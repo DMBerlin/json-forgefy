@@ -1,6 +1,6 @@
 import { isObject } from "@helpers/is-object.helper";
 
-describe("Is Object Helper Test", () => {
+describe("isObject Testing Suit", () => {
   it("should return true if the value is an object", () => {
     expect(isObject({})).toBe(true);
   });
