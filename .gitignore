@@ -1,0 +1,46 @@
+# Dependency directories
+node_modules/
+
+# Output directories
+dist/
+lib/
+build/
+
+# Environment variables
+.env
+
+# Log files
+*.log
+npm-debug.log*
+
+# Visual Studio Code directories
+.vscode/
+
+# IDE-specific files
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# macOS
+.DS_Store
+
+# JetBrains IDEs
+.idea/
+
+# Operating System files
+Thumbs.db
+Desktop.ini
+
+# Compiled binary addons (node-gyp)
+build/Release/
+
+# package-lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# tsbuildinfos
+*.tsbuildinfo
