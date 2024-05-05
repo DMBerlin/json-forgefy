@@ -37,5 +37,10 @@ Desktop.ini
 # Compiled binary addons (node-gyp)
 build/Release/
 
+# package-lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
 # tsbuildinfos
 *.tsbuildinfo
