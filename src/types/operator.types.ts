@@ -3,7 +3,16 @@ export type OperatorKey =
   | "$multiply"
   | "$toNumber"
   | "$toString"
-  | "$toUpper";
+  | "$divide"
+  | "$add"
+  | "$subtract"
+  | "$toUpper"
+  | "$toLower"
+  | "$concat"
+  | "$size"
+  | "$substr"
+  | "$slice"
+  | "$split";
 
 export type OperatorValue = (
   source?: Record<string, any>,
