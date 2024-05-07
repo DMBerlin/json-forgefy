@@ -1,8 +1,10 @@
 import { isOperator } from "../helpers/is-operator.common";
 import { resolveExpression } from "../common/resolve-expression.common";
 
+type DivideOperatorInput = number[];
+
 export function $divide(source?: Record<string, any>) {
-  return function (values: number[]) {
+  return function (values: DivideOperatorInput) {
     const prepare: number[] = values.map(
       (value: number | Record<string, any>) =>
         (typeof value === "object" && isOperator(value)

@@ -7,10 +7,10 @@ interface SwitchOperatorInput {
 }
 
 export function $switch(source?: Record<string, any>) {
-  return function (input: SwitchOperatorInput) {
-    for (const branch of input.branches) {
+  return function (value: SwitchOperatorInput) {
+    for (const branch of value.branches) {
       if (resolveExpression(source, branch.case)) return branch.then;
     }
-    return input.default;
+    return value.default;
   };
 }
