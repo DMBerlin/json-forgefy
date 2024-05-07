@@ -13,6 +13,13 @@ export const blueprintFixture = {
       netAmount: "$transactionDetails.netAmount",
     },
   },
+  receiverType: {
+    $cond: {
+      if: { $eq: ["$receiver.accountType", "Preparing"] },
+      then: "It is checking...",
+      else: "Finished",
+    },
+  },
   branch: {
     $switch: {
       branches: [

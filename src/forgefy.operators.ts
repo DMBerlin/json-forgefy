@@ -15,6 +15,7 @@ import { $size } from "./operators/size.operator";
 import { $add } from "./operators/add.operator";
 import { $eq } from "./operators/eq.operator";
 import { $switch } from "./operators/switch.operator";
+import { $cond } from "@operators/cond.operator";
 
 export const operators: Map<string, (...any: any[]) => any> = new Map<
   OperatorKey,
@@ -35,4 +36,5 @@ export const operators: Map<string, (...any: any[]) => any> = new Map<
   .set("$divide", $divide)
   .set("$size", $size)
   .set("$eq", $eq)
-  .set("$switch", $switch);
+  .set("$switch", $switch)
+  .set("$cond", $cond);

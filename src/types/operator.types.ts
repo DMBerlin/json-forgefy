@@ -14,7 +14,8 @@ export type OperatorKey =
   | "$slice"
   | "$split"
   | "$eq"
-  | "$switch";
+  | "$switch"
+  | "$cond";
 
 export type OperatorValue = (
   source?: Record<string, any>,
