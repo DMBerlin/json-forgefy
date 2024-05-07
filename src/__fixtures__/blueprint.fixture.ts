@@ -13,4 +13,19 @@ export const blueprintFixture = {
       netAmount: "$transactionDetails.netAmount",
     },
   },
+  branch: {
+    $switch: {
+      branches: [
+        {
+          case: { $eq: ["$sender.bank.branchName", "Branch A"] },
+          then: "Open Banking Name A",
+        },
+        {
+          case: { $eq: ["$sender.bank.branchName", "Branch B"] },
+          then: "Open Banking Name B",
+        },
+      ],
+      default: "Unknown Branch",
+    },
+  },
 };

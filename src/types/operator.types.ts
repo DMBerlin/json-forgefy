@@ -12,7 +12,9 @@ export type OperatorKey =
   | "$size"
   | "$substr"
   | "$slice"
-  | "$split";
+  | "$split"
+  | "$eq"
+  | "$switch";
 
 export type OperatorValue = (
   source?: Record<string, any>,

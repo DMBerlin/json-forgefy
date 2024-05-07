@@ -2,7 +2,7 @@ import { isValidObjectPath } from "../helpers/is-valid-object-path.common";
 import { getValueByPath } from "./get-value-by-path.common";
 import { operators } from "../forgefy.operators";
 
-export function resolveOperation<T>(
+export function resolveExpression<T>(
   source: Record<string, any>,
   operator: Record<string, any>,
 ): T {

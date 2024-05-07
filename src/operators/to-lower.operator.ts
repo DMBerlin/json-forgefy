@@ -1,4 +1,4 @@
-export function toLower() {
+export function $toLower() {
   return function (value: string) {
     return value.toLowerCase();
   };

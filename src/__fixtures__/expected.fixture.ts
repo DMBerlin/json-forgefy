@@ -8,4 +8,5 @@ export const expectedFixture = {
     currency: "USD",
     fees: { transactionFee: "10.0", netAmount: "990.0" },
   },
+  branch: "Unknown Branch",
 };
