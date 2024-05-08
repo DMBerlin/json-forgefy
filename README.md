@@ -14,7 +14,7 @@ This is heavily inspired on the MongoDB aggregation pipeline, where you can tran
 
 ```ts
 // INCOMMING JSON STRING
-export const actual: Record<string, any> = {
+export const actual = {
   transactionId: "1234567890",
   transactionType: "Money Transfer",
   transactionDate: "2024-01-01T00:00:00Z",
