@@ -2,14 +2,14 @@ import { isValidObjectPath } from "../helpers/is-valid-object-path.common";
 import { getValueByPath } from "../common/get-value-by-path.common";
 import { isObject } from "../helpers/is-object.helper";
 import { isOperator } from "../helpers/is-operator.common";
-import { resolveOperation } from "../common/resolve-operation.common";
+import { resolveExpression } from "../common/resolve-expression.common";
 
 function assignValueByOperator(
   key: string,
   source: Record<string, any>,
   blueprint: Record<string, any>,
 ): void {
-  blueprint[key] = resolveOperation(source, blueprint[key]);
+  blueprint[key] = resolveExpression(source, blueprint[key]);
 }
 
 function assignValueByPath(
