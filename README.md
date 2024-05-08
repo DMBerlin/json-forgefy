@@ -13,8 +13,7 @@ This is heavily inspired on the MongoDB aggregation pipeline, where you can tran
 ## Example:
 
 ```ts
-// INCOMMING JSON STRING
-export const incomingPaylad = {
+export const incomingPayload = {
   transactionId: "1234567890",
   transactionType: "Money Transfer",
   transactionDate: "2024-01-01T00:00:00Z",
