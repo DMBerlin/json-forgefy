@@ -14,7 +14,7 @@ This is heavily inspired on the MongoDB aggregation pipeline, where you can tran
 
 ```ts
 // INCOMMING JSON STRING
-export const actual = {
+export const incomingPaylad = {
   transactionId: "1234567890",
   transactionType: "Money Transfer",
   transactionDate: "2024-01-01T00:00:00Z",
@@ -69,7 +69,7 @@ export const actual = {
 The object above - as example - is the incoming JSON string that you want to transform into a new object. You want to obtain the following result at the end:
 
 ```ts
-export const expected = {
+export const expectedResult = {
   accountId: "A123",
   accountType: "Savings",
   transactionId: "1234567890",
@@ -79,13 +79,15 @@ export const expected = {
     currency: "USD",
     fees: { transactionFee: "10.0", netAmount: "990.0" },
   },
+  receiverType: "Finished",
+  branch: "Open Banking Name A",
 };
 ```
 
 To do so, we just need to specify a blueprint configuration file, like the following:
 
 ```ts
-export const blueprint = {
+export const yourBlueprint = {
   accountId: "$sender.accountId",
   accountType: "$sender.accountType",
   transactionId: "$transactionId",
@@ -100,8 +102,29 @@ export const blueprint = {
       netAmount: "$transactionDetails.netAmount",
     },
   },
+  receiverType: {
+    $cond: {
+      if: { $eq: ["$receiver.accountType", "Preparing"] },
+      then: "It is checking...",
+      else: "Finished",
+    },
+  },
+  branch: {
+    $switch: {
+      branches: [
+        {
+          case: { $eq: ["$sender.bank.branchName", "Branch A"] },
+          then: "Open Banking Name A",
+        },
+        {
+          case: { $eq: ["$sender.bank.branchName", "Branch B"] },
+          then: "Open Banking Name B",
+        },
+      ],
+      default: "Unknown Branch",
+    },
+  },
 };
-
 ```
 
 ## How to:
@@ -110,5 +133,5 @@ Import the `forgefy` function from the package and pass two inputs, the incoming
 
 ```ts
 import { forgefy } from "json-forgefy";
-const result = forgefy(actual, blueprint);
+const result = forgefy(incomingPayload, yourBlueprint);
 ```
