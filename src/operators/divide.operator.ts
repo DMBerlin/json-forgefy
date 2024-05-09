@@ -4,7 +4,7 @@ import { resolveExpression } from "../common/resolve-expression.common";
 type DivideOperatorInput = number[];
 
 export function $divide(source?: Record<string, any>) {
-  return function (values: DivideOperatorInput) {
+  return function (values: DivideOperatorInput): number {
     const prepare: number[] = values.map(
       (value: number | Record<string, any>) =>
         (typeof value === "object" && isOperator(value)

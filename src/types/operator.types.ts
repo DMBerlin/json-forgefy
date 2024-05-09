@@ -15,7 +15,12 @@ export type OperatorKey =
   | "$split"
   | "$eq"
   | "$switch"
-  | "$cond";
+  | "$cond"
+  | "$abs"
+  | "$ceil"
+  | "$floor"
+  | "$max"
+  | "$min";
 
 export type OperatorValue = (
   source?: Record<string, any>,
