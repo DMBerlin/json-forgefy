@@ -16,6 +16,11 @@ import { $add } from "./operators/add.operator";
 import { $eq } from "./operators/eq.operator";
 import { $switch } from "./operators/switch.operator";
 import { $cond } from "@operators/cond.operator";
+import { $abs } from "@operators/abs.operator";
+import { $ceil } from "@operators/ceil.operator";
+import { $floor } from "@operators/floor.operator";
+import { $max } from "@operators/max.operator";
+import { $min } from "@operators/min.operator";
 
 export const operators: Map<string, (...any: any[]) => any> = new Map<
   OperatorKey,
@@ -37,4 +42,9 @@ export const operators: Map<string, (...any: any[]) => any> = new Map<
   .set("$size", $size)
   .set("$eq", $eq)
   .set("$switch", $switch)
-  .set("$cond", $cond);
+  .set("$cond", $cond)
+  .set("$abs", $abs)
+  .set("$ceil", $ceil)
+  .set("$floor", $floor)
+  .set("$max", $max)
+  .set("$min", $min);

@@ -4,7 +4,7 @@ import { resolveExpression } from "../common/resolve-expression.common";
 type MultiplyOperatorInput = number[];
 
 export function $multiply(source?: Record<string, any>) {
-  return function (values: MultiplyOperatorInput) {
+  return function (values: MultiplyOperatorInput): number {
     const prepare: number[] = values.map(
       (value: number | Record<string, any>) =>
         (typeof value === "object" && isOperator(value)
