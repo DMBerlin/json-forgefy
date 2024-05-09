@@ -65,25 +65,7 @@ export const incomingPayload = {
 };
 ```
 
-The object above - as example - is the incoming JSON string that you want to transform into a new object. You want to obtain the following result at the end:
-
-```ts
-export const expectedResult = {
-  accountId: "A123",
-  accountType: "Savings",
-  transactionId: "1234567890",
-  transactionStatus: "PENDING",
-  transactionDetails: {
-    amount: 100000,
-    currency: "USD",
-    fees: { transactionFee: "10.0", netAmount: "990.0" },
-  },
-  receiverType: "Finished",
-  branch: "Open Banking Name A",
-};
-```
-
-To do so, we just need to specify a blueprint configuration file, like the following:
+To transform our incoming JSON string into a new Object, we can create a blueprint configuration file like this one below:
 
 ```ts
 export const yourBlueprint = {
@@ -123,6 +105,24 @@ export const yourBlueprint = {
       default: "Unknown Branch",
     },
   },
+};
+```
+
+The end result will be:
+
+```ts
+export const expectedResult = {
+  accountId: "A123",
+  accountType: "Savings",
+  transactionId: "1234567890",
+  transactionStatus: "PENDING",
+  transactionDetails: {
+    amount: 100000,
+    currency: "USD",
+    fees: { transactionFee: "10.0", netAmount: "990.0" },
+  },
+  receiverType: "Finished",
+  branch: "Open Banking Name A",
 };
 ```
 
