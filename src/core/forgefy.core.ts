@@ -1,7 +1,7 @@
-import { isValidObjectPath } from "../helpers/is-valid-object-path.common";
+import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
 import { getValueByPath } from "../common/get-value-by-path.common";
 import { isObject } from "../helpers/is-object.helper";
-import { isOperator } from "../helpers/is-operator.common";
+import { isOperator } from "../helpers/is-operator.helper";
 import { resolveExpression } from "../common/resolve-expression.common";
 
 function assignValueByOperator(

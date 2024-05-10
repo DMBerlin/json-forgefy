@@ -1,6 +1,6 @@
-import { isOperator } from "../helpers/is-operator.common";
+import { isOperator } from "../helpers/is-operator.helper";
 import { resolveExpression } from "../common/resolve-expression.common";
-import { isValidObjectPath } from "../helpers/is-valid-object-path.common";
+import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
 import { getValueByPath } from "../common/get-value-by-path.common";
 
 type EqOperatorInput = [unknown, unknown];
