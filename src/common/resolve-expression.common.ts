@@ -4,12 +4,12 @@ import { operators } from "../forgefy.operators";
 
 export function resolveExpression<T>(
   source: Record<string, any>,
-  operator: Record<string, any>,
+  expression: Record<string, any>,
 ): T {
-  const key = Object.keys(operator)[0];
-  const args = isValidObjectPath(operator[key])
-    ? getValueByPath(source, operator[key])
-    : operator[key];
-  const executable = operators.get(key);
-  return executable(source)(args);
+  const key = Object.keys(expression)[0];
+  const args = isValidObjectPath(expression[key])
+    ? getValueByPath(source, expression[key])
+    : expression[key];
+  const operator = operators.get(key);
+  return operator(source)(args);
 }
