@@ -1,4 +1,4 @@
-import { isOperator } from "../helpers/is-operator.common";
+import { isOperator } from "../helpers/is-operator.helper";
 import { resolveExpression } from "../common/resolve-expression.common";
 
 type MultiplyOperatorInput = number[];

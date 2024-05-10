@@ -1,4 +1,4 @@
-import { isValidObjectPath } from "../helpers/is-valid-object-path.common";
+import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
 import { getValueByPath } from "./get-value-by-path.common";
 import { operators } from "../forgefy.operators";
 
