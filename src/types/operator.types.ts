@@ -4,6 +4,7 @@ import {
   CeilOperatorInput,
   ConcatOperatorInput,
   CondOperatorInput,
+  DateDiffOperatorInput,
   DivideOperatorInput,
   EqOperatorInput,
   FloorOperatorInput,
@@ -49,7 +50,8 @@ export type OperatorKey =
   | "$ceil"
   | "$floor"
   | "$max"
-  | "$min";
+  | "$min"
+  | "$dateDiff";
 
 export type OperatorInput =
   | AddOperatorInput
@@ -58,6 +60,7 @@ export type OperatorInput =
   | CeilOperatorInput
   | ConcatOperatorInput
   | CondOperatorInput
+  | DateDiffOperatorInput
   | DivideOperatorInput
   | EqOperatorInput
   | FloorOperatorInput

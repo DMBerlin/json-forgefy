@@ -19,6 +19,12 @@ export type CondOperatorInput = {
   else: unknown;
 };
 
+export type DateDiffOperatorInput = {
+  startDate: string;
+  endDate: string;
+  unit: "days" | "months" | "years";
+};
+
 export type DivideOperatorInput = number[];
 
 export type EqOperatorInput = [unknown, unknown];
