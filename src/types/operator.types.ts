@@ -1,3 +1,32 @@
+import {
+  AbsOperatorInput,
+  AddOperatorInput,
+  CeilOperatorInput,
+  ConcatOperatorInput,
+  CondOperatorInput,
+  DivideOperatorInput,
+  EqOperatorInput,
+  FloorOperatorInput,
+  IfNullOperatorInput,
+  MaxOperatorInput,
+  MinOperatorInput,
+  MultiplyOperatorInput,
+  SizeOperatorInput,
+  SliceOperatorInput,
+  SplitOperatorInput,
+  SubstrOperatorInput,
+  SubtractOperatorInput,
+  SwitchOperatorInput,
+  ToLowerOperatorInput,
+  ToNumberOperatorInput,
+  ToStringOperatorInput,
+  ToUpperOperatorInput,
+} from "../types/operator-inputs.types";
+
+export type OperatorValue = (
+  source?: Record<string, any>,
+) => (...args: any[]) => any;
+
 export type OperatorKey =
   | "$ifNull"
   | "$multiply"
@@ -22,6 +51,26 @@ export type OperatorKey =
   | "$max"
   | "$min";
 
-export type OperatorValue = (
-  source?: Record<string, any>,
-) => (...args: any[]) => any;
+export type OperatorInput =
+  | AddOperatorInput
+  | AbsOperatorInput
+  | SwitchOperatorInput
+  | CeilOperatorInput
+  | ConcatOperatorInput
+  | CondOperatorInput
+  | DivideOperatorInput
+  | EqOperatorInput
+  | FloorOperatorInput
+  | IfNullOperatorInput
+  | MaxOperatorInput
+  | MinOperatorInput
+  | MultiplyOperatorInput
+  | SizeOperatorInput
+  | SliceOperatorInput
+  | SplitOperatorInput
+  | SubstrOperatorInput
+  | SubtractOperatorInput
+  | ToLowerOperatorInput
+  | ToNumberOperatorInput
+  | ToStringOperatorInput
+  | ToUpperOperatorInput;

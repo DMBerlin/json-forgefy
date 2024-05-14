@@ -1,14 +1,17 @@
 import { isOperator } from "../helpers/is-operator.helper";
 import { resolveExpression } from "../common/resolve-expression.common";
+import { ExecutionContext } from "../interfaces/execution-context.interface";
+import { DivideOperatorInput } from "../types/operator-inputs.types";
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
 
-type DivideOperatorInput = number[];
-
-export function $divide(source?: Record<string, any>) {
+export const $divide: ExecutableExpression<DivideOperatorInput, number> = (
+  ctx?: ExecutionContext,
+) => {
   return function (values: DivideOperatorInput): number {
     const prepare: number[] = values.map(
       (value: number | Record<string, any>) =>
         (typeof value === "object" && isOperator(value)
-          ? resolveExpression<number>(source, value)
+          ? resolveExpression<number>(ctx.context, value)
           : value) as number,
     );
     return prepare.reduce(
@@ -16,4 +19,4 @@ export function $divide(source?: Record<string, any>) {
       1,
     );
   };
-}
+};

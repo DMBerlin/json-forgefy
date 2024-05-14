@@ -1,5 +1,5 @@
 import { OperatorKey } from "../types/operator.types";
 
-export type ExpressionType = {
+export type ExpressionTypes = {
   [K in OperatorKey]: unknown;
 };

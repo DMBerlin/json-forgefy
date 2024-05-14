@@ -1,16 +1,12 @@
 import { resolveExpression } from "../common/resolve-expression.common";
-import { ExpressionType } from "../types/expression.type";
+import { ExecutionContext } from "../interfaces/execution-context.interface";
+import { SwitchOperatorInput } from "../types/operator-inputs.types";
 
-interface SwitchOperatorInput {
-  branches: Array<{ case: ExpressionType; then: unknown }>;
-  default: unknown;
-}
-
-export function $switch(source?: Record<string, any>) {
+export const $switch = (ctx?: ExecutionContext) => {
   return function (value: SwitchOperatorInput) {
     for (const branch of value.branches) {
-      if (resolveExpression(source, branch.case)) return branch.then;
+      if (resolveExpression(ctx.context, branch.case)) return branch.then;
     }
     return value.default;
   };
-}
+};
