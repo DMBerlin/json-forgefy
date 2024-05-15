@@ -21,7 +21,7 @@ import { $ceil } from "./operators/ceil.operator";
 import { $floor } from "./operators/floor.operator";
 import { $max } from "./operators/max.operator";
 import { $min } from "./operators/min.operator";
-import { $dateDiff } from "@operators/date-diff.operator";
+import { $dateDiff } from "./operators/date-diff.operator";
 
 export const operators: Map<OperatorKey, OperatorValue> = new Map<
   OperatorKey,
