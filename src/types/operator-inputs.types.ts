@@ -1,11 +1,11 @@
-import { ExpressionTypes } from "./expression.types";
+import { Expression } from "../types/expression.types";
 
 export type AddOperatorInput = number[];
 
 export type AbsOperatorInput = number;
 
 export type SwitchOperatorInput = {
-  branches: Array<{ case: ExpressionTypes; then: unknown }>;
+  branches: Array<{ case: Expression; then: unknown }>;
   default: unknown;
 };
 
@@ -14,7 +14,7 @@ export type CeilOperatorInput = number;
 export type ConcatOperatorInput = string[];
 
 export type CondOperatorInput = {
-  if: ExpressionTypes;
+  if: Expression;
   then: unknown;
   else: unknown;
 };
