@@ -1,6 +1,6 @@
-import { resolveExpression } from "../common/resolve-expression.common";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { SwitchOperatorInput } from "../types/operator-inputs.types";
+import { resolveExpression } from "@common/resolve-expression.common";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { SwitchOperatorInput } from "../types/inputs.types";
 
 export const $switch = (ctx?: ExecutionContext) => {
   return function (value: SwitchOperatorInput) {

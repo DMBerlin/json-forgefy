@@ -1,5 +1,5 @@
-import { MaxOperatorInput } from "../types/operator-inputs.types";
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { MaxOperatorInput } from "../types/inputs.types";
 
 export const $max: ExecutableExpression<MaxOperatorInput, number> = () => {
   return function (values: MaxOperatorInput): number {

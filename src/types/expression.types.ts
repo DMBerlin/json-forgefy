@@ -1,4 +1,4 @@
-import { OperatorKey } from "../types/operator.types";
+import { OperatorKey } from "./operator.types";
 
 export type Expression = { [K in OperatorKey]?: ExpressionValues };
 

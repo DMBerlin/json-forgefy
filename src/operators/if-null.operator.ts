@@ -1,5 +1,5 @@
 import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { IfNullOperatorInput } from "../types/operator-inputs.types";
+import { IfNullOperatorInput } from "../types/inputs.types";
 import { isOperator } from "../helpers/is-operator.helper";
 import { resolveExpression } from "../common/resolve-expression.common";
 import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
