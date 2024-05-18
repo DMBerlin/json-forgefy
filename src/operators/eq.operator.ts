@@ -4,7 +4,7 @@ import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
 import { getValueByPath } from "@common/get-value-by-path.common";
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { EqOperatorInput } from "../types/inputs.types";
+import { EqOperatorInput } from "@/types/operator-input.types";
 
 export const $eq: ExecutableExpression<EqOperatorInput, boolean> = (
   ctx?: ExecutionContext,
