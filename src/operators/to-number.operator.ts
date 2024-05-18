@@ -1,5 +1,5 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ToNumberOperatorInput } from "../types/inputs.types";
+import { ToNumberOperatorInput } from "@/types/operator-input.types";
 
 export const $toNumber: ExecutableExpression<
   ToNumberOperatorInput,

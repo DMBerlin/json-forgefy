@@ -1,5 +1,5 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { SplitOperatorInput } from "../types/inputs.types";
+import { SplitOperatorInput } from "@/types/operator-input.types";
 
 export const $split: ExecutableExpression<
   SplitOperatorInput,

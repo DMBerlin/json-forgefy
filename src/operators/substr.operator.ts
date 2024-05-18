@@ -1,5 +1,5 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { SubstrOperatorInput } from "../types/inputs.types";
+import { SubstrOperatorInput } from "@/types/operator-input.types";
 
 export const $substr: ExecutableExpression<
   SubstrOperatorInput,

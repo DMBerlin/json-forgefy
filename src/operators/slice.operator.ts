@@ -1,5 +1,5 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { SliceOperatorInput } from "../types/inputs.types";
+import { SliceOperatorInput } from "@/types/operator-input.types";
 
 export const $slice: ExecutableExpression<SliceOperatorInput, string> = () => {
   return function (params: SliceOperatorInput): string {

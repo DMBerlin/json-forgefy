@@ -22,7 +22,7 @@ import {
   ToNumberOperatorInput,
   ToStringOperatorInput,
   ToUpperOperatorInput,
-} from "./inputs.types";
+} from "./operator-input.types";
 
 export type OperatorValue = (
   source?: Record<string, any>,

@@ -1,5 +1,5 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { AddOperatorInput } from "../types/inputs.types";
+import { AddOperatorInput } from "@/types/operator-input.types";
 
 export const $add: ExecutableExpression<AddOperatorInput, number> = () => {
   return function (value: AddOperatorInput): number {
