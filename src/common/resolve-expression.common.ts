@@ -1,15 +1,20 @@
 import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
 import { getValueByPath } from "./get-value-by-path.common";
 import { operators } from "../forgefy.operators";
+import { OperatorKey, OperatorValue } from "../types/operator.types";
 
 export function resolveExpression<T>(
   source: Record<string, any>,
-  operator: Record<string, any>,
+  expression: Record<string, any>,
 ): T {
-  const key = Object.keys(operator)[0];
-  const args = isValidObjectPath(operator[key])
-    ? getValueByPath(source, operator[key])
-    : operator[key];
-  const executable = operators.get(key);
-  return executable(source)(args);
+  try {
+    const key: OperatorKey = Object.keys(expression)[0] as OperatorKey;
+    const args = isValidObjectPath(expression[key])
+      ? getValueByPath(source, expression[key])
+      : expression[key];
+    const operator: OperatorValue = operators.get(key);
+    return operator({ context: source })(args);
+  } catch (error) {
+    return null;
+  }
 }

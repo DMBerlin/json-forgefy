@@ -1,14 +1,12 @@
 import { resolveExpression } from "../common/resolve-expression.common";
-import { ExpressionType } from "../types/expression.type";
+import { ExecutionContext } from "../interfaces/execution-context.interface";
+import { CondOperatorInput } from "../types/operator-inputs.types";
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
 
-type CondOperatorInput = {
-  if: ExpressionType;
-  then: unknown;
-  else: unknown;
-};
-
-export function $cond(source?: Record<string, any>) {
+export const $cond: ExecutableExpression<CondOperatorInput, unknown> = (
+  ctx?: ExecutionContext,
+) => {
   return function (value: CondOperatorInput): unknown {
-    return resolveExpression(source, value.if) ? value.then : value.else;
+    return resolveExpression(ctx.context, value.if) ? value.then : value.else;
   };
-}
+};

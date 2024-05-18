@@ -1,5 +1,11 @@
-export function $toUpper() {
-  return function (value: string) {
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { ToUpperOperatorInput } from "../types/operator-inputs.types";
+
+export const $toUpper: ExecutableExpression<
+  ToUpperOperatorInput,
+  string
+> = () => {
+  return function (value: string): string {
     return value.toUpperCase();
   };
-}
+};

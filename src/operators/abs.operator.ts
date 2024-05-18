@@ -1,7 +1,8 @@
-type AbsOperatorInput = number;
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { AbsOperatorInput } from "../types/operator-inputs.types";
 
-export function $abs() {
+export const $abs: ExecutableExpression<AbsOperatorInput, number> = () => {
   return function (value: AbsOperatorInput): number {
     return Math.abs(value);
   };
-}
+};

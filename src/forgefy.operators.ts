@@ -15,14 +15,15 @@ import { $size } from "./operators/size.operator";
 import { $add } from "./operators/add.operator";
 import { $eq } from "./operators/eq.operator";
 import { $switch } from "./operators/switch.operator";
-import { $cond } from "@operators/cond.operator";
-import { $abs } from "@operators/abs.operator";
-import { $ceil } from "@operators/ceil.operator";
-import { $floor } from "@operators/floor.operator";
-import { $max } from "@operators/max.operator";
-import { $min } from "@operators/min.operator";
+import { $cond } from "./operators/cond.operator";
+import { $abs } from "./operators/abs.operator";
+import { $ceil } from "./operators/ceil.operator";
+import { $floor } from "./operators/floor.operator";
+import { $max } from "./operators/max.operator";
+import { $min } from "./operators/min.operator";
+import { $dateDiff } from "./operators/date-diff.operator";
 
-export const operators: Map<string, (...any: any[]) => any> = new Map<
+export const operators: Map<OperatorKey, OperatorValue> = new Map<
   OperatorKey,
   OperatorValue
 >()
@@ -47,4 +48,5 @@ export const operators: Map<string, (...any: any[]) => any> = new Map<
   .set("$ceil", $ceil)
   .set("$floor", $floor)
   .set("$max", $max)
-  .set("$min", $min);
+  .set("$min", $min)
+  .set("$dateDiff", $dateDiff);

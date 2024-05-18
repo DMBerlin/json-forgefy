@@ -1,4 +1,4 @@
-import { isOperator } from "@helpers/is-operator.helper";
+import { isOperator } from "../helpers/is-operator.helper";
 
 describe("isOperator Testing Suit", () => {
   it("should return true when object is an operator", () => {

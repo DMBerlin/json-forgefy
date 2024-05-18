@@ -1,5 +1,8 @@
-export function $slice() {
-  return function (value: string, start: number, end: number) {
-    return value.slice(start, end);
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { SliceOperatorInput } from "../types/operator-inputs.types";
+
+export const $slice: ExecutableExpression<SliceOperatorInput, string> = () => {
+  return function (params: SliceOperatorInput): string {
+    return params.input.slice(params.start, params.end);
   };
-}
+};
