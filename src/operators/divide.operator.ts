@@ -1,8 +1,8 @@
-import { isOperator } from "../helpers/is-operator.helper";
-import { resolveExpression } from "../common/resolve-expression.common";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { DivideOperatorInput } from "../types/operator-inputs.types";
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { isOperator } from "@helpers/is-operator.helper";
+import { resolveExpression } from "@common/resolve-expression.common";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { DivideOperatorInput } from "../types/inputs.types";
 
 export const $divide: ExecutableExpression<DivideOperatorInput, number> = (
   ctx?: ExecutionContext,

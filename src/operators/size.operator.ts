@@ -1,5 +1,5 @@
-import { SizeOperatorInput } from "../types/operator-inputs.types";
-import { ExecutableExpression } from "@src/interfaces/executable-expression.interface";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { SizeOperatorInput } from "../types/inputs.types";
 
 export const $size: ExecutableExpression<SizeOperatorInput, number> = () => {
   return function (values: SizeOperatorInput): number {

@@ -1,5 +1,5 @@
-import { MinOperatorInput } from "../types/operator-inputs.types";
-import { ExecutableExpression } from "@src/interfaces/executable-expression.interface";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { MinOperatorInput } from "../types/inputs.types";
 
 export const $min: ExecutableExpression<MinOperatorInput, number> = () => {
   return function (values: MinOperatorInput): number {

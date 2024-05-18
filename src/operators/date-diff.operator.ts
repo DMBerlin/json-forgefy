@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { DateDiffOperatorInput } from "../types/operator-inputs.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { DateDiffOperatorInput } from "../types/inputs.types";
 
 export const $dateDiff: ExecutableExpression<
   DateDiffOperatorInput,

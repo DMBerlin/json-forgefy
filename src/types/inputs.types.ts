@@ -1,4 +1,4 @@
-import { Expression } from "../types/expression.types";
+import { Expression } from "./expression.types";
 
 export type AddOperatorInput = number[];
 

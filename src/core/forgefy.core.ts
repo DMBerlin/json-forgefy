@@ -37,6 +37,12 @@ function keyHandler(
   }
 }
 
+/**
+ * @description Function that converts an incoming payload to a new object based on the projection.
+ * @param payload
+ * @param projection
+ * @returns {Record<string, any>}
+ */
 export function forgefy(
   payload: Record<string, any>,
   projection: Projection,

@@ -1,7 +1,7 @@
-import { resolveExpression } from "../common/resolve-expression.common";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { CondOperatorInput } from "../types/operator-inputs.types";
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { resolveExpression } from "@common/resolve-expression.common";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { CondOperatorInput } from "../types/inputs.types";
 
 export const $cond: ExecutableExpression<CondOperatorInput, unknown> = (
   ctx?: ExecutionContext,
