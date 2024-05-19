@@ -7,6 +7,6 @@ export const $cond: ExecutableExpression<CondOperatorInput, unknown> = (
   ctx?: ExecutionContext,
 ) => {
   return function (value: CondOperatorInput): unknown {
-    return resolveExpression(ctx.context, value.if) ? value.then : value.else;
+    return resolveExpression(ctx?.context, value.if) ? value.then : value.else;
   };
 };
