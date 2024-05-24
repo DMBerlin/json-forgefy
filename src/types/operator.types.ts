@@ -18,6 +18,7 @@ import {
   SubstrOperatorInput,
   SubtractOperatorInput,
   SwitchOperatorInput,
+  ToFixedOperatorInput,
   ToLowerOperatorInput,
   ToNumberOperatorInput,
   ToStringOperatorInput,
@@ -51,7 +52,8 @@ export type OperatorKey =
   | "$floor"
   | "$max"
   | "$min"
-  | "$dateDiff";
+  | "$dateDiff"
+  | "$toFixed";
 
 export type OperatorInput =
   | AddOperatorInput
@@ -76,4 +78,5 @@ export type OperatorInput =
   | ToLowerOperatorInput
   | ToNumberOperatorInput
   | ToStringOperatorInput
-  | ToUpperOperatorInput;
+  | ToUpperOperatorInput
+  | ToFixedOperatorInput;

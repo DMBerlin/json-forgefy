@@ -67,3 +67,8 @@ export type ToNumberOperatorInput = string;
 export type ToStringOperatorInput = string;
 
 export type ToUpperOperatorInput = string;
+
+export type ToFixedOperatorInput = {
+  value: number;
+  precision: number;
+};
