@@ -25,7 +25,7 @@ export type DateDiffOperatorInput = {
   unit: "days" | "months" | "years";
 };
 
-export type DivideOperatorInput = number[];
+export type DivideOperatorInput = Array<number | Expression>;
 
 export type EqOperatorInput = [unknown, unknown];
 
