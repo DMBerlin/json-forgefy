@@ -12,10 +12,10 @@ export const $eq: ExecutableExpression<EqOperatorInput, boolean> = (
   return function (values: EqOperatorInput): boolean {
     const prepare: Array<unknown> = values.map((value) => {
       if (typeof value === "object" && isOperator(value)) {
-        return resolveExpression(ctx.context, value);
+        return resolveExpression(ctx?.context, value);
       }
       if (typeof value === "string" && isValidObjectPath(value)) {
-        return getValueByPath(ctx.context, value);
+        return getValueByPath(ctx?.context, value);
       }
       return value;
     });

@@ -27,7 +27,10 @@ export type DateDiffOperatorInput = {
 
 export type DivideOperatorInput = Array<number | Expression>;
 
-export type EqOperatorInput = [unknown, unknown];
+export type EqOperatorInput = [
+  Omit<Expression, "$eq"> | number | string | boolean,
+  Omit<Expression, "$eq"> | number | string | boolean,
+];
 
 export type FloorOperatorInput = number;
 
