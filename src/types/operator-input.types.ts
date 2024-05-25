@@ -1,4 +1,6 @@
 import { Expression } from "./expression.types";
+import { JsonValidTypes } from "@/types/json.types";
+import { ObjectPathValue } from "@/types/object-path-value.types";
 
 export type AddOperatorInput = number[];
 
@@ -34,7 +36,10 @@ export type EqOperatorInput = [
 
 export type FloorOperatorInput = number;
 
-export type IfNullOperatorInput = [unknown, unknown];
+export type IfNullOperatorInput = [
+  Expression | ObjectPathValue,
+  JsonValidTypes,
+];
 
 export type MaxOperatorInput = number[];
 
