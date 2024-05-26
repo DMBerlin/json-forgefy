@@ -5,7 +5,7 @@ export const $toNumber: ExecutableExpression<
   ToNumberOperatorInput,
   number
 > = () => {
-  return function (value: string): number {
+  return function (value: ToNumberOperatorInput): number {
     return Number(value);
   };
 };

@@ -72,7 +72,7 @@ export type ToLowerOperatorInput = string;
 
 export type ToNumberOperatorInput = string;
 
-export type ToStringOperatorInput = string;
+export type ToStringOperatorInput = unknown;
 
 export type ToUpperOperatorInput = string;
 
