@@ -8,7 +8,7 @@ export type AbsOperatorInput = number;
 
 export type SwitchOperatorInput = {
   branches: Array<{ case: Expression; then: unknown }>;
-  default: unknown;
+  default: JsonValidTypes;
 };
 
 export type CeilOperatorInput = number;

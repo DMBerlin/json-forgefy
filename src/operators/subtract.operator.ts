@@ -8,7 +8,6 @@ export const $subtract: ExecutableExpression<
   return function (values: SubtractOperatorInput): number {
     return values.reduce(
       (accumulator: number, base: number) => accumulator - base,
-      0,
     );
   };
 };

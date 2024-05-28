@@ -15,12 +15,8 @@ export const $divide: ExecutableExpression<DivideOperatorInput, number> = (
           : value) as number,
     );
 
-    let output = 0;
-
-    for (const value of prepare) {
-      output = output === 0 ? value : output / value;
-    }
-
-    return output;
+    return prepare.reduce(
+      (accumulator: number, base: number) => accumulator / base,
+    );
   };
 };
