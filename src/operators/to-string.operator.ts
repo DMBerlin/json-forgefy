@@ -5,7 +5,7 @@ export const $toString: ExecutableExpression<
   ToStringOperatorInput,
   string
 > = () => {
-  return function (value: unknown): string {
+  return function (value: ToStringOperatorInput): string {
     return String(value);
   };
 };

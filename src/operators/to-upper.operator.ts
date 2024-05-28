@@ -5,7 +5,7 @@ export const $toUpper: ExecutableExpression<
   ToUpperOperatorInput,
   string
 > = () => {
-  return function (value: string): string {
+  return function (value: ToUpperOperatorInput): string {
     return value.toUpperCase();
   };
 };

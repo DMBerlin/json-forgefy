@@ -16,7 +16,6 @@ export const $multiply: ExecutableExpression<MultiplyOperatorInput, number> = (
     );
     return prepare.reduce(
       (accumulator: number, base: number) => accumulator * base,
-      1,
     );
   };
 };

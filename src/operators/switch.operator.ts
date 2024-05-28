@@ -5,7 +5,7 @@ import { SwitchOperatorInput } from "@/types/operator-input.types";
 export const $switch = (ctx?: ExecutionContext) => {
   return function (value: SwitchOperatorInput) {
     for (const branch of value.branches) {
-      if (resolveExpression(ctx.context, branch.case)) return branch.then;
+      if (resolveExpression(ctx?.context, branch.case)) return branch.then;
     }
     return value.default;
   };

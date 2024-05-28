@@ -14,9 +14,9 @@ export const $divide: ExecutableExpression<DivideOperatorInput, number> = (
           ? resolveExpression<number>(ctx.context, value)
           : value) as number,
     );
+
     return prepare.reduce(
       (accumulator: number, base: number) => accumulator / base,
-      1,
     );
   };
 };
