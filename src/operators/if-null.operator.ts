@@ -1,10 +1,10 @@
-import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { IfNullOperatorInput } from "@/types/operator-input.types";
-import { isOperator } from "@helpers/is-operator.helper";
-import { resolveExpression } from "@common/resolve-expression.common";
-import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
-import { getValueByPath } from "@common/get-value-by-path.common";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { IfNullOperatorInput } from "../types/operator-input.types";
+import { isOperator } from "../helpers/is-operator.helper";
+import { resolveExpression } from "../common/resolve-expression.common";
+import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
+import { getValueByPath } from "../common/get-value-by-path.common";
+import { ExecutionContext } from "../interfaces/execution-context.interface";
 
 export const $ifNull: ExecutableExpression<
   IfNullOperatorInput,

@@ -1,4 +1,4 @@
-import { $abs } from "@operators/abs.operator";
+import { $abs } from "../operators/abs.operator";
 
 describe("Abs Operator", () => {
   it("should return the absolute value of a positive number", () => {

@@ -1,4 +1,4 @@
-import { $slice } from "@operators/slice.operator";
+import { $slice } from "../operators/slice.operator";
 
 describe("slice operator", () => {
   it("should return a slice of the input string", () => {

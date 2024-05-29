@@ -1,4 +1,4 @@
-import { $divide } from "@operators/divide.operator";
+import { $divide } from "../operators/divide.operator";
 
 describe("Divide operator", () => {
   it("should divide a sequence of numbers in order", () => {

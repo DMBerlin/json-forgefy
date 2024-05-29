@@ -1,4 +1,4 @@
-import { $concat } from "@operators/concat.operator";
+import { $concat } from "../operators/concat.operator";
 
 describe("Concat operator", () => {
   it("should concatenate all strings", () => {

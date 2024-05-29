@@ -1,5 +1,5 @@
-import { SwitchOperatorInput } from "@/types/operator-input.types";
-import { $switch } from "@operators/switch.operator";
+import { SwitchOperatorInput } from "../types/operator-input.types";
+import { $switch } from "../operators/switch.operator";
 
 describe("switch operator", () => {
   it("should return the first branch that matches the case", () => {

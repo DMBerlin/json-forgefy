@@ -1,4 +1,4 @@
-import { $split } from "@operators/split.operator";
+import { $split } from "../operators/split.operator";
 
 describe("split operator", () => {
   it("should split a string by a delimiter", () => {

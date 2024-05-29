@@ -1,3 +1,3 @@
-import { forgefy } from "@core/forgefy.core";
+import { forgefy } from "./core/forgefy.core";
 
 export { forgefy };

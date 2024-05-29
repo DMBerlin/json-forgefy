@@ -1,6 +1,6 @@
 import { Expression } from "./expression.types";
-import { JsonValidTypes } from "@/types/json.types";
-import { ObjectPathValue } from "@/types/object-path-value.types";
+import { JsonValidTypes } from "../types/json.types";
+import { ObjectPathValue } from "../types/object-path-value.types";
 
 export type AddOperatorInput = number[];
 

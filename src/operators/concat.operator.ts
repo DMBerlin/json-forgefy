@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ConcatOperatorInput } from "@/types/operator-input.types";
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { ConcatOperatorInput } from "../types/operator-input.types";
 
 export const $concat: ExecutableExpression<
   ConcatOperatorInput,
