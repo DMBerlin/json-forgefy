@@ -1,4 +1,4 @@
-import { $subtract } from "@operators/subtract.operator";
+import { $subtract } from "../operators/subtract.operator";
 
 describe("subtract operator", () => {
   it("should subtract two numbers", () => {

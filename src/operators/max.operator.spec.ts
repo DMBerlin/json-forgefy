@@ -1,4 +1,4 @@
-import { $max } from "@operators/max.operator";
+import { $max } from "../operators/max.operator";
 
 describe("max operator", () => {
   it("should return the maximum value from the input array", () => {

@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ToFixedOperatorInput } from "@/types/operator-input.types";
+import { ExecutableExpression } from "../interfaces/executable-expression.interface";
+import { ToFixedOperatorInput } from "../types/operator-input.types";
 
 export const $toFixed: ExecutableExpression<
   ToFixedOperatorInput,

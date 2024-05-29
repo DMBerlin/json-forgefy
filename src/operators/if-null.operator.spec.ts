@@ -1,4 +1,4 @@
-import { $ifNull } from "@operators/if-null.operator";
+import { $ifNull } from "../operators/if-null.operator";
 
 describe("ifNull operator", () => {
   it("should return the first value if operation resolves correctly", () => {

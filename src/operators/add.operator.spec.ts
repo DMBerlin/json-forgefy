@@ -1,4 +1,4 @@
-import { $add } from "@operators/add.operator";
+import { $add } from "../operators/add.operator";
 
 describe("Add operator", () => {
   it("should return the sum of all numbers", () => {

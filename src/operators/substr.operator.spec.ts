@@ -1,4 +1,4 @@
-import { $substr } from "@operators/substr.operator";
+import { $substr } from "../operators/substr.operator";
 
 describe("substr operator", () => {
   it("should return a substring from a string", () => {

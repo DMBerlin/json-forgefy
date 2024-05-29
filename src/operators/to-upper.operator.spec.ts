@@ -1,4 +1,4 @@
-import { $toUpper } from "@operators/to-upper.operator";
+import { $toUpper } from "../operators/to-upper.operator";
 
 describe("toUpper", () => {
   it("should convert a string to uppercase", () => {

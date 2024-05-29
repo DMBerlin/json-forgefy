@@ -53,16 +53,6 @@
     "typescript": "^5.3.3"
   },
   "jest": {
-    "moduleNameMapper": {
-      "^@src/(.*)$": "<rootDir>/../src/$1",
-      "^@fixtures/(.*)$": "<rootDir>/../src/__fixtures__/$1",
-      "^@common/(.*)$": "<rootDir>/../src/common/$1",
-      "^@core/(.*)$": "<rootDir>/../src/core/$1",
-      "^@helpers/(.*)$": "<rootDir>/../src/helpers/$1",
-      "^@interfaces/(.*)$": "<rootDir>/../src/interfaces/$1",
-      "^@operators/(.*)$": "<rootDir>/../src/operators/$1",
-      "^@types/(.*)$": "<rootDir>/../src/types/$1"
-    },
     "moduleFileExtensions": [
       "js",
       "json",

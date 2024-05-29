@@ -1,4 +1,4 @@
-import { $size } from "@operators/size.operator";
+import { $size } from "../operators/size.operator";
 
 describe("size operator", () => {
   it("should return the size of the input array", () => {
