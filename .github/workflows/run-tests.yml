@@ -23,4 +23,4 @@ jobs:
       - name: Run Tests
         run: npm test
         env:
-          TZ: 'UTC'
+          TZ: 'America/Sao_Paulo'
