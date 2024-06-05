@@ -2,19 +2,15 @@ on:
   push:
     branches:
       - main
-
-permissions:
-  contents: write
-  pull-requests: write
-
+      - 1.x
 name: release-please
-
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
-        id: release
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
+          # The short ref name of the branch or tag that triggered
+          #  the workflow run. For example, `main` or `1.x`
+          target-branch: ${{ github.ref_name }}
