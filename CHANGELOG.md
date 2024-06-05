@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/DMBerlin/json-forgefy/compare/v1.2.0...v1.3.0) (2024-06-05)
+
+
+### Features
+
+* add code linting workflow ([#30](https://github.com/DMBerlin/json-forgefy/issues/30)) ([c0b7d07](https://github.com/DMBerlin/json-forgefy/commit/c0b7d07b5ecd4449661d28cf15b0f823e44bad52))
+
 ## [1.2.0](https://github.com/DMBerlin/json-forgefy/compare/v1.1.0...v1.2.0) (2024-06-05)
 
 
