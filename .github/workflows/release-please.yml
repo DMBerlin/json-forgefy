@@ -18,5 +18,3 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
-          extra-files: |
-            package.json
