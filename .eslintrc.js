@@ -15,7 +15,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'dist/', '/node_modules', '/.husky'],
+  ignorePatterns: ['.eslintrc.js', 'dist/', '/node_modules', '/.husky', '/coverage', '/.github'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

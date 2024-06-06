@@ -5,6 +5,7 @@ node_modules/
 dist/
 lib/
 build/
+coverage/
 
 # Environment variables
 .env
