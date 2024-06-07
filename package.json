@@ -57,26 +57,31 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "<rootDir>/coverage",
     "testEnvironment": "node",
+    "collectCoverage": true,
     "collectCoverageFrom": [
-      "!**/__fixtures__/**",
-      "!**/interfaces/**",
-      "!**/types/**",
-      "!**/index.ts",
-      "**/*.(t|j)s"
+      "src/**/*.(t|j)s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/__fixtures__/",
+      "/__mocks__/",
+      "/__tests__/",
+      "/interfaces/",
+      "/types/",
+      "/index.ts"
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 80,
-        "functions": 80,
-        "lines": 80,
-        "statements": 80
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
       }
     }
   }
