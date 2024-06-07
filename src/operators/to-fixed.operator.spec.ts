@@ -16,4 +16,16 @@ describe("ToFixed operator", () => {
     const expected = 123.456;
     expect($toFixed()({ value, precision: 3 })).toEqual(expected);
   });
+  it("should return the original value if its type is different from number", () => {
+    const value = "123.456";
+    const expected = "123.456";
+    // @ts-expect-error-next-line
+    expect($toFixed()({ value, precision: null })).toEqual(expected);
+  });
+  it("should use default precision when missing", () => {
+    const value = 123.456;
+    const expected = 123;
+    // @ts-expect-error-next-line
+    expect($toFixed()({ value })).toEqual(expected);
+  });
 });

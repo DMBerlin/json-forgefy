@@ -30,4 +30,15 @@ describe("eq operator", () => {
     };
     expect($eq({ context })([1, "$a.b.c"])).toBe(false);
   });
+
+  it("should resolve eq operator when first input is an expression", () => {
+    const context = {
+      a: {
+        b: {
+          c: 1,
+        },
+      },
+    };
+    expect($eq({ context })([{ $toNumber: "1" }, "$a.b.c"])).toBe(true);
+  });
 });
