@@ -4,7 +4,7 @@ export type Expression = { [K in OperatorKey]?: ExpressionValues };
 
 type NestedExpression = { [key: string]: ExpressionValues };
 
-type ExpressionValues =
+export type ExpressionValues =
   | string
   | number
   | boolean
