@@ -1,4 +1,4 @@
-import { Expression } from "./expression.types";
+import { Expression, ExpressionValues } from "./expression.types";
 import { JsonValidTypes } from "../types/json.types";
 import { ObjectPathValue } from "../types/object-path-value.types";
 
@@ -80,3 +80,8 @@ export type ToFixedOperatorInput = {
   value: number;
   precision: number;
 };
+
+export type GtOperatorInput = [ExpressionValues, ExpressionValues];
+export type GteOperatorInput = [ExpressionValues, ExpressionValues];
+export type LtOperatorInput = [ExpressionValues, ExpressionValues];
+export type LteOperatorInput = [ExpressionValues, ExpressionValues];
