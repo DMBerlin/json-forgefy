@@ -44,7 +44,7 @@ jobs:
           TZ: 'America/Sao_Paulo'
 
       - name: Run Coverage
-        run: npm run coverage
+        run: npm run test:cov
         env:
           TZ: 'America/Sao_Paulo'
 
