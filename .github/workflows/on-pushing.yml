@@ -43,6 +43,16 @@ jobs:
         env:
           TZ: 'America/Sao_Paulo'
 
+      - name: Run Coverage
+        run: npm run test:cov
+        env:
+          TZ: 'America/Sao_Paulo'
+
+      - name: Check Coverage
+        run: |
+          COVERAGE=$(nyc report --reporter=text-summary | grep 'All files' | cut -d '|' -f 5 | sed 's/%//')
+          if (( $(echo "$COVERAGE < 90" | bc -l) )); then exit 1; fi
+
   build:
     needs: test
 
