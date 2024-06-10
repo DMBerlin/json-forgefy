@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.5.0...v1.6.0) (2024-06-10)
+
+
+### Features
+
+* update testing pipeline ([#42](https://www.github.com/DMBerlin/json-forgefy/issues/42)) ([163e2b0](https://www.github.com/DMBerlin/json-forgefy/commit/163e2b0bd8d6c81d9938cd6e7afb8db0d4b9cbfb))
+
 ## [1.5.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.4.0...v1.5.0) (2024-06-09)
 
 
