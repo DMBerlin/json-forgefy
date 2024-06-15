@@ -85,7 +85,7 @@ describe("DateDiff operator", () => {
     };
     expect(() => $dateDiff()(dates)).toThrow("Invalid unit: weeks");
   });
-  it("should use current date on invalid end date", () => {
+  it("should use current time as endDate on invalid endDate", () => {
     const dates: DateDiffOperatorInput = {
       startDate: "01/01/2021",
       endDate: "invalid",
@@ -95,10 +95,10 @@ describe("DateDiff operator", () => {
     const result: number = $dateDiff()(dates);
     expect(result).toBe(daysDiff);
   });
-  it("should use current date on invalid end date", () => {
+  it("should use current time startDate on invalid startDate", () => {
     const dates: DateDiffOperatorInput = {
       startDate: "invalid",
-      endDate: new Date().toLocaleDateString(),
+      endDate: new Date().toLocaleDateString("en-US"),
       unit: "days",
     };
     const daysDiff: number = diffInDays(new Date(), new Date(dates.endDate));
