@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.6.1](https://www.github.com/DMBerlin/json-forgefy/compare/v1.6.0...v1.6.1) (2024-06-15)
+
+
+### Bug Fixes
+
+* date diff testing on invalid date inputs ([#44](https://www.github.com/DMBerlin/json-forgefy/issues/44)) ([933739a](https://www.github.com/DMBerlin/json-forgefy/commit/933739a3af25bc0d229606dd7b615d8c382da22b))
+
 ## [1.6.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.5.0...v1.6.0) (2024-06-10)
 
 
