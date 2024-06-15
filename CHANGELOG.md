@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.6.1...v1.7.0) (2024-06-15)
+
+
+### Features
+
+* update lint packages ([#45](https://www.github.com/DMBerlin/json-forgefy/issues/45)) ([889ab7e](https://www.github.com/DMBerlin/json-forgefy/commit/889ab7e920f775dbaeb8addcd48e9776785a845c))
+
 ### [1.6.1](https://www.github.com/DMBerlin/json-forgefy/compare/v1.6.0...v1.6.1) (2024-06-15)
 
 
