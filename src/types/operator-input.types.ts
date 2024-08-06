@@ -47,6 +47,11 @@ export type MinOperatorInput = number[];
 
 export type MultiplyOperatorInput = number[];
 
+export type RegexOperatorInput = {
+  value: string;
+  pattern: string;
+};
+
 export type SizeOperatorInput = number[];
 
 export type SliceOperatorInput = {
