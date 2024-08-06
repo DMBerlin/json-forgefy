@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.7.0...v1.8.0) (2024-08-06)
+
+
+### Features
+
+* **operator:** add regex operator ([#48](https://www.github.com/DMBerlin/json-forgefy/issues/48)) ([a4c67dd](https://www.github.com/DMBerlin/json-forgefy/commit/a4c67dded97aae0ec334c8c59fd52704ab17d288))
+
 ## [1.7.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.6.1...v1.7.0) (2024-06-15)
 
 
