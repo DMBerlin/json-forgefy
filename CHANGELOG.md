@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.8.0...v1.9.0) (2024-08-08)
+
+
+### Features
+
+* update packages from outdated releases ([#50](https://www.github.com/DMBerlin/json-forgefy/issues/50)) ([13cb955](https://www.github.com/DMBerlin/json-forgefy/commit/13cb955c74d3f9986846ff6f909aa2d5ef986794))
+
 ## [1.8.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.7.0...v1.8.0) (2024-08-06)
 
 
