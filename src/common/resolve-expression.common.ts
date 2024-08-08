@@ -15,7 +15,7 @@ export function resolveExpression<T>(
       : expression[key];
     const operator: OperatorValue = operators.get(key);
     return operator({ context: source })(args);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
