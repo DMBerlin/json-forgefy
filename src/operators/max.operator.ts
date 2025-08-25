@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { MaxOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { MaxOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $max operator returns the largest number from an array of numbers.

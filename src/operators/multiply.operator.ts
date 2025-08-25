@@ -1,8 +1,8 @@
-import { isOperator } from "../helpers/is-operator.helper";
-import { resolveExpression } from "../common/resolve-expression.common";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { MultiplyOperatorInput } from "../types/operator-input.types";
+import { isOperator } from "@helpers/is-operator.helper";
+import { resolveExpression } from "@common/resolve-expression.common";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { MultiplyOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $multiply operator performs multiplication on an array of numbers.

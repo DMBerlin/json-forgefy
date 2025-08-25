@@ -1,4 +1,4 @@
-import { $min } from "../operators/min.operator";
+import { $min } from "@operators/min.operator";
 
 describe("min operator", () => {
   it("should return the minimum value from the input array", () => {

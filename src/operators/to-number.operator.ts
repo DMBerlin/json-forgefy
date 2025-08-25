@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ToNumberOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ToNumberOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $toNumber operator converts a value to its numeric representation.

@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { MinOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { MinOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $min operator returns the smallest number from an array of numbers.

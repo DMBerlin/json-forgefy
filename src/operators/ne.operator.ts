@@ -1,7 +1,7 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "../common/resolve-path-or-expression.common";
-import { NeOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
+import { NeOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $ne operator performs a "not equal" comparison between two values.

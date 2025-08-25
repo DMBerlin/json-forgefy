@@ -1,8 +1,8 @@
-import { ExecutionContext } from "../interfaces/execution-context.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { getValueByPath } from "./get-value-by-path.common";
 import { resolveExpression } from "./resolve-expression.common";
-import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
-import { isOperator } from "../helpers/is-operator.helper";
+import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
+import { isOperator } from "@helpers/is-operator.helper";
 
 /**
  * Resolves a value that can be either a direct value, an object path, or an operator expression.

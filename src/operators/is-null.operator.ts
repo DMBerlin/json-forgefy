@@ -1,7 +1,7 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "../common/resolve-path-or-expression.common";
-import { IsNullOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
+import { IsNullOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $isNull operator checks if a value is null or undefined.

@@ -1,5 +1,5 @@
-import { operators } from "../forgefy.operators";
-import { OperatorKey } from "../types/operator.types";
+import { operators } from "@/forgefy.operators";
+import { OperatorKey } from "@lib-types/operator.types";
 
 /**
  * Determines if an object represents a valid operator expression.

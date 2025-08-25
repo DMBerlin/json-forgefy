@@ -1,4 +1,4 @@
-import { $floor } from "../operators/floor.operator";
+import { $floor } from "@operators/floor.operator";
 
 describe("floor operator", () => {
   it("should round down the input value", () => {

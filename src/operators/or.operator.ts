@@ -1,7 +1,7 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "../common/resolve-path-or-expression.common";
-import { OrOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
+import { OrOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $or operator performs a logical OR operation on an array of expressions.

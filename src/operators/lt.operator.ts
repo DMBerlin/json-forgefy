@@ -1,7 +1,7 @@
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { LtOperatorInput } from "../types/operator-input.types";
-import { resolvePathOrExpression } from "../common/resolve-path-or-expression.common";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { LtOperatorInput } from "@lib-types/operator-input.types";
+import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 
 /**
  * The $lt operator performs a "less than" comparison between two values.

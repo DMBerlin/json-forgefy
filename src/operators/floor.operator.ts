@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { FloorOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { FloorOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $floor operator rounds a number down to the nearest integer.

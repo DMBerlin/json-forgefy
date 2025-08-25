@@ -1,7 +1,7 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "../common/resolve-path-or-expression.common";
-import { InOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
+import { InOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $in operator checks if a value exists within an array of values.

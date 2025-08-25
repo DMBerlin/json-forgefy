@@ -1,7 +1,7 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "../common/resolve-path-or-expression.common";
-import { GtOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
+import { GtOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $gt operator performs a "greater than" comparison between two values.

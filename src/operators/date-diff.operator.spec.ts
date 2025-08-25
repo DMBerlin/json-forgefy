@@ -1,6 +1,6 @@
-import { $dateDiff } from "../operators/date-diff.operator";
-import { DateDiffOperatorInput } from "../types/operator-input.types";
-import { diffInDays } from "../helpers/date-time.heper";
+import { $dateDiff } from "@operators/date-diff.operator";
+import { DateDiffOperatorInput } from "@lib-types/operator-input.types";
+import { diffInDays } from "@helpers/date-time.heper";
 
 describe("DateDiff operator", () => {
   it("should return the difference between two dates", () => {

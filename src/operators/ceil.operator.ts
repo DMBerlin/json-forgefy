@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { CeilOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { CeilOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $ceil operator rounds a number up to the nearest integer.

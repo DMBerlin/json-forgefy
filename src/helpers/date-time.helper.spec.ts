@@ -2,7 +2,7 @@ import {
   diffInDays,
   diffInMonths,
   diffInYears,
-} from "../helpers/date-time.heper";
+} from "@helpers/date-time.heper";
 
 describe("DateTimeHelper", () => {
   let startDate: Date;

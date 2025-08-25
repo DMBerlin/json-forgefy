@@ -1,4 +1,4 @@
-import { $toString } from "../operators/to-string.operator";
+import { $toString } from "@operators/to-string.operator";
 
 describe("toString", () => {
   it("should convert a number to string", () => {

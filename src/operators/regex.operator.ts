@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { RegexOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { RegexOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $regex operator tests if a string matches a regular expression pattern.

@@ -1,5 +1,5 @@
 import { $lt } from "./lt.operator";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
 
 describe("LtOperator", () => {
   describe("asserting raw values", () => {

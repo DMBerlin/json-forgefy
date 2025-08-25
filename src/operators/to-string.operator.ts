@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ToStringOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ToStringOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $toString operator converts a value to its string representation.

@@ -1,9 +1,9 @@
-import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
-import { getValueByPath } from "../common/get-value-by-path.common";
-import { isObject } from "../helpers/is-object.helper";
-import { isOperator } from "../helpers/is-operator.helper";
-import { resolveExpression } from "../common/resolve-expression.common";
-import { Projection } from "../types/expression.types";
+import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
+import { getValueByPath } from "@common/get-value-by-path.common";
+import { isObject } from "@helpers/is-object.helper";
+import { isOperator } from "@helpers/is-operator.helper";
+import { resolveExpression } from "@common/resolve-expression.common";
+import { Projection } from "@lib-types/expression.types";
 
 /**
  * Assigns a value to a node property by resolving an operator expression.

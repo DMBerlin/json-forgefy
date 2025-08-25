@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { SplitOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { SplitOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $split operator splits a string into an array of substrings using a delimiter.

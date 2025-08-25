@@ -1,6 +1,6 @@
-import { resolveExpression } from "../common/resolve-expression.common";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-import { SwitchOperatorInput } from "../types/operator-input.types";
+import { resolveExpression } from "@common/resolve-expression.common";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { SwitchOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $switch operator provides multi-branch conditional logic.

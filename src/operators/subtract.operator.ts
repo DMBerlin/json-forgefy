@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { SubtractOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { SubtractOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $subtract operator performs subtraction on an array of numbers.

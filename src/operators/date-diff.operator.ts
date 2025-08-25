@@ -1,11 +1,11 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { DateDiffOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { DateDiffOperatorInput } from "@lib-types/operator-input.types";
 import {
   diffInDays,
   diffInMonths,
   diffInYears,
   isValidDateString,
-} from "../helpers/date-time.heper";
+} from "@helpers/date-time.heper";
 
 /**
  * The $dateDiff operator calculates the difference between two dates in the specified unit.

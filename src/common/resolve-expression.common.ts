@@ -1,8 +1,8 @@
-import { isValidObjectPath } from "../helpers/is-valid-object-path.helper";
+import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
 import { getValueByPath } from "./get-value-by-path.common";
-import { operators } from "../forgefy.operators";
-import { OperatorKey, OperatorValue } from "../types/operator.types";
-import { ExpressionValues } from "../types/expression.types";
+import { operators } from "@/forgefy.operators";
+import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
+import { ExpressionValues } from "@lib-types/expression.types";
 
 /**
  * Resolves an operator expression by executing the appropriate operator function with the given arguments.

@@ -16,7 +16,7 @@
  * @license ISC
  */
 
-import { forgefy } from "./core/forgefy.core";
+import { forgefy } from "@core/forgefy.core";
 
 /**
  * The main transformation function exported by the json-forgefy library.

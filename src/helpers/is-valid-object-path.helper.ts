@@ -1,5 +1,5 @@
-import { operators } from "../forgefy.operators";
-import { OperatorKey } from "../types/operator.types";
+import { operators } from "@/forgefy.operators";
+import { OperatorKey } from "@lib-types/operator.types";
 
 /**
  * Determines if a string represents a valid object path for value extraction.

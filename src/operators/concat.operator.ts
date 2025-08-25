@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ConcatOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ConcatOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $concat operator concatenates multiple strings into a single string.

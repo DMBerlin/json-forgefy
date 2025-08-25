@@ -1,4 +1,4 @@
-import { $ceil } from "../operators/ceil.operator";
+import { $ceil } from "@operators/ceil.operator";
 
 describe("Ceil operator", () => {
   it("should return the smallest integer greater than or equal to a given number", () => {

@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { AddOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { AddOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $add operator performs addition on an array of numbers.

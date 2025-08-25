@@ -1,5 +1,5 @@
 import { $gte } from "./gte.operator";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
 
 describe("GteOperator", () => {
   describe("asserting raw values", () => {

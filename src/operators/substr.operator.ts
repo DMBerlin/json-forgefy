@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { SubstrOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { SubstrOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $substr operator extracts a substring from a string.

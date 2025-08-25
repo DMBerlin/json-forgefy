@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ToFixedOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ToFixedOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $toFixed operator formats a number to a specified number of decimal places.

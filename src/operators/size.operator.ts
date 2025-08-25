@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { SizeOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { SizeOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $size operator returns the length of a string or array.

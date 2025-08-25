@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ToLowerOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ToLowerOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $toLower operator converts a string to lowercase.

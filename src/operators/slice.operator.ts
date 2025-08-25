@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { SliceOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { SliceOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $slice operator extracts a section of a string and returns it as a new string.

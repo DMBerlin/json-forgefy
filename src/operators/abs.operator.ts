@@ -1,5 +1,5 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { AbsOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { AbsOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $abs operator returns the absolute value of a number.

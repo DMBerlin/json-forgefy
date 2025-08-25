@@ -1,4 +1,4 @@
-import { $toFixed } from "../operators/to-fixed.operator";
+import { $toFixed } from "@operators/to-fixed.operator";
 
 describe("ToFixed operator", () => {
   it("should return a function that returns a string with the number fixed to 1 decimal", () => {

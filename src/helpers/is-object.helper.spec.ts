@@ -1,4 +1,4 @@
-import { isObject } from "../helpers/is-object.helper";
+import { isObject } from "@helpers/is-object.helper";
 
 describe("isObject Testing Suit", () => {
   it("should return true if the value is an object", () => {

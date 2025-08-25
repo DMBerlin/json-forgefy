@@ -1,7 +1,6 @@
-import { ExecutableExpression } from "../interfaces/executable-expression.interface";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
-// import { getValueByPath } from "../common/get-value-by-path.common";
-import { ExistsOperatorInput } from "../types/operator-input.types";
+import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { ExistsOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $exists operator checks if a field exists in the source object.
