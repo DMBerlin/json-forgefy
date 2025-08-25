@@ -23,6 +23,19 @@ import { $max } from "./operators/max.operator";
 import { $min } from "./operators/min.operator";
 import { $dateDiff } from "./operators/date-diff.operator";
 import { $toFixed } from "./operators/to-fixed.operator";
+import { $gt } from "./operators/gt.operator";
+import { $gte } from "./operators/gte.operator";
+import { $lt } from "./operators/lt.operator";
+import { $lte } from "./operators/lte.operator";
+import { $regex } from "./operators/regex.operator";
+import { $and } from "./operators/and.operator";
+import { $or } from "./operators/or.operator";
+import { $not } from "./operators/not.operator";
+import { $ne } from "./operators/ne.operator";
+import { $in } from "./operators/in.operator";
+import { $nin } from "./operators/nin.operator";
+import { $exists } from "./operators/exists.operator";
+import { $isNull } from "./operators/is-null.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -34,7 +47,10 @@ import { $toFixed } from "./operators/to-fixed.operator";
  * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min
  * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size
  * - Conditional: $cond, $switch, $ifNull
- * - Comparison: $eq (others like $gt, $lt are available in their respective files)
+ * - Comparison: $eq, $gt, $gte, $lt, $lte, $ne, $regex
+ * - Logical: $and, $or, $not
+ * - Array: $in, $nin
+ * - Utility: $exists, $isNull
  * - Type Conversion: $toNumber, $toString
  * - Date: $dateDiff
  * - Utility: $toFixed
@@ -73,4 +89,17 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$max", $max)
   .set("$min", $min)
   .set("$dateDiff", $dateDiff)
-  .set("$toFixed", $toFixed);
+  .set("$toFixed", $toFixed)
+  .set("$gt", $gt)
+  .set("$gte", $gte)
+  .set("$lt", $lt)
+  .set("$lte", $lte)
+  .set("$regex", $regex)
+  .set("$and", $and)
+  .set("$or", $or)
+  .set("$not", $not)
+  .set("$ne", $ne)
+  .set("$in", $in)
+  .set("$nin", $nin)
+  .set("$exists", $exists)
+  .set("$isNull", $isNull);
