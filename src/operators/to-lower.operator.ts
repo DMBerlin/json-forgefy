@@ -4,9 +4,9 @@ import { ToLowerOperatorInput } from "../types/operator-input.types";
 /**
  * The $toLower operator converts a string to lowercase.
  * All uppercase letters in the string are converted to their lowercase equivalents.
- * 
+ *
  * @returns A function that converts the input string to lowercase
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

@@ -4,9 +4,9 @@ import { MaxOperatorInput } from "../types/operator-input.types";
 /**
  * The $max operator returns the largest number from an array of numbers.
  * It compares all provided values and returns the maximum value.
- * 
+ *
  * @returns A function that returns the maximum value from the input array
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

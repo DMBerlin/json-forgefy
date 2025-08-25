@@ -8,10 +8,10 @@ import { MultiplyOperatorInput } from "../types/operator-input.types";
  * The $multiply operator performs multiplication on an array of numbers.
  * It multiplies all the provided values together and returns the product.
  * Supports nested operator expressions that resolve to numbers.
- * 
+ *
  * @param ctx - Optional execution context containing the source object for expression resolution
  * @returns A function that multiplies all numbers in the array and returns the product
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

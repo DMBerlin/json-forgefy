@@ -6,10 +6,10 @@ import { GteOperatorInput } from "../types/operator-input.types";
 /**
  * The $gte operator performs a "greater than or equal" comparison between two values.
  * It supports comparing literals, object paths, and nested operator expressions.
- * 
+ *
  * @param ctx - Optional execution context containing the source object for path/expression resolution
  * @returns A function that returns true if the first value is greater than or equal to the second, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

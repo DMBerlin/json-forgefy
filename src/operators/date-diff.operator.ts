@@ -11,9 +11,9 @@ import {
  * The $dateDiff operator calculates the difference between two dates in the specified unit.
  * It supports calculating differences in days, months, or years.
  * If invalid date strings are provided, it defaults to the current date.
- * 
+ *
  * @returns A function that calculates the date difference in the specified unit
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

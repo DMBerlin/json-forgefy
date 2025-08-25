@@ -4,9 +4,9 @@ import { AbsOperatorInput } from "../types/operator-input.types";
 /**
  * The $abs operator returns the absolute value of a number.
  * It converts negative numbers to positive while keeping positive numbers unchanged.
- * 
+ *
  * @returns A function that returns the absolute value of the input number
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

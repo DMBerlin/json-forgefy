@@ -4,9 +4,9 @@ import { SubstrOperatorInput } from "../types/operator-input.types";
 /**
  * The $substr operator extracts a substring from a string.
  * It takes a starting position and length to determine which part of the string to extract.
- * 
+ *
  * @returns A function that extracts a substring based on start position and length
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

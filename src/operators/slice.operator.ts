@@ -4,9 +4,9 @@ import { SliceOperatorInput } from "../types/operator-input.types";
 /**
  * The $slice operator extracts a section of a string and returns it as a new string.
  * It uses start and end indices to determine which part of the string to extract.
- * 
+ *
  * @returns A function that extracts a slice of the input string
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

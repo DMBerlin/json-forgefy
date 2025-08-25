@@ -10,10 +10,10 @@ import { EqOperatorInput } from "../types/operator-input.types";
  * The $eq operator performs equality comparison between two values.
  * It supports comparing literals, object paths, and nested operator expressions.
  * The comparison uses strict equality (===).
- * 
+ *
  * @param ctx - Optional execution context containing the source object for path resolution
  * @returns A function that takes two values and returns true if they are equal, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

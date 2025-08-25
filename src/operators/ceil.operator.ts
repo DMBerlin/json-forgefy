@@ -4,9 +4,9 @@ import { CeilOperatorInput } from "../types/operator-input.types";
 /**
  * The $ceil operator rounds a number up to the nearest integer.
  * It always rounds towards positive infinity, regardless of the number's sign.
- * 
+ *
  * @returns A function that returns the ceiling (rounded up) value of the input number
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

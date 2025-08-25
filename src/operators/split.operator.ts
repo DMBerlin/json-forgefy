@@ -4,9 +4,9 @@ import { SplitOperatorInput } from "../types/operator-input.types";
 /**
  * The $split operator splits a string into an array of substrings using a delimiter.
  * It divides the string at each occurrence of the specified delimiter.
- * 
+ *
  * @returns A function that splits the input string into an array of strings
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

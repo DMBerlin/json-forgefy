@@ -6,10 +6,10 @@ import { SwitchOperatorInput } from "../types/operator-input.types";
  * The $switch operator provides multi-branch conditional logic.
  * It evaluates multiple case conditions in order and returns the value of the first matching case.
  * If no cases match, it returns the default value. This is similar to switch statements in programming.
- * 
+ *
  * @param ctx - Optional execution context containing the source object for expression resolution
  * @returns A function that evaluates cases and returns the matching branch value or default
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

@@ -4,9 +4,9 @@ import { SubtractOperatorInput } from "../types/operator-input.types";
 /**
  * The $subtract operator performs subtraction on an array of numbers.
  * It subtracts each subsequent number from the first number in sequence.
- * 
+ *
  * @returns A function that subtracts all numbers in the array from the first number
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

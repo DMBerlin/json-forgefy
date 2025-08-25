@@ -4,9 +4,9 @@ import { RegexOperatorInput } from "../types/operator-input.types";
 /**
  * The $regex operator tests if a string matches a regular expression pattern.
  * It creates a RegExp object from the provided pattern and tests it against the input value.
- * 
+ *
  * @returns A function that returns true if the string matches the regex pattern, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

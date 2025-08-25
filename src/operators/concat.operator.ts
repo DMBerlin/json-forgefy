@@ -4,9 +4,9 @@ import { ConcatOperatorInput } from "../types/operator-input.types";
 /**
  * The $concat operator concatenates multiple strings into a single string.
  * It joins all provided string values in the order they are specified.
- * 
+ *
  * @returns A function that concatenates all input strings into one string
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

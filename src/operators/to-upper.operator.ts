@@ -4,9 +4,9 @@ import { ToUpperOperatorInput } from "../types/operator-input.types";
 /**
  * The $toUpper operator converts a string to uppercase.
  * All lowercase letters in the string are converted to their uppercase equivalents.
- * 
+ *
  * @returns A function that converts the input string to uppercase
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

@@ -2,10 +2,10 @@
  * Determines if a value is a plain object (not an array, null, or other non-object types).
  * This helper function is used throughout the library to identify when a value should be
  * processed as an object that might contain nested projections or operators.
- * 
+ *
  * @param value - The value to check
  * @returns true if the value is a plain object, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * isObject({}); // Returns true

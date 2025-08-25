@@ -4,10 +4,10 @@ import { AddOperatorInput } from "../types/operator-input.types";
 /**
  * The $add operator performs addition on an array of numbers.
  * It sums all the provided values and returns the total.
- * 
+ *
  * @param value - An array of numbers to add together
  * @returns The sum of all numbers in the array
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

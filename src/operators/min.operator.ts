@@ -4,9 +4,9 @@ import { MinOperatorInput } from "../types/operator-input.types";
 /**
  * The $min operator returns the smallest number from an array of numbers.
  * It compares all provided values and returns the minimum value.
- * 
+ *
  * @returns A function that returns the minimum value from the input array
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

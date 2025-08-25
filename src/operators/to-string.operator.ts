@@ -4,9 +4,9 @@ import { ToStringOperatorInput } from "../types/operator-input.types";
 /**
  * The $toString operator converts a value to its string representation.
  * This is useful for ensuring values are treated as strings in the output.
- * 
+ *
  * @returns A function that converts any input value to a string
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

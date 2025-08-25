@@ -4,9 +4,9 @@ import { FloorOperatorInput } from "../types/operator-input.types";
 /**
  * The $floor operator rounds a number down to the nearest integer.
  * It always rounds towards negative infinity, regardless of the number's sign.
- * 
+ *
  * @returns A function that returns the floor (rounded down) value of the input number
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

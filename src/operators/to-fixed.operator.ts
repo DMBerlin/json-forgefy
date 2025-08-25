@@ -4,9 +4,9 @@ import { ToFixedOperatorInput } from "../types/operator-input.types";
 /**
  * The $toFixed operator formats a number to a specified number of decimal places.
  * It truncates (not rounds) the number to the specified precision and returns it as a number.
- * 
+ *
  * @returns A function that formats a number to the specified decimal places
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

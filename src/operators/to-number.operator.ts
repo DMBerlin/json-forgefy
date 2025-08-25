@@ -4,9 +4,9 @@ import { ToNumberOperatorInput } from "../types/operator-input.types";
 /**
  * The $toNumber operator converts a value to its numeric representation.
  * This is useful for converting string numbers to actual numbers for mathematical operations.
- * 
+ *
  * @returns A function that converts any input value to a number
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

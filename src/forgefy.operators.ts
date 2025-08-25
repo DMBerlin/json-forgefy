@@ -29,7 +29,7 @@ import { $toFixed } from "./operators/to-fixed.operator";
  * This Map contains all the operator functions that can be used in transformation blueprints.
  * Each operator is registered with its key (e.g., "$add", "$multiply") and corresponding
  * implementation function.
- * 
+ *
  * The operators are organized into categories:
  * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min
  * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size
@@ -38,7 +38,7 @@ import { $toFixed } from "./operators/to-fixed.operator";
  * - Type Conversion: $toNumber, $toString
  * - Date: $dateDiff
  * - Utility: $toFixed
- * 
+ *
  * @example
  * ```typescript
  * // The operators map is used internally by resolveExpression

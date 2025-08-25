@@ -6,10 +6,10 @@ import { GtOperatorInput } from "../types/operator-input.types";
 /**
  * The $gt operator performs a "greater than" comparison between two values.
  * It supports comparing literals, object paths, and nested operator expressions.
- * 
+ *
  * @param ctx - Optional execution context containing the source object for path/expression resolution
  * @returns A function that returns true if the first value is greater than the second, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

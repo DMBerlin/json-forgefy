@@ -4,9 +4,9 @@ import { SizeOperatorInput } from "../types/operator-input.types";
 /**
  * The $size operator returns the length of a string or array.
  * It counts the number of characters in a string or elements in an array.
- * 
+ *
  * @returns A function that returns the size/length of the input
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:

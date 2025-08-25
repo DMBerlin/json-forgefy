@@ -6,10 +6,10 @@ import { resolvePathOrExpression } from "../common/resolve-path-or-expression.co
 /**
  * The $lt operator performs a "less than" comparison between two values.
  * It supports comparing literals, object paths, and nested operator expressions.
- * 
+ *
  * @param ctx - Optional execution context containing the source object for path/expression resolution
  * @returns A function that returns true if the first value is less than the second, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * // In a projection:
