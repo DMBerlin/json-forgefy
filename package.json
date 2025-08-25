@@ -87,6 +87,16 @@
         "lines": 100,
         "statements": 100
       }
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^@fixtures/(.*)$": "<rootDir>/src/__fixtures__/$1",
+      "^@common/(.*)$": "<rootDir>/src/common/$1",
+      "^@core/(.*)$": "<rootDir>/src/core/$1",
+      "^@helpers/(.*)$": "<rootDir>/src/helpers/$1",
+      "^@interfaces/(.*)$": "<rootDir>/src/interfaces/$1",
+      "^@operators/(.*)$": "<rootDir>/src/operators/$1",
+      "^@lib-types/(.*)$": "<rootDir>/src/types/$1"
     }
   }
 }
