@@ -1,5 +1,5 @@
-import { $cond } from "../operators/cond.operator";
-import { CondOperatorInput } from "../types/operator-input.types";
+import { $cond } from "@operators/cond.operator";
+import { CondOperatorInput } from "@lib-types/operator-input.types";
 
 describe("Cond operator", () => {
   it("should return the first truthy expression on a truthy if statement", () => {

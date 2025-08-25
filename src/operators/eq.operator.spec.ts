@@ -1,4 +1,4 @@
-import { $eq } from "../operators/eq.operator";
+import { $eq } from "@operators/eq.operator";
 
 describe("eq operator", () => {
   it("should return true if two values are equal", () => {

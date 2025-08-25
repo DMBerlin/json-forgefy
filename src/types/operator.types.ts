@@ -23,6 +23,19 @@ import {
   ToNumberOperatorInput,
   ToStringOperatorInput,
   ToUpperOperatorInput,
+  GtOperatorInput,
+  GteOperatorInput,
+  LtOperatorInput,
+  LteOperatorInput,
+  RegexOperatorInput,
+  AndOperatorInput,
+  OrOperatorInput,
+  NotOperatorInput,
+  NeOperatorInput,
+  InOperatorInput,
+  NinOperatorInput,
+  ExistsOperatorInput,
+  IsNullOperatorInput,
 } from "./operator-input.types";
 
 export type OperatorValue = (
@@ -53,7 +66,20 @@ export type OperatorKey =
   | "$max"
   | "$min"
   | "$dateDiff"
-  | "$toFixed";
+  | "$toFixed"
+  | "$gt"
+  | "$gte"
+  | "$lt"
+  | "$lte"
+  | "$regex"
+  | "$and"
+  | "$or"
+  | "$not"
+  | "$ne"
+  | "$in"
+  | "$nin"
+  | "$exists"
+  | "$isNull";
 
 export type OperatorInput =
   | AddOperatorInput
@@ -79,4 +105,17 @@ export type OperatorInput =
   | ToNumberOperatorInput
   | ToStringOperatorInput
   | ToUpperOperatorInput
-  | ToFixedOperatorInput;
+  | ToFixedOperatorInput
+  | GtOperatorInput
+  | GteOperatorInput
+  | LtOperatorInput
+  | LteOperatorInput
+  | RegexOperatorInput
+  | AndOperatorInput
+  | OrOperatorInput
+  | NotOperatorInput
+  | NeOperatorInput
+  | InOperatorInput
+  | NinOperatorInput
+  | ExistsOperatorInput
+  | IsNullOperatorInput;

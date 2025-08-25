@@ -1,5 +1,40 @@
 # Changelog
 
+## [1.10.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.9.0...v1.10.0) (2025-08-24)
+
+### Features
+
+* **operators:** add comprehensive MongoDB-style logical operators
+  - Add `$and` operator for logical AND operations with support for nested expressions
+  - Add `$or` operator for logical OR operations with support for nested expressions  
+  - Add `$not` operator for logical NOT operations with support for nested expressions
+* **operators:** add advanced comparison and membership operators
+  - Add `$ne` (not equal) operator for inequality comparisons
+  - Add `$in` operator for array membership checks with expression support in both value and array elements
+  - Add `$nin` (not in) operator for negative array membership checks with expression support in both value and array elements
+* **operators:** add field existence and null checking operators
+  - Add `$exists` operator for checking field existence in objects
+  - Add `$isNull` operator for null value checking
+* **operators:** register previously implemented comparison operators
+  - Register `$gt`, `$gte`, `$lt`, `$lte` comparison operators in main operator registry
+  - Register `$regex` pattern matching operator in main operator registry
+* **core:** enhance expression resolution in array elements
+  - Update `$in` and `$nin` operators to resolve expressions within array elements
+  - Improve `resolvePathOrExpression` handling for complex nested scenarios
+  - Add robust null/undefined handling in `getValueByPath` and `isOperator` helpers
+  - Implement path aliases for better readability in nested paths
+* **testing:** add comprehensive test coverage for all new operators
+  - Add 296+ test cases covering edge cases, nested expressions, and complex scenarios
+  - Achieve 99.45% statement coverage and 98.83% branch coverage
+  - Add specific tests for expression resolution within array elements
+
+### Bug Fixes
+
+* **core:** fix null/undefined handling in helper functions
+  - Fix `TypeError` in `getValueByPath` when accessing properties of null/undefined objects
+  - Fix `TypeError` in `isOperator` when checking null/undefined inputs
+  - Improve error handling in `$exists` operator for non-existent nested paths
+
 ## [1.9.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.8.0...v1.9.0) (2024-08-08)
 
 

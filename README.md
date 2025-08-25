@@ -1,136 +1,324 @@
-# JSON-FORGEFY
+# JSON Forgefy 🔧
 
-## Ideia:
+[![npm version](https://badge.fury.io/js/json-forgefy.svg)](https://badge.fury.io/js/json-forgefy)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-The idea of this package is to provide a way to transform an upcoming JSON string into a new Object, following a blueprint configuration file.
+A powerful TypeScript library for transforming JSON objects using MongoDB-inspired operators and projection blueprints. Perfect for data transformation, API response mapping, and creating flexible data processing pipelines.
 
-This came with the necessity of consuming 3rd services API where you can setup a JSON Schema Like configuration file to obtain the desired JSON structure as response, before sending it forward to the next downstream service.
+## 🚀 Why JSON Forgefy?
 
-The purpose of this package is to make it heavily agnostic of the system. You don't have to bother parsing each prop from A to B, just provide the blueprint and let the package do the rest.
+- **🎯 Declarative**: Define transformations using simple blueprint objects
+- **🔄 MongoDB-Inspired**: Familiar operators like `$add`, `$multiply`, `$cond`, `$switch`
+- **🏗️ Composable**: Nest operators and combine transformations
+- **📦 Type-Safe**: Full TypeScript support with comprehensive type definitions
+- **⚡ Lightweight**: Zero dependencies, minimal footprint
+- **🧪 Well-Tested**: Comprehensive test coverage
 
-This is heavily inspired on the MongoDB aggregation pipeline, where you can transform the data as you wish. I'll try to add as much operators as needed, following their official documentation.
+## 📦 Installation
 
-## Example:
+```bash
+npm install json-forgefy
+```
 
-```ts
-export const incomingPayload = {
-  transactionId: "1234567890",
-  transactionType: "Money Transfer",
-  transactionDate: "2024-01-01T00:00:00Z",
-  transactionStatus: "Pending",
-  sender: {
-    accountId: "A123",
-    accountType: "Savings",
-    bank: {
-      bankId: "B123",
-      bankName: "Bank A",
-      branchName: "Branch A",
-      ifscCode: "IFSC123",
-      swiftCode: "SWIFT123",
-      address: {
-        street: "Street A",
-        city: "City A",
-        state: "State A",
-        country: "Country A",
-        zipCode: "ZIP123",
-      },
-    },
+```bash
+yarn add json-forgefy
+```
+
+## 🎯 Quick Start
+
+```typescript
+import { forgefy } from 'json-forgefy';
+
+// Your source data
+const payload = {
+  user: { name: "John Doe", age: 30 },
+  transaction: { amount: "100.50", currency: "USD" }
+};
+
+// Your transformation blueprint
+const blueprint = {
+  userName: "$user.name",                    // Extract nested values
+  userAge: "$user.age",
+  amount: { $toNumber: "$transaction.amount" },  // Convert string to number
+  amountCents: { 
+    $multiply: [{ $toNumber: "$transaction.amount" }, 100] 
   },
-  receiver: {
-    accountId: "B456",
-    accountType: "Checking",
-    bank: {
-      bankId: "B456",
-      bankName: "Bank B",
-      branchName: "Branch B",
-      ifscCode: "IFSC456",
-      swiftCode: "SWIFT456",
-      address: {
-        street: "Street B",
-        city: "City B",
-        state: "State B",
-        country: "Country B",
-        zipCode: "ZIP456",
-      },
-    },
-  },
-  transactionDetails: {
-    amount: "1000.0",
-    currency: "USD",
-    exchangeRate: "1.0",
-    transactionFee: "10.0",
-    netAmount: "990.0",
-    description: "Money Transfer to Account B456",
-  },
+  currency: "$transaction.currency"
+};
+
+// Transform the data
+const result = forgefy(payload, blueprint);
+
+console.log(result);
+// Output:
+// {
+//   userName: "John Doe",
+//   userAge: 30,
+//   amount: 100.5,
+//   amountCents: 10050,
+//   currency: "USD"
+// }
+```
+
+## 🔧 Core Concepts
+
+### 1. Path Extraction
+Use `$` prefix to extract values from nested objects:
+
+```typescript
+const data = { user: { profile: { name: "Alice" } } };
+const blueprint = { name: "$user.profile.name" };
+// Result: { name: "Alice" }
+```
+
+### 2. Operators
+Transform data using MongoDB-style operators:
+
+```typescript
+const blueprint = {
+  total: { $add: [10, 20, 30] },           // Math operations
+  text: { $toString: 123 },                // Type conversions
+  upper: { $toUpper: "$user.name" },       // String operations
+  conditional: {                           // Conditional logic
+    $cond: {
+      if: { $gt: ["$amount", 100] },
+      then: "Premium",
+      else: "Standard"
+    }
+  }
 };
 ```
 
-To transform our incoming JSON string into a new Object, we can create a blueprint configuration file like this one below:
+### 3. Nested Transformations
+Create complex nested structures:
 
-```ts
-export const yourBlueprint = {
-  accountId: "$sender.accountId",
-  accountType: "$sender.accountType",
-  transactionId: "$transactionId",
-  transactionStatus: { $toUpper: "$transactionStatus" },
-  transactionDetails: {
-    amount: {
-      $multiply: [{ $toNumber: "$transactionDetails.amount" }, 100],
-    },
-    currency: "$transactionDetails.currency",
-    fees: {
-      transactionFee: "$transactionDetails.transactionFee",
-      netAmount: "$transactionDetails.netAmount",
-    },
+```typescript
+const blueprint = {
+  user: {
+    id: "$userId",
+    profile: {
+      displayName: { $toUpper: "$user.name" },
+      isActive: { $eq: ["$status", "active"] }
+    }
   },
-  receiverType: {
+  summary: {
+    total: { $add: ["$price", "$tax"] },
+    formatted: { $concat: ["$", { $toString: { $add: ["$price", "$tax"] } }] }
+  }
+};
+```
+
+## 📚 Available Operators
+
+### Mathematical Operators
+- `$add` - Addition: `{ $add: [1, 2, 3] }` → `6`
+- `$subtract` - Subtraction: `{ $subtract: [10, 3] }` → `7`
+- `$multiply` - Multiplication: `{ $multiply: [4, 5] }` → `20`
+- `$divide` - Division: `{ $divide: [20, 4] }` → `5`
+- `$abs` - Absolute value: `{ $abs: -5 }` → `5`
+- `$ceil` - Ceiling: `{ $ceil: 4.2 }` → `5`
+- `$floor` - Floor: `{ $floor: 4.8 }` → `4`
+- `$max` - Maximum: `{ $max: [1, 5, 3] }` → `5`
+- `$min` - Minimum: `{ $min: [1, 5, 3] }` → `1`
+- `$toFixed` - Fixed decimals: `{ $toFixed: [3.14159, 2] }` → `"3.14"`
+
+### String Operators
+- `$toString` - Convert to string: `{ $toString: 123 }` → `"123"`
+- `$toUpper` - Uppercase: `{ $toUpper: "hello" }` → `"HELLO"`
+- `$toLower` - Lowercase: `{ $toLower: "HELLO" }` → `"hello"`
+- `$concat` - Concatenate: `{ $concat: ["Hello", " ", "World"] }` → `"Hello World"`
+- `$substr` - Substring: `{ $substr: ["Hello", 1, 3] }` → `"ell"`
+- `$slice` - Slice array/string: `{ $slice: ["Hello", 0, 2] }` → `"He"`
+- `$split` - Split string: `{ $split: ["a,b,c", ","] }` → `["a", "b", "c"]`
+- `$size` - Get length: `{ $size: "Hello" }` → `5`
+
+### Comparison Operators
+- `$eq` - Equal: `{ $eq: [5, 5] }` → `true`
+- `$gt` - Greater than: `{ $gt: [10, 5] }` → `true`
+- `$gte` - Greater than or equal: `{ $gte: [5, 5] }` → `true`
+- `$lt` - Less than: `{ $lt: [3, 5] }` → `true`
+- `$lte` - Less than or equal: `{ $lte: [5, 5] }` → `true`
+
+### Conditional Operators
+- `$cond` - If-then-else logic
+- `$switch` - Multi-branch conditional
+- `$ifNull` - Null coalescing: `{ $ifNull: [null, "default"] }` → `"default"`
+
+### Type Conversion
+- `$toNumber` - Convert to number: `{ $toNumber: "123" }` → `123`
+- `$toString` - Convert to string: `{ $toString: 123 }` → `"123"`
+
+### Date Operators
+- `$dateDiff` - Calculate date differences
+
+### Utility Operators
+- `$regex` - Regular expression matching
+
+## 🌟 Advanced Examples
+
+### E-commerce Order Processing
+```typescript
+const orderData = {
+  items: [
+    { name: "Laptop", price: 999.99, quantity: 1 },
+    { name: "Mouse", price: 29.99, quantity: 2 }
+  ],
+  customer: { 
+    name: "john doe", 
+    tier: "premium",
+    country: "US" 
+  },
+  discount: 0.1
+};
+
+const blueprint = {
+  customerName: { $toUpper: "$customer.name" },
+  itemCount: { $size: "$items" },
+  subtotal: { 
+    $add: [
+      { $multiply: ["$items.0.price", "$items.0.quantity"] },
+      { $multiply: ["$items.1.price", "$items.1.quantity"] }
+    ]
+  },
+  discountAmount: {
     $cond: {
-      if: { $eq: ["$receiver.accountType", "Preparing"] },
-      then: "It is checking...",
-      else: "Finished",
-    },
+      if: { $eq: ["$customer.tier", "premium"] },
+      then: { $multiply: [
+        { $add: [
+          { $multiply: ["$items.0.price", "$items.0.quantity"] },
+          { $multiply: ["$items.1.price", "$items.1.quantity"] }
+        ]},
+        "$discount"
+      ]},
+      else: 0
+    }
   },
-  branch: {
+  shippingCost: {
     $switch: {
       branches: [
-        {
-          case: { $eq: ["$sender.bank.branchName", "Branch A"] },
-          then: "Open Banking Name A",
-        },
-        {
-          case: { $eq: ["$sender.bank.branchName", "Branch B"] },
-          then: "Open Banking Name B",
-        },
+        { case: { $eq: ["$customer.country", "US"] }, then: 5.99 },
+        { case: { $eq: ["$customer.country", "CA"] }, then: 7.99 }
       ],
-      default: "Unknown Branch",
-    },
-  },
+      default: 12.99
+    }
+  }
 };
 ```
 
-The end result will be:
+### API Response Transformation
+```typescript
+const apiResponse = {
+  user_id: 12345,
+  first_name: "jane",
+  last_name: "smith",
+  email_address: "jane.smith@example.com",
+  account_balance: "1250.75",
+  is_verified: true,
+  created_at: "2024-01-15T10:30:00Z"
+};
 
-```ts
-export const expectedResult = {
-  accountId: "A123",
-  accountType: "Savings",
-  transactionId: "1234567890",
-  transactionStatus: "PENDING",
-  transactionDetails: {
-    amount: 100000,
-    currency: "USD",
-    fees: { transactionFee: "10.0", netAmount: "990.0" },
+const blueprint = {
+  id: "$user_id",
+  fullName: { 
+    $concat: [
+      { $toUpper: { $substr: ["$first_name", 0, 1] } },
+      { $substr: ["$first_name", 1] },
+      " ",
+      { $toUpper: { $substr: ["$last_name", 0, 1] } },
+      { $substr: ["$last_name", 1] }
+    ]
   },
-  receiverType: "Finished",
-  branch: "Open Banking Name A",
+  email: "$email_address",
+  balance: {
+    amount: { $toNumber: "$account_balance" },
+    formatted: { $concat: ["$", "$account_balance"] }
+  },
+  status: {
+    $cond: {
+      if: "$is_verified",
+      then: "Verified User",
+      else: "Pending Verification"
+    }
+  },
+  memberSince: "$created_at"
 };
 ```
 
-## How to:
+## 🛠️ Development
 
-Import the `forgefy` function from the package and pass two inputs, the incoming JSON string and the blueprint configuration file.
+### Prerequisites
+- Node.js 16+
+- pnpm, npm or yarn
 
-```ts
-import { forgefy } from "json-forgefy";
-const result = forgefy(incomingPayload, yourBlueprint);
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/DMBerlin/json-forgefy.git
+cd json-forgefy
+
+# Install dependencies
+pnpm install
+
+# Run tests
+pnpm test
+
+# Build the project
+pnpm build
+
+# Run linting
+pnpm lint
 ```
+
+### Testing
+```bash
+# Run all tests
+pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Run tests with coverage
+pnpm test:cov
+```
+
+## 📖 API Reference
+
+### `forgefy(payload, projection)`
+
+The main transformation function.
+
+**Parameters:**
+- `payload` (Record<string, any>): The source object to transform
+- `projection` (Projection): The blueprint object defining the transformation
+
+**Returns:**
+- `Record<string, any>`: The transformed object
+
+**Example:**
+```typescript
+const result = forgefy(sourceData, transformationBlueprint);
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Inspired by MongoDB's aggregation pipeline operators
+- Built with TypeScript for type safety and developer experience
+- Designed for modern JavaScript/TypeScript applications
+
+---
+
+Made with ❤️ by [Daniel Marinho](https://github.com/DMBerlin)

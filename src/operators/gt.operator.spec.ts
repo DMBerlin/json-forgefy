@@ -1,5 +1,5 @@
 import { $gt } from "./gt.operator";
-import { ExecutionContext } from "../interfaces/execution-context.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
 
 describe("GtOperator", () => {
   describe("asserting raw values", () => {

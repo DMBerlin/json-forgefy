@@ -1,7 +1,7 @@
-import { forgefy } from "../core/forgefy.core";
-import { originFixture } from "../__fixtures__/origin.fixtures";
-import { blueprintFixture } from "../__fixtures__/blueprint.fixture";
-import { expectedFixture } from "../__fixtures__/expected.fixture";
+import { forgefy } from "@core/forgefy.core";
+import { originFixture } from "@fixtures/origin.fixtures";
+import { blueprintFixture } from "@fixtures/blueprint.fixture";
+import { expectedFixture } from "@fixtures/expected.fixture";
 
 describe("ForgefyCore", () => {
   it("should forge actual into expected correctly", () => {

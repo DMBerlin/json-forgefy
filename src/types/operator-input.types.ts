@@ -1,6 +1,6 @@
 import { Expression, ExpressionValues } from "./expression.types";
-import { JsonValidTypes } from "../types/json.types";
-import { ObjectPathValue } from "../types/object-path-value.types";
+import { JsonValidTypes } from "./json.types";
+import { ObjectPathValue } from "./object-path-value.types";
 
 export type AddOperatorInput = number[];
 
@@ -90,3 +90,11 @@ export type GtOperatorInput = [ExpressionValues, ExpressionValues];
 export type GteOperatorInput = [ExpressionValues, ExpressionValues];
 export type LtOperatorInput = [ExpressionValues, ExpressionValues];
 export type LteOperatorInput = [ExpressionValues, ExpressionValues];
+export type AndOperatorInput = ExpressionValues[];
+export type OrOperatorInput = ExpressionValues[];
+export type NotOperatorInput = ExpressionValues;
+export type NeOperatorInput = [ExpressionValues, ExpressionValues];
+export type InOperatorInput = [ExpressionValues, ExpressionValues];
+export type NinOperatorInput = [ExpressionValues, ExpressionValues];
+export type ExistsOperatorInput = string;
+export type IsNullOperatorInput = ExpressionValues;

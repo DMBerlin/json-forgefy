@@ -1,4 +1,4 @@
-import { $multiply } from "../operators/multiply.operator";
+import { $multiply } from "@operators/multiply.operator";
 
 describe("multiply operator", () => {
   it("should multiply two numbers", () => {

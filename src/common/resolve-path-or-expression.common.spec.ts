@@ -1,5 +1,5 @@
 import { resolvePathOrExpression } from "./resolve-path-or-expression.common";
-import { Expression } from "../types/expression.types";
+import { Expression } from "@lib-types/expression.types";
 
 describe("resolvePathOrExpression", () => {
   it("should return value by path", () => {

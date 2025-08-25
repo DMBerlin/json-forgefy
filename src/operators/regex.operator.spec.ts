@@ -1,5 +1,5 @@
 import { $regex } from "./regex.operator";
-import { RegexOperatorInput } from "../types/operator-input.types";
+import { RegexOperatorInput } from "@lib-types/operator-input.types";
 
 describe("regex operator", () => {
   it("should return true if the value matches the pattern", () => {

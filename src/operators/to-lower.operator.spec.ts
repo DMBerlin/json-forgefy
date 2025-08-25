@@ -1,4 +1,4 @@
-import { $toLower } from "../operators/to-lower.operator";
+import { $toLower } from "@operators/to-lower.operator";
 
 describe("toLowerCase", () => {
   it("should convert a string to lower case", () => {
