@@ -24,6 +24,28 @@ import { $min } from "./operators/min.operator";
 import { $dateDiff } from "./operators/date-diff.operator";
 import { $toFixed } from "./operators/to-fixed.operator";
 
+/**
+ * Central registry of all available operators in the json-forgefy library.
+ * This Map contains all the operator functions that can be used in transformation blueprints.
+ * Each operator is registered with its key (e.g., "$add", "$multiply") and corresponding
+ * implementation function.
+ * 
+ * The operators are organized into categories:
+ * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min
+ * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size
+ * - Conditional: $cond, $switch, $ifNull
+ * - Comparison: $eq (others like $gt, $lt are available in their respective files)
+ * - Type Conversion: $toNumber, $toString
+ * - Date: $dateDiff
+ * - Utility: $toFixed
+ * 
+ * @example
+ * ```typescript
+ * // The operators map is used internally by resolveExpression
+ * const operator = operators.get("$add");
+ * const result = operator({ context: sourceData })([1, 2, 3]); // Returns 6
+ * ```
+ */
 export const operators: Map<OperatorKey, OperatorValue> = new Map<
   OperatorKey,
   OperatorValue
