@@ -319,12 +319,6 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 - Built with TypeScript for type safety and developer experience
 - Designed for modern JavaScript/TypeScript applications
 
-## 📞 Support
-
-- 🐛 [Report Issues](https://github.com/DMBerlin/json-forgefy/issues)
-- 💬 [Discussions](https://github.com/DMBerlin/json-forgefy/discussions)
-- 📧 [Email Support](mailto:your-email@example.com)
-
 ---
 
 Made with ❤️ by [Daniel Marinho](https://github.com/DMBerlin)
