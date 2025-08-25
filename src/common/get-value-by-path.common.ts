@@ -35,6 +35,10 @@ export function getValueByPath(
     ? path
         .slice(1)
         .split(".")
-        .reduce((obj: Record<string, any>, key: string) => obj[key], source)
+        .reduce(
+          (obj: Record<string, any>, key: string) =>
+            obj === null || obj === undefined ? undefined : obj[key],
+          source,
+        )
     : undefined;
 }

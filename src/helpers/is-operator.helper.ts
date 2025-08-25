@@ -22,6 +22,11 @@ import { OperatorKey } from "../types/operator.types";
  * ```
  */
 export function isOperator(obj: Record<string, any>): boolean {
+  // Handle null, undefined, or non-object values
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
   const keys: string[] = Object.keys(obj);
   return (
     keys.length === 1 &&
