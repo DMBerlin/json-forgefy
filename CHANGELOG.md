@@ -22,6 +22,7 @@
   - Update `$in` and `$nin` operators to resolve expressions within array elements
   - Improve `resolvePathOrExpression` handling for complex nested scenarios
   - Add robust null/undefined handling in `getValueByPath` and `isOperator` helpers
+  - Implement path aliases for better readability in nested paths
 * **testing:** add comprehensive test coverage for all new operators
   - Add 296+ test cases covering edge cases, nested expressions, and complex scenarios
   - Achieve 99.45% statement coverage and 98.83% branch coverage
