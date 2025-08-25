@@ -160,4 +160,37 @@ describe("$exists operator", () => {
     const result = $exists(mockContext)("settings.nonExistent.field");
     expect(result).toBe(false);
   });
+
+  it("should return false when trying to access property of null", () => {
+    const result = $exists(mockContext)("nullValue.someProperty");
+    expect(result).toBe(false);
+  });
+
+  it("should return false when trying to access property of undefined", () => {
+    const result = $exists(mockContext)("undefinedValue.someProperty");
+    expect(result).toBe(false);
+  });
+
+  it("should return false when trying to access property of primitive value", () => {
+    const result = $exists(mockContext)("emptyString.someProperty");
+    expect(result).toBe(false);
+  });
+
+  it("should return false when trying to access property of number", () => {
+    const result = $exists(mockContext)("zeroValue.someProperty");
+    expect(result).toBe(false);
+  });
+
+  it("should handle error cases gracefully", () => {
+    // Create a context with a getter that throws an error
+    const errorContext = {
+      context: {
+        get errorProperty() {
+          throw new Error("Access denied");
+        },
+      },
+    };
+    const result = $exists(errorContext)("errorProperty.nested");
+    expect(result).toBe(false);
+  });
 });
