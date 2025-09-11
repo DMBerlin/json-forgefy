@@ -1,0 +1,117 @@
+# Dependabot configuration for json-forgefy
+# This file configures automated dependency updates
+
+version: 2
+updates:
+  # Enable version updates for npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "DMBerlin"
+    assignees:
+      - "DMBerlin"
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "javascript"
+    # Group minor and patch updates together
+    groups:
+      # Group all non-major updates for dev dependencies
+      dev-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Ignore major version updates for critical dependencies
+    ignore:
+      # Ignore major updates for TypeScript to avoid breaking changes
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      # Ignore major updates for Jest to maintain test stability
+      - dependency-name: "jest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "ts-jest"
+        update-types: ["version-update:semver-major"]
+      # Ignore major updates for ESLint to avoid config breaking changes
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@typescript-eslint/eslint-plugin"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@typescript-eslint/parser"
+        update-types: ["version-update:semver-major"]
+      # Ignore major updates for Husky to maintain Git hooks
+      - dependency-name: "husky"
+        update-types: ["version-update:semver-major"]
+      # Ignore major updates for Prettier to maintain formatting
+      - dependency-name: "prettier"
+        update-types: ["version-update:semver-major"]
+      # Ignore major updates for Release Please to maintain release process
+      - dependency-name: "release-please"
+        update-types: ["version-update:semver-major"]
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "DMBerlin"
+    assignees:
+      - "DMBerlin"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "ci"
+    # Group all GitHub Actions updates
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Enable version updates for pnpm (if using pnpm-specific features)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "DMBerlin"
+    assignees:
+      - "DMBerlin"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "pnpm"
+    # Focus on pnpm-related updates
+    target-branch: "dependabot/pnpm"
+    groups:
+      pnpm-updates:
+        patterns:
+          - "pnpm"
+        update-types:
+          - "minor"
+          - "patch"
