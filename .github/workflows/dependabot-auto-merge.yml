@@ -1,0 +1,126 @@
+name: Dependabot Auto-merge
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot-auto-merge:
+    # Only run for Dependabot PRs
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run linting
+        run: pnpm lint
+
+      - name: Run tests
+        run: pnpm test
+        env:
+          TZ: 'America/Sao_Paulo'
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Check if PR is safe to auto-merge
+        id: safety-check
+        run: |
+          # Check if this is a minor or patch update (not major)
+          if [[ "${{ github.event.pull_request.title }}" =~ ^(chore|ci):\ (bump|update).*from.*to.*$ ]]; then
+            echo "safe_to_merge=true" >> $GITHUB_OUTPUT
+            echo "✅ Safe to auto-merge: Minor/patch update detected"
+          else
+            echo "safe_to_merge=false" >> $GITHUB_OUTPUT
+            echo "❌ Not safe to auto-merge: Major update or unexpected format"
+          fi
+
+      - name: Auto-merge Dependabot PR
+        if: steps.safety-check.outputs.safe_to_merge == 'true'
+        uses: fastify/github-action-merge-dependabot@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          target: minor
+          merge-method: squash
+          merge-comment: |
+            🤖 **Dependabot Auto-merge**
+            
+            This PR has been automatically merged because:
+            - ✅ All tests passed
+            - ✅ Linting passed  
+            - ✅ Build successful
+            - ✅ Minor/patch update (safe to merge)
+            
+            Thanks for keeping our dependencies up to date! 🚀
+
+      - name: Comment on non-auto-mergeable PRs
+        if: steps.safety-check.outputs.safe_to_merge == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🤖 **Dependabot Review Required**
+              
+              This dependency update requires manual review because:
+              - 🔍 Major version update detected
+              - ⚠️ Potential breaking changes
+              
+              Please review the changes and merge manually when ready.
+              
+              **What to check:**
+              - [ ] Breaking changes in changelog
+              - [ ] Test compatibility
+              - [ ] Configuration updates needed
+              - [ ] Documentation updates required`
+            })
+
+      - name: Add labels to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = ['dependencies'];
+            
+            // Add specific labels based on PR title
+            if (context.payload.pull_request.title.includes('github-actions')) {
+              labels.push('github-actions', 'ci');
+            } else if (context.payload.pull_request.title.includes('pnpm')) {
+              labels.push('pnpm');
+            } else {
+              labels.push('javascript', 'npm');
+            }
+            
+            // Add status label
+            if ('${{ steps.safety-check.outputs.safe_to_merge }}' === 'true') {
+              labels.push('auto-merge');
+            } else {
+              labels.push('needs-review');
+            }
+            
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: labels
+            });

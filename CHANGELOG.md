@@ -1,5 +1,58 @@
 # Changelog
 
+## [Unreleased]
+
+### Features
+
+* **documentation:** completely overhaul README with user-friendly, product-focused content
+  - Add compelling value proposition and problem-solving focus
+  - Include comprehensive real-world use cases and examples
+  - Add detailed operator reference with practical examples
+  - Create common patterns and best practices section
+  - Center documentation around pnpm as primary package manager
+* **ci/cd:** enhance GitHub Actions workflows with pnpm support
+  - Update all workflows to use pnpm instead of npm
+  - Add comprehensive CI pipeline with lint, test, and build stages
+  - Integrate Codecov for coverage reporting
+  - Add build artifact uploads for better CI visibility
+* **release:** improve automated release process
+  - Move Release Please configuration to package.json for cleaner setup
+  - Add npm publishing automation with proper authentication
+  - Enhance release workflow with better error handling and permissions
+  - Add release scripts for manual release management
+* **dependencies:** add comprehensive Dependabot integration
+  - Configure automated dependency updates with smart grouping
+  - Add security-focused updates with daily scanning
+  - Implement auto-merge for safe minor/patch updates
+  - Add manual review requirement for major updates
+  - Protect critical dependencies from breaking changes
+* **tooling:** update project configuration for better developer experience
+  - Fix Husky v10 compatibility warnings
+  - Add release-please as dev dependency
+  - Update package.json scripts to use pnpm consistently
+  - Improve project structure and configuration management
+
+### Improvements
+
+* **developer experience:** significantly improve project setup and maintenance
+  - Streamlined release process with automated npm publishing
+  - Better dependency management with intelligent auto-updates
+  - Enhanced CI/CD pipeline with comprehensive testing
+  - Cleaner configuration with single-source-of-truth approach
+* **documentation:** transform technical documentation into user-focused content
+  - Clear problem-solving approach with real-world examples
+  - Comprehensive operator reference with practical use cases
+  - Better onboarding experience for new users
+  - Professional presentation suitable for npm package listing
+
+### Technical Debt
+
+* **configuration:** consolidate configuration files for better maintainability
+  - Move Release Please config from separate file to package.json
+  - Remove deprecated Husky configuration files
+  - Standardize on pnpm across all tooling and documentation
+  - Improve project structure and file organization
+
 ## [1.10.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.9.0...v1.10.0) (2025-08-24)
 
 ### Features

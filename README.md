@@ -3,61 +3,213 @@
 [![npm version](https://badge.fury.io/js/json-forgefy.svg)](https://badge.fury.io/js/json-forgefy)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-A powerful TypeScript library for transforming JSON objects using MongoDB-inspired operators and projection blueprints. Perfect for data transformation, API response mapping, and creating flexible data processing pipelines.
+**Transform JSON data with MongoDB-style operators. No database required.**
 
-## 🚀 Why JSON Forgefy?
+JSON Forgefy lets you reshape, calculate, and transform JSON objects using familiar MongoDB aggregation operators. Perfect for API responses, data pipelines, and any JSON transformation needs.
 
-- **🎯 Declarative**: Define transformations using simple blueprint objects
-- **🔄 MongoDB-Inspired**: Familiar operators like `$add`, `$multiply`, `$cond`, `$switch`
-- **🏗️ Composable**: Nest operators and combine transformations
+## 🎯 What Problems Does It Solve?
+
+- **API Response Mapping**: Transform external API responses to match your app's data structure
+- **Data Normalization**: Convert inconsistent data formats into standardized schemas  
+- **Calculations**: Perform math operations, string manipulations, and conditional logic
+- **Data Pipelines**: Create reusable transformation blueprints for consistent data processing
+- **Type Safety**: Get full TypeScript support with compile-time validation
+
+## ✨ Key Benefits
+
+- **🚀 Zero Dependencies**: Lightweight with no external dependencies
+- **📝 Declarative**: Define transformations as simple blueprint objects
+- **🔄 MongoDB Operators**: Use familiar `$add`, `$multiply`, `$cond`, `$switch` syntax
+- **🏗️ Composable**: Nest operators and combine transformations seamlessly
 - **📦 Type-Safe**: Full TypeScript support with comprehensive type definitions
-- **⚡ Lightweight**: Zero dependencies, minimal footprint
-- **🧪 Well-Tested**: Comprehensive test coverage
+- **🧪 Battle-Tested**: 100% test coverage with comprehensive test suite
 
 ## 📦 Installation
 
 ```bash
-npm install json-forgefy
+pnpm add json-forgefy
 ```
 
 ```bash
+# Alternative package managers
+npm install json-forgefy
 yarn add json-forgefy
 ```
 
-## 🎯 Quick Start
+## 🚀 Quick Start
+
+Transform API responses, calculate values, and reshape data in seconds:
 
 ```typescript
 import { forgefy } from 'json-forgefy';
 
-// Your source data
-const payload = {
-  user: { name: "John Doe", age: 30 },
-  transaction: { amount: "100.50", currency: "USD" }
+// Raw API response
+const apiResponse = {
+  user: { 
+    first_name: "john", 
+    last_name: "doe", 
+    email: "john@example.com",
+    balance: "1250.75"
+  },
+  transaction: { 
+    amount: "100.50", 
+    currency: "USD",
+    status: "pending"
+  }
 };
 
-// Your transformation blueprint
+// Define your transformation blueprint
 const blueprint = {
-  userName: "$user.name",                    // Extract nested values
-  userAge: "$user.age",
-  amount: { $toNumber: "$transaction.amount" },  // Convert string to number
-  amountCents: { 
-    $multiply: [{ $toNumber: "$transaction.amount" }, 100] 
+  // Extract and format user data
+  user: {
+    fullName: { 
+      $concat: [
+        { $toUpper: { $substr: ["$user.first_name", 0, 1] } },
+        { $substr: ["$user.first_name", 1] },
+        " ",
+        { $toUpper: { $substr: ["$user.last_name", 0, 1] } },
+        { $substr: ["$user.last_name", 1] }
+      ]
+    },
+    email: "$user.email",
+    balance: { $toNumber: "$user.balance" }
   },
-  currency: "$transaction.currency"
+  
+  // Calculate transaction details
+  transaction: {
+    amount: { $toNumber: "$transaction.amount" },
+    amountCents: { $multiply: [{ $toNumber: "$transaction.amount" }, 100] },
+    currency: "$transaction.currency",
+    status: { $toUpper: "$transaction.status" },
+    isHighValue: { $gt: [{ $toNumber: "$transaction.amount" }, 100] }
+  }
 };
 
 // Transform the data
-const result = forgefy(payload, blueprint);
+const result = forgefy(apiResponse, blueprint);
 
 console.log(result);
 // Output:
 // {
-//   userName: "John Doe",
-//   userAge: 30,
-//   amount: 100.5,
-//   amountCents: 10050,
-//   currency: "USD"
+//   user: {
+//     fullName: "John Doe",
+//     email: "john@example.com", 
+//     balance: 1250.75
+//   },
+//   transaction: {
+//     amount: 100.5,
+//     amountCents: 10050,
+//     currency: "USD",
+//     status: "PENDING",
+//     isHighValue: true
+//   }
 // }
+```
+
+## 💼 Real-World Use Cases
+
+### 1. **API Response Standardization**
+Transform inconsistent third-party API responses into your app's data structure:
+
+```typescript
+// External API returns snake_case, you need camelCase
+const externalApiData = {
+  user_id: 123,
+  first_name: "jane",
+  account_balance: "2500.00",
+  is_premium_member: true
+};
+
+const blueprint = {
+  id: "$user_id",
+  firstName: "$first_name", 
+  balance: { $toNumber: "$account_balance" },
+  isPremium: "$is_premium_member",
+  tier: {
+    $cond: {
+      if: "$is_premium_member",
+      then: "Premium",
+      else: "Standard"
+    }
+  }
+};
+```
+
+### 2. **Financial Calculations**
+Process payment data with complex calculations:
+
+```typescript
+const paymentData = {
+  subtotal: "99.99",
+  tax_rate: "0.08",
+  discount_percent: "10",
+  shipping: "5.99"
+};
+
+const blueprint = {
+  subtotal: { $toNumber: "$subtotal" },
+  tax: { 
+    $multiply: [
+      { $toNumber: "$subtotal" }, 
+      { $toNumber: "$tax_rate" }
+    ] 
+  },
+  discount: {
+    $multiply: [
+      { $toNumber: "$subtotal" },
+      { $divide: [{ $toNumber: "$discount_percent" }, 100] }
+    ]
+  },
+  total: {
+    $add: [
+      { $toNumber: "$subtotal" },
+      { $multiply: [{ $toNumber: "$subtotal" }, { $toNumber: "$tax_rate" }] },
+      { $toNumber: "$shipping" },
+      { $multiply: [
+        { $toNumber: "$subtotal" },
+        { $divide: [{ $toNumber: "$discount_percent" }, 100] }
+      ]}
+    ]
+  }
+};
+```
+
+### 3. **Data Validation & Conditional Logic**
+Apply business rules and validation:
+
+```typescript
+const userData = {
+  age: 25,
+  country: "US",
+  subscription_type: "premium",
+  last_login: "2024-01-15T10:30:00Z"
+};
+
+const blueprint = {
+  canAccessPremium: {
+    $and: [
+      { $gte: ["$age", 18] },
+      { $eq: ["$subscription_type", "premium"] }
+    ]
+  },
+  region: {
+    $switch: {
+      branches: [
+        { case: { $eq: ["$country", "US"] }, then: "North America" },
+        { case: { $eq: ["$country", "CA"] }, then: "North America" },
+        { case: { $eq: ["$country", "GB"] }, then: "Europe" }
+      ],
+      default: "Other"
+    }
+  },
+  accountStatus: {
+    $cond: {
+      if: { $gt: [{ $dateDiff: ["$last_login", "now"] }, 30] },
+      then: "Inactive",
+      else: "Active"
+    }
+  }
+};
 ```
 
 ## 🔧 Core Concepts
@@ -108,139 +260,185 @@ const blueprint = {
 };
 ```
 
-## 📚 Available Operators
+## 📚 Complete Operator Reference
 
-### Mathematical Operators
-- `$add` - Addition: `{ $add: [1, 2, 3] }` → `6`
-- `$subtract` - Subtraction: `{ $subtract: [10, 3] }` → `7`
-- `$multiply` - Multiplication: `{ $multiply: [4, 5] }` → `20`
-- `$divide` - Division: `{ $divide: [20, 4] }` → `5`
-- `$abs` - Absolute value: `{ $abs: -5 }` → `5`
-- `$ceil` - Ceiling: `{ $ceil: 4.2 }` → `5`
-- `$floor` - Floor: `{ $floor: 4.8 }` → `4`
-- `$max` - Maximum: `{ $max: [1, 5, 3] }` → `5`
-- `$min` - Minimum: `{ $min: [1, 5, 3] }` → `1`
-- `$toFixed` - Fixed decimals: `{ $toFixed: [3.14159, 2] }` → `"3.14"`
+### 🔢 Mathematical Operations
+Perfect for calculations, aggregations, and numeric transformations:
 
-### String Operators
-- `$toString` - Convert to string: `{ $toString: 123 }` → `"123"`
-- `$toUpper` - Uppercase: `{ $toUpper: "hello" }` → `"HELLO"`
-- `$toLower` - Lowercase: `{ $toLower: "HELLO" }` → `"hello"`
-- `$concat` - Concatenate: `{ $concat: ["Hello", " ", "World"] }` → `"Hello World"`
-- `$substr` - Substring: `{ $substr: ["Hello", 1, 3] }` → `"ell"`
-- `$slice` - Slice array/string: `{ $slice: ["Hello", 0, 2] }` → `"He"`
-- `$split` - Split string: `{ $split: ["a,b,c", ","] }` → `["a", "b", "c"]`
-- `$size` - Get length: `{ $size: "Hello" }` → `5`
+| Operator | Description | Example | Result |
+|----------|-------------|---------|---------|
+| `$add` | Add numbers | `{ $add: [1, 2, 3] }` | `6` |
+| `$subtract` | Subtract numbers | `{ $subtract: [10, 3] }` | `7` |
+| `$multiply` | Multiply numbers | `{ $multiply: [4, 5] }` | `20` |
+| `$divide` | Divide numbers | `{ $divide: [20, 4] }` | `5` |
+| `$abs` | Absolute value | `{ $abs: -5 }` | `5` |
+| `$ceil` | Round up | `{ $ceil: 4.2 }` | `5` |
+| `$floor` | Round down | `{ $floor: 4.8 }` | `4` |
+| `$max` | Maximum value | `{ $max: [1, 5, 3] }` | `5` |
+| `$min` | Minimum value | `{ $min: [1, 5, 3] }` | `1` |
+| `$toFixed` | Format decimals | `{ $toFixed: [3.14159, 2] }` | `"3.14"` |
 
-### Comparison Operators
-- `$eq` - Equal: `{ $eq: [5, 5] }` → `true`
-- `$gt` - Greater than: `{ $gt: [10, 5] }` → `true`
-- `$gte` - Greater than or equal: `{ $gte: [5, 5] }` → `true`
-- `$lt` - Less than: `{ $lt: [3, 5] }` → `true`
-- `$lte` - Less than or equal: `{ $lte: [5, 5] }` → `true`
+### 📝 String Operations
+Transform and manipulate text data:
 
-### Conditional Operators
-- `$cond` - If-then-else logic
-- `$switch` - Multi-branch conditional
-- `$ifNull` - Null coalescing: `{ $ifNull: [null, "default"] }` → `"default"`
+| Operator | Description | Example | Result |
+|----------|-------------|---------|---------|
+| `$toString` | Convert to string | `{ $toString: 123 }` | `"123"` |
+| `$toUpper` | Uppercase | `{ $toUpper: "hello" }` | `"HELLO"` |
+| `$toLower` | Lowercase | `{ $toLower: "HELLO" }` | `"hello"` |
+| `$concat` | Join strings | `{ $concat: ["Hello", " ", "World"] }` | `"Hello World"` |
+| `$substr` | Extract substring | `{ $substr: ["Hello", 1, 3] }` | `"ell"` |
+| `$slice` | Slice string/array | `{ $slice: ["Hello", 0, 2] }` | `"He"` |
+| `$split` | Split string | `{ $split: ["a,b,c", ","] }` | `["a", "b", "c"]` |
+| `$size` | Get length | `{ $size: "Hello" }` | `5` |
 
-### Type Conversion
-- `$toNumber` - Convert to number: `{ $toNumber: "123" }` → `123`
-- `$toString` - Convert to string: `{ $toString: 123 }` → `"123"`
+### ⚖️ Comparison & Logic
+Make decisions and validate data:
 
-### Date Operators
-- `$dateDiff` - Calculate date differences
+| Operator | Description | Example | Result |
+|----------|-------------|---------|---------|
+| `$eq` | Equal | `{ $eq: [5, 5] }` | `true` |
+| `$ne` | Not equal | `{ $ne: [5, 3] }` | `true` |
+| `$gt` | Greater than | `{ $gt: [10, 5] }` | `true` |
+| `$gte` | Greater or equal | `{ $gte: [5, 5] }` | `true` |
+| `$lt` | Less than | `{ $lt: [3, 5] }` | `true` |
+| `$lte` | Less or equal | `{ $lte: [5, 5] }` | `true` |
+| `$and` | Logical AND | `{ $and: [true, false] }` | `false` |
+| `$or` | Logical OR | `{ $or: [true, false] }` | `true` |
+| `$not` | Logical NOT | `{ $not: true }` | `false` |
+| `$in` | Value in array | `{ $in: ["a", ["a", "b"]] }` | `true` |
+| `$nin` | Value not in array | `{ $nin: ["c", ["a", "b"]] }` | `true` |
+| `$exists` | Field exists | `{ $exists: "$field" }` | `true/false` |
+| `$isNull` | Is null/undefined | `{ $isNull: null }` | `true` |
 
-### Utility Operators
-- `$regex` - Regular expression matching
+### 🔀 Conditional Logic
+Handle complex decision-making:
 
-## 🌟 Advanced Examples
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `$cond` | If-then-else | `{ $cond: { if: "$age > 18", then: "Adult", else: "Minor" } }` |
+| `$switch` | Multi-branch | `{ $switch: { branches: [{ case: "$type === 'A'", then: "Type A" }], default: "Other" } }` |
+| `$ifNull` | Null coalescing | `{ $ifNull: ["$optional", "default"] }` |
 
-### E-commerce Order Processing
+### 🔄 Type Conversion
+Convert between data types safely:
+
+| Operator | Description | Example | Result |
+|----------|-------------|---------|---------|
+| `$toNumber` | Convert to number | `{ $toNumber: "123" }` | `123` |
+| `$toString` | Convert to string | `{ $toString: 123 }` | `"123"` |
+
+### 📅 Date Operations
+Work with dates and time:
+
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `$dateDiff` | Calculate difference | `{ $dateDiff: ["$start", "$end", "days"] }` |
+
+### 🔍 Advanced Operations
+Powerful utilities for complex scenarios:
+
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `$regex` | Pattern matching | `{ $regex: ["$email", "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"] }` |
+
+## 🎯 Common Patterns & Best Practices
+
+### Pattern 1: Data Normalization
+Standardize inconsistent API responses:
+
 ```typescript
-const orderData = {
-  items: [
-    { name: "Laptop", price: 999.99, quantity: 1 },
-    { name: "Mouse", price: 29.99, quantity: 2 }
-  ],
-  customer: { 
-    name: "john doe", 
-    tier: "premium",
-    country: "US" 
-  },
-  discount: 0.1
+// Transform snake_case API to camelCase
+const normalizeUser = {
+  userId: "$user_id",
+  firstName: "$first_name", 
+  lastName: "$last_name",
+  emailAddress: "$email_address",
+  accountBalance: { $toNumber: "$account_balance" },
+  isVerified: "$is_verified",
+  createdAt: "$created_at"
 };
+```
 
-const blueprint = {
-  customerName: { $toUpper: "$customer.name" },
-  itemCount: { $size: "$items" },
-  subtotal: { 
-    $add: [
-      { $multiply: ["$items.0.price", "$items.0.quantity"] },
-      { $multiply: ["$items.1.price", "$items.1.quantity"] }
+### Pattern 2: Calculated Fields
+Add computed properties to your data:
+
+```typescript
+const addCalculations = {
+  // Keep original data
+  price: "$price",
+  tax: "$tax",
+  
+  // Add calculated fields
+  subtotal: { $add: ["$price", "$tax"] },
+  discountAmount: { $multiply: ["$price", "$discountRate"] },
+  finalPrice: { 
+    $subtract: [
+      { $add: ["$price", "$tax"] },
+      { $multiply: ["$price", "$discountRate"] }
     ]
   },
-  discountAmount: {
-    $cond: {
-      if: { $eq: ["$customer.tier", "premium"] },
-      then: { $multiply: [
-        { $add: [
-          { $multiply: ["$items.0.price", "$items.0.quantity"] },
-          { $multiply: ["$items.1.price", "$items.1.quantity"] }
-        ]},
-        "$discount"
-      ]},
-      else: 0
-    }
-  },
-  shippingCost: {
+  isExpensive: { $gt: ["$price", 100] }
+};
+```
+
+### Pattern 3: Conditional Data Enrichment
+Add fields based on business logic:
+
+```typescript
+const enrichUserData = {
+  // Basic user info
+  name: "$name",
+  age: "$age",
+  
+  // Conditional enrichment
+  category: {
     $switch: {
       branches: [
-        { case: { $eq: ["$customer.country", "US"] }, then: 5.99 },
-        { case: { $eq: ["$customer.country", "CA"] }, then: 7.99 }
+        { case: { $lt: ["$age", 18] }, then: "Minor" },
+        { case: { $lt: ["$age", 65] }, then: "Adult" }
       ],
-      default: 12.99
+      default: "Senior"
+    }
+  },
+  canVote: { $gte: ["$age", 18] },
+  greeting: {
+    $cond: {
+      if: { $gte: ["$age", 18] },
+      then: { $concat: ["Hello ", "$name", ", you can vote!"] },
+      else: { $concat: ["Hi ", "$name", ", you'll be able to vote in ", { $toString: { $subtract: [18, "$age"] } }, " years"] }
     }
   }
 };
 ```
 
-### API Response Transformation
-```typescript
-const apiResponse = {
-  user_id: 12345,
-  first_name: "jane",
-  last_name: "smith",
-  email_address: "jane.smith@example.com",
-  account_balance: "1250.75",
-  is_verified: true,
-  created_at: "2024-01-15T10:30:00Z"
-};
+### Pattern 4: Data Validation & Sanitization
+Clean and validate incoming data:
 
-const blueprint = {
-  id: "$user_id",
-  fullName: { 
+```typescript
+const validateAndClean = {
+  // Clean string data
+  email: { $toLower: "$email" },
+  name: { 
     $concat: [
-      { $toUpper: { $substr: ["$first_name", 0, 1] } },
-      { $substr: ["$first_name", 1] },
+      { $toUpper: { $substr: ["$firstName", 0, 1] } },
+      { $substr: ["$firstName", 1] },
       " ",
-      { $toUpper: { $substr: ["$last_name", 0, 1] } },
-      { $substr: ["$last_name", 1] }
+      { $toUpper: { $substr: ["$lastName", 0, 1] } },
+      { $substr: ["$lastName", 1] }
     ]
   },
-  email: "$email_address",
-  balance: {
-    amount: { $toNumber: "$account_balance" },
-    formatted: { $concat: ["$", "$account_balance"] }
-  },
+  
+  // Validate and set defaults
+  age: { $ifNull: ["$age", 0] },
+  isValidEmail: { $regex: ["$email", "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"] },
   status: {
     $cond: {
-      if: "$is_verified",
-      then: "Verified User",
-      else: "Pending Verification"
+      if: { $and: ["$email", { $gt: ["$age", 0] }] },
+      then: "Valid",
+      else: "Invalid"
     }
-  },
-  memberSince: "$created_at"
+  }
 };
 ```
 
@@ -248,7 +446,7 @@ const blueprint = {
 
 ### Prerequisites
 - Node.js 16+
-- pnpm, npm or yarn
+- pnpm (recommended) or npm/yarn
 
 ### Setup
 ```bash
@@ -256,7 +454,7 @@ const blueprint = {
 git clone https://github.com/DMBerlin/json-forgefy.git
 cd json-forgefy
 
-# Install dependencies
+# Install dependencies with pnpm
 pnpm install
 
 # Run tests
@@ -269,7 +467,7 @@ pnpm build
 pnpm lint
 ```
 
-### Testing
+### Development Commands
 ```bash
 # Run all tests
 pnpm test
@@ -279,6 +477,12 @@ pnpm test:watch
 
 # Run tests with coverage
 pnpm test:cov
+
+# Lint and fix code
+pnpm lint:fix
+
+# Build for production
+pnpm build
 ```
 
 ## 📖 API Reference

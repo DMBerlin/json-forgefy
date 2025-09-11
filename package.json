@@ -6,11 +6,11 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "pnpm run build",
     "pretest": "eslint . --fix && prettier --write ./src/**/*.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix && prettier \"{src,apps,libs,test}/**/*.ts\" --write",
-    "prepush": "npm run test",
+    "prepush": "pnpm run test",
     "precommit": "lint-staged",
     "prepare": "husky",
     "test": "jest --runInBand",
@@ -98,5 +98,28 @@
       "^@operators/(.*)$": "<rootDir>/src/operators/$1",
       "^@lib-types/(.*)$": "<rootDir>/src/types/$1"
     }
+  },
+  "release-please": {
+    "release-type": "node",
+    "packages": {
+      ".": {
+        "package-name": "json-forgefy",
+        "changelog-path": "CHANGELOG.md",
+        "version-file": "package.json"
+      }
+    },
+    "bump-minor-pre-major": true,
+    "bump-patch-for-minor-pre-major": true,
+    "draft": false,
+    "prerelease": false,
+    "include-component-in-tag": false,
+    "include-v-in-tag": true,
+    "pull-request-title-pattern": "chore: release ${version}",
+    "pull-request-header": "Release ${version}",
+    "pull-request-footer": "This PR was generated with [Release Please](https://github.com/googleapis/release-please).",
+    "separate-pull-requests": false,
+    "sequential-calls": true,
+    "tag-separator": "/",
+    "versioning-strategy": "default"
   }
 }
