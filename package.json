@@ -16,7 +16,10 @@
     "test": "jest --runInBand",
     "test:watch": "jest --watch --runInBand",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "release": "release-please release-pr --token=$GITHUB_TOKEN --repo-url=https://github.com/DMBerlin/json-forgefy.git --config-file=package.json",
+    "release:create": "release-please release-pr --token=$GITHUB_TOKEN --repo-url=https://github.com/DMBerlin/json-forgefy.git --config-file=package.json",
+    "release:tag": "release-please release-pr --token=$GITHUB_TOKEN --repo-url=https://github.com/DMBerlin/json-forgefy.git --config-file=package.json --create-release"
   },
   "repository": {
     "type": "git",
@@ -37,8 +40,8 @@
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@types/jest": "^30.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.1",
-    "@typescript-eslint/parser": "^8.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.2.1",
@@ -46,6 +49,7 @@
     "jest": "^29.7.0",
     "lint-staged": "^16.1.6",
     "prettier": "^3.3.3",
+    "release-please": "^15.0.0",
     "source-map-support": "^0.5.21",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
