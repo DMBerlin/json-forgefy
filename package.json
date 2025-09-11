@@ -17,9 +17,9 @@
     "test:watch": "jest --watch --runInBand",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "release": "release-please release-pr --token=$GITHUB_TOKEN --repo-url=https://github.com/DMBerlin/json-forgefy.git --config-file=package.json",
-    "release:create": "release-please release-pr --token=$GITHUB_TOKEN --repo-url=https://github.com/DMBerlin/json-forgefy.git --config-file=package.json",
-    "release:tag": "release-please release-pr --token=$GITHUB_TOKEN --repo-url=https://github.com/DMBerlin/json-forgefy.git --config-file=package.json --create-release"
+    "release": "release-please release-pr --token=$GITHUB_TOKEN",
+    "release:create": "release-please release-pr --token=$GITHUB_TOKEN",
+    "release:tag": "release-please release-pr --token=$GITHUB_TOKEN --create-release"
   },
   "repository": {
     "type": "git",
