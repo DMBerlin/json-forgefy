@@ -32,12 +32,10 @@ jobs:
           version: latest
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests
         run: pnpm test
-        env:
-          TZ: 'America/Sao_Paulo'
 
       - name: Build package
         run: pnpm build
