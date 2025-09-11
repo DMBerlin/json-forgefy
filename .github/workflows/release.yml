@@ -44,10 +44,11 @@ jobs:
 
       - name: Release with release-please
         id: release
-        uses: google-github-actions/release-please-action@v4
+        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: package.json
+          manifest-file: package.json
 
       - name: Publish to npm
         if: steps.release.outputs.release_created
