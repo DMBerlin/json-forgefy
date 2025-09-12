@@ -58,6 +58,9 @@ updates:
       # Ignore major updates for Release Please to maintain release process
       - dependency-name: "release-please"
         update-types: ["version-update:semver-major"]
+      # Ignore @octokit/plugin-paginate-rest security issue (can't auto-fix major version)
+      - dependency-name: "@octokit/plugin-paginate-rest"
+        update-types: ["version-update:semver-major"]
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -87,31 +90,3 @@ updates:
           - "minor"
           - "patch"
 
-  # Enable version updates for pnpm (if using pnpm-specific features)
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "America/Sao_Paulo"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "DMBerlin"
-    assignees:
-      - "DMBerlin"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    labels:
-      - "dependencies"
-      - "pnpm"
-    # Focus on pnpm-related updates
-    target-branch: "dependabot/pnpm"
-    groups:
-      pnpm-updates:
-        patterns:
-          - "pnpm"
-        update-types:
-          - "minor"
-          - "patch"
