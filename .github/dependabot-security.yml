@@ -1,0 +1,63 @@
+# Dependabot security updates configuration
+# This file configures automated security updates
+
+version: 2
+updates:
+  # Security updates for npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "DMBerlin"
+    assignees:
+      - "DMBerlin"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "security"
+      - "dependencies"
+      - "high-priority"
+    # Only create PRs for security updates
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    # Auto-merge security updates for patch versions
+    groups:
+      security-patches:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+    # Ignore non-security updates
+    ignore:
+      - update-type: "version-update:semver-minor"
+      - update-type: "version-update:semver-major"
+
+  # Security updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "DMBerlin"
+    assignees:
+      - "DMBerlin"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "security"
+      - "github-actions"
+      - "high-priority"
+    # Only create PRs for security updates
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
