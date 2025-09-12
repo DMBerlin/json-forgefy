@@ -1,0 +1,22 @@
+{
+  "release-type": "node",
+  "packages": {
+    ".": {
+      "package-name": "json-forgefy",
+      "changelog-path": "CHANGELOG.md"
+    }
+  },
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "draft": false,
+  "prerelease": false,
+  "include-component-in-tag": false,
+  "include-v-in-tag": true,
+  "pull-request-title-pattern": "chore: release ${version}",
+  "pull-request-header": "Release ${version}",
+  "pull-request-footer": "This PR was generated with [Release Please](https://github.com/googleapis/release-please).",
+  "separate-pull-requests": false,
+  "sequential-calls": true,
+  "tag-separator": "/",
+  "versioning-strategy": "default"
+}

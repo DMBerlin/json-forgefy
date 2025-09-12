@@ -39,9 +39,9 @@ Desktop.ini
 build/Release/
 
 # package-lock files
-pnpm-lock.yaml
-package-lock.json
-yarn.lock
+# pnpm-lock.yaml
+# package-lock.json
+# yarn.lock
 
 # tsbuildinfos
 *.tsbuildinfo
