@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/DMBerlin/json-forgefy/compare/v1.10.0...v1.11.0) (2025-09-12)
+
+
+### Features
+
+* improve readme and automation ([#53](https://github.com/DMBerlin/json-forgefy/issues/53)) ([8f7fda5](https://github.com/DMBerlin/json-forgefy/commit/8f7fda5377506635da2363ae25b97fe325ace9cb))
+
 ## [Unreleased]
 
 ### Features
