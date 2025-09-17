@@ -120,7 +120,7 @@ function keyHandler(
  *   currency: "$transaction.currency"
  * };
  *
- * const result = forgefy(payload, projection);
+ * const result = Forgefy.this(payload, projection);
  * // Result: {
  * //   userName: "John",
  * //   userAge: 30,

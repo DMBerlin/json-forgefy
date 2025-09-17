@@ -41,7 +41,7 @@ yarn add json-forgefy
 Transform API responses, calculate values, and reshape data in seconds:
 
 ```typescript
-import { forgefy } from 'json-forgefy';
+import { Forgefy } from 'json-forgefy';
 
 // Raw API response
 const apiResponse = {
@@ -86,7 +86,7 @@ const blueprint = {
 };
 
 // Transform the data
-const result = forgefy(apiResponse, blueprint);
+const result = Forgefy.this(apiResponse, blueprint);
 
 // Output:
 {
@@ -134,7 +134,7 @@ const blueprint = {
 };
 
 // Transform the data
-const result = forgefy(externalApiData, blueprint);
+const result = Forgefy.this(externalApiData, blueprint);
 
 // Output:
 {
@@ -185,7 +185,7 @@ const blueprint = {
 };
 
 // Transform the data
-const result = forgefy(paymentData, blueprint);
+const result = Forgefy.this(paymentData, blueprint);
 
 // Output:
 {
@@ -234,7 +234,7 @@ const blueprint = {
 };
 
 // Transform the data
-const result = forgefy(userData, blueprint);
+const result = Forgefy.this(userData, blueprint);
 
 // Output:
 {
@@ -253,7 +253,7 @@ Use `$` prefix to extract values from nested objects:
 const data = { user: { profile: { name: "Alice" } } };
 const blueprint = { name: "$user.profile.name" };
 // Transform the data
-const result = forgefy(data, blueprint);
+const result = Forgefy.this(data, blueprint);
 // Result: { name: "Alice" }
 ```
 
@@ -521,7 +521,7 @@ pnpm build
 
 ## 📖 API Reference
 
-### `forgefy(payload, projection)`
+### `Forgefy.this(payload, projection)`
 
 The main transformation function.
 
@@ -534,7 +534,7 @@ The main transformation function.
 
 **Example:**
 ```typescript
-const result = forgefy(sourceData, transformationBlueprint);
+const result = Forgefy.this(sourceData, transformationBlueprint);
 ```
 
 ## 🤝 Contributing
