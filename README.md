@@ -41,7 +41,7 @@ yarn add json-forgefy
 Transform API responses, calculate values, and reshape data in seconds:
 
 ```typescript
-import { forgefy } from 'json-forgefy';
+import { Forgefy } from 'json-forgefy';
 
 // Raw API response
 const apiResponse = {
@@ -64,11 +64,11 @@ const blueprint = {
   user: {
     fullName: { 
       $concat: [
-        { $toUpper: { $substr: ["$user.first_name", 0, 1] } },
-        { $substr: ["$user.first_name", 1] },
+        { $toUpper: { $substr: { value: "$user.first_name", start: 0, length: 1 } } },
+        { $substr: { value: "$user.first_name", start: 1, length: 100 } },
         " ",
-        { $toUpper: { $substr: ["$user.last_name", 0, 1] } },
-        { $substr: ["$user.last_name", 1] }
+        { $toUpper: { $substr: { value: "$user.last_name", start: 0, length: 1 } } },
+        { $substr: { value: "$user.last_name", start: 1, length: 100 } }
       ]
     },
     email: "$user.email",
@@ -86,24 +86,23 @@ const blueprint = {
 };
 
 // Transform the data
-const result = forgefy(apiResponse, blueprint);
+const result = Forgefy.this(apiResponse, blueprint);
 
-console.log(result);
 // Output:
-// {
-//   user: {
-//     fullName: "John Doe",
-//     email: "john@example.com", 
-//     balance: 1250.75
-//   },
-//   transaction: {
-//     amount: 100.5,
-//     amountCents: 10050,
-//     currency: "USD",
-//     status: "PENDING",
-//     isHighValue: true
-//   }
-// }
+{
+  user: {
+    fullName: "John Doe",
+    email: "john@example.com", 
+    balance: 1250.75
+  },
+  transaction: {
+    amount: 100.5,
+    amountCents: 10050,
+    currency: "USD",
+    status: "PENDING",
+    isHighValue: true
+  }
+}
 ```
 
 ## 💼 Real-World Use Cases
@@ -133,6 +132,18 @@ const blueprint = {
     }
   }
 };
+
+// Transform the data
+const result = Forgefy.this(externalApiData, blueprint);
+
+// Output:
+{
+  id: 123,
+  firstName: "jane",
+  balance: 2500,
+  isPremium: true,
+  tier: "Premium"
+}
 ```
 
 ### 2. **Financial Calculations**
@@ -172,6 +183,17 @@ const blueprint = {
     ]
   }
 };
+
+// Transform the data
+const result = Forgefy.this(paymentData, blueprint);
+
+// Output:
+{
+  subtotal: 99.99,
+  tax: 8.00,
+  discount: 10.00,
+  total: 123.99
+}
 ```
 
 ### 3. **Data Validation & Conditional Logic**
@@ -204,12 +226,22 @@ const blueprint = {
   },
   accountStatus: {
     $cond: {
-      if: { $gt: [{ $dateDiff: ["$last_login", "now"] }, 30] },
+      if: { $gt: [{ $dateDiff: { startDate: "$last_login", endDate: "now", unit: "days" } }, 30] },
       then: "Inactive",
       else: "Active"
     }
   }
 };
+
+// Transform the data
+const result = Forgefy.this(userData, blueprint);
+
+// Output:
+{
+  canAccessPremium: true,
+  region: "North America", 
+  accountStatus: "Inactive"
+}
 ```
 
 ## 🔧 Core Concepts
@@ -220,6 +252,8 @@ Use `$` prefix to extract values from nested objects:
 ```typescript
 const data = { user: { profile: { name: "Alice" } } };
 const blueprint = { name: "$user.profile.name" };
+// Transform the data
+const result = Forgefy.this(data, blueprint);
 // Result: { name: "Alice" }
 ```
 
@@ -276,7 +310,7 @@ Perfect for calculations, aggregations, and numeric transformations:
 | `$floor` | Round down | `{ $floor: 4.8 }` | `4` |
 | `$max` | Maximum value | `{ $max: [1, 5, 3] }` | `5` |
 | `$min` | Minimum value | `{ $min: [1, 5, 3] }` | `1` |
-| `$toFixed` | Format decimals | `{ $toFixed: [3.14159, 2] }` | `"3.14"` |
+| `$toFixed` | Format decimals | `{ $toFixed: { value: 3.14159, precision: 2 } }` | `3.14` |
 
 ### 📝 String Operations
 Transform and manipulate text data:
@@ -287,9 +321,9 @@ Transform and manipulate text data:
 | `$toUpper` | Uppercase | `{ $toUpper: "hello" }` | `"HELLO"` |
 | `$toLower` | Lowercase | `{ $toLower: "HELLO" }` | `"hello"` |
 | `$concat` | Join strings | `{ $concat: ["Hello", " ", "World"] }` | `"Hello World"` |
-| `$substr` | Extract substring | `{ $substr: ["Hello", 1, 3] }` | `"ell"` |
-| `$slice` | Slice string/array | `{ $slice: ["Hello", 0, 2] }` | `"He"` |
-| `$split` | Split string | `{ $split: ["a,b,c", ","] }` | `["a", "b", "c"]` |
+| `$substr` | Extract substring | `{ $substr: { value: "Hello", start: 1, length: 3 } }` | `"ell"` |
+| `$slice` | Slice string/array | `{ $slice: { input: "Hello", start: 0, end: 2 } }` | `"He"` |
+| `$split` | Split string | `{ $split: { input: "a,b,c", delimiter: "," } }` | `["a", "b", "c"]` |
 | `$size` | Get length | `{ $size: "Hello" }` | `5` |
 
 ### ⚖️ Comparison & Logic
@@ -333,14 +367,14 @@ Work with dates and time:
 
 | Operator | Description | Example |
 |----------|-------------|---------|
-| `$dateDiff` | Calculate difference | `{ $dateDiff: ["$start", "$end", "days"] }` |
+| `$dateDiff` | Calculate difference | `{ $dateDiff: { startDate: "$start", endDate: "$end", unit: "days" } }` |
 
 ### 🔍 Advanced Operations
 Powerful utilities for complex scenarios:
 
 | Operator | Description | Example |
 |----------|-------------|---------|
-| `$regex` | Pattern matching | `{ $regex: ["$email", "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"] }` |
+| `$regex` | Pattern matching | `{ $regex: { value: "$email", pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" } }` |
 
 ## 🎯 Common Patterns & Best Practices
 
@@ -421,17 +455,17 @@ const validateAndClean = {
   email: { $toLower: "$email" },
   name: { 
     $concat: [
-      { $toUpper: { $substr: ["$firstName", 0, 1] } },
-      { $substr: ["$firstName", 1] },
+      { $toUpper: { $substr: { value: "$firstName", start: 0, length: 1 } } },
+      { $substr: { value: "$firstName", start: 1, length: 100 } },
       " ",
-      { $toUpper: { $substr: ["$lastName", 0, 1] } },
-      { $substr: ["$lastName", 1] }
+      { $toUpper: { $substr: { value: "$lastName", start: 0, length: 1 } } },
+      { $substr: { value: "$lastName", start: 1, length: 100 } }
     ]
   },
   
   // Validate and set defaults
   age: { $ifNull: ["$age", 0] },
-  isValidEmail: { $regex: ["$email", "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"] },
+  isValidEmail: { $regex: { value: "$email", pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" } },
   status: {
     $cond: {
       if: { $and: ["$email", { $gt: ["$age", 0] }] },
@@ -487,7 +521,7 @@ pnpm build
 
 ## 📖 API Reference
 
-### `forgefy(payload, projection)`
+### `Forgefy.this(payload, projection)`
 
 The main transformation function.
 
@@ -500,7 +534,7 @@ The main transformation function.
 
 **Example:**
 ```typescript
-const result = forgefy(sourceData, transformationBlueprint);
+const result = Forgefy.this(sourceData, transformationBlueprint);
 ```
 
 ## 🤝 Contributing
