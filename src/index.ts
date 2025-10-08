@@ -12,7 +12,7 @@
  * - And many more operators inspired by MongoDB's aggregation pipeline
  *
  * @author Daniel Marinho
- * @version 2.0.0
+ * @version 2.0.1
  * @license ISC
  */
 
