@@ -1,4 +1,17 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["./*"],
+      "@fixtures/*": ["__fixtures__/*"],
+      "@common/*": ["common/*"],
+      "@core/*": ["core/*"],
+      "@helpers/*": ["helpers/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@operators/*": ["operators/*"],
+      "@lib-types/*": ["types/*"]
+    }
+  },
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "./**/*.mock.ts"]
 }
