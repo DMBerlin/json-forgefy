@@ -36,6 +36,7 @@ import { $in } from "@operators/in.operator";
 import { $nin } from "@operators/nin.operator";
 import { $exists } from "@operators/exists.operator";
 import { $isNull } from "@operators/is-null.operator";
+import { $replace } from "@operators/replace.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -45,7 +46,7 @@ import { $isNull } from "@operators/is-null.operator";
  *
  * The operators are organized into categories:
  * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min
- * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size
+ * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace
  * - Conditional: $cond, $switch, $ifNull
  * - Comparison: $eq, $gt, $gte, $lt, $lte, $ne, $regex
  * - Logical: $and, $or, $not
@@ -70,8 +71,8 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$add", $add)
   .set("$and", $and)
   .set("$ceil", $ceil)
-  .set("$concat", $concat)
   .set("$cond", $cond)
+  .set("$concat", $concat)
   .set("$dateDiff", $dateDiff)
   .set("$divide", $divide)
   .set("$eq", $eq)
@@ -92,6 +93,7 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$not", $not)
   .set("$or", $or)
   .set("$regex", $regex)
+  .set("$replace", $replace)
   .set("$size", $size)
   .set("$slice", $slice)
   .set("$split", $split)

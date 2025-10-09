@@ -1,13 +1,33 @@
 # Changelog
 
-## [1.11.0](https://github.com/DMBerlin/json-forgefy/compare/v1.10.0...v1.11.0) (2025-09-12)
-
+## [2.1.0](https://github.com/DMBerlin/json-forgefy/compare/v2.0.1...v2.1.0) (2025-10-09)
 
 ### Features
 
-* improve readme and automation ([#53](https://github.com/DMBerlin/json-forgefy/issues/53)) ([8f7fda5](https://github.com/DMBerlin/json-forgefy/commit/8f7fda5377506635da2363ae25b97fe325ace9cb))
+* **operators:** add `$replace` operator for multiple string replacements
+  - Add `$replace` operator that follows String.prototype.replace() pattern but accepts array of search values
+  - Support replacing multiple different characters in a single operation (e.g., clean CPF by removing dots and dashes)
+  - Include proper regex escaping for special characters to ensure safe literal string replacement
+  - Add comprehensive test coverage with 9 test cases covering edge cases and special regex characters
+  - Register operator in main operator registry with lexicographic ordering
+  - Update documentation with practical examples and usage patterns
 
-## [Unreleased]
+### Improvements
+
+* **codebase:** improve code organization and maintainability
+  - Reorder `OperatorKey` type in lexicographic order for better organization
+  - Reorder operators map in `forgefy.operators.ts` to match lexicographic order
+  - Enhance code readability and maintainability for future operator additions
+
+### Documentation
+
+* **readme:** update documentation to include new `$replace` operator
+  - Add `$replace` operator to String Operations section with example and result
+  - Include practical CPF cleaning example in Quick Start section
+  - Add `$replace` usage in Data Validation & Sanitization pattern
+  - Update output examples to showcase the new operator functionality
+
+## [1.11.0](https://www.github.com/DMBerlin/json-forgefy/compare/v1.9.0...v1.10.0) (2025-09-24)
 
 ### Features
 

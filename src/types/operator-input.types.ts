@@ -98,3 +98,8 @@ export type InOperatorInput = [ExpressionValues, ExpressionValues];
 export type NinOperatorInput = [ExpressionValues, ExpressionValues];
 export type ExistsOperatorInput = string;
 export type IsNullOperatorInput = ExpressionValues;
+export type ReplaceOperatorInput = {
+  input: string;
+  searchValues: string[];
+  replacement: string;
+};
