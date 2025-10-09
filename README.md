@@ -49,7 +49,8 @@ const apiResponse = {
     first_name: "john", 
     last_name: "doe", 
     email: "john@example.com",
-    balance: "1250.75"
+    balance: "1250.75",
+    cpf: "123.456.789-10"
   },
   transaction: { 
     amount: "100.50", 
@@ -72,7 +73,14 @@ const blueprint = {
       ]
     },
     email: "$user.email",
-    balance: { $toNumber: "$user.balance" }
+    balance: { $toNumber: "$user.balance" },
+    cleanCpf: { 
+      $replace: { 
+        input: "$user.cpf", 
+        searchValues: [".", "-"], 
+        replacement: "" 
+      } 
+    }
   },
   
   // Calculate transaction details
@@ -93,7 +101,8 @@ const result = Forgefy.this(apiResponse, blueprint);
   user: {
     fullName: "John Doe",
     email: "john@example.com", 
-    balance: 1250.75
+    balance: 1250.75,
+    cleanCpf: "12345678910"
   },
   transaction: {
     amount: 100.5,
@@ -325,6 +334,7 @@ Transform and manipulate text data:
 | `$slice` | Slice string/array | `{ $slice: { input: "Hello", start: 0, end: 2 } }` | `"He"` |
 | `$split` | Split string | `{ $split: { input: "a,b,c", delimiter: "," } }` | `["a", "b", "c"]` |
 | `$size` | Get length | `{ $size: "Hello" }` | `5` |
+| `$replace` | Replace multiple values | `{ $replace: { input: "123.456.789-10", searchValues: [".", "-"], replacement: "" } }` | `"12345678910"` |
 
 ### ⚖️ Comparison & Logic
 Make decisions and validate data:
@@ -453,6 +463,14 @@ Clean and validate incoming data:
 const validateAndClean = {
   // Clean string data
   email: { $toLower: "$email" },
+  // Clean CPF by removing dots and dashes
+  cleanCpf: { 
+    $replace: { 
+      input: "$cpf", 
+      searchValues: [".", "-"], 
+      replacement: "" 
+    } 
+  },
   name: { 
     $concat: [
       { $toUpper: { $substr: { value: "$firstName", start: 0, length: 1 } } },
