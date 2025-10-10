@@ -36,6 +36,13 @@ import {
   NinOperatorInput,
   ExistsOperatorInput,
   IsNullOperatorInput,
+  IsNumberOperatorInput,
+  CoalesceOperatorInput,
+  RoundOperatorInput,
+  EveryOperatorInput,
+  SomeOperatorInput,
+  IsNaNOperatorInput,
+  TrimOperatorInput,
 } from "./operator-input.types";
 
 export type OperatorValue = (
@@ -47,18 +54,22 @@ export type OperatorKey =
   | "$add"
   | "$and"
   | "$ceil"
+  | "$coalesce"
   | "$cond"
   | "$concat"
   | "$dateDiff"
   | "$divide"
   | "$eq"
+  | "$every"
   | "$exists"
   | "$floor"
   | "$gt"
   | "$gte"
   | "$ifNull"
   | "$in"
+  | "$isNaN"
   | "$isNull"
+  | "$isNumber"
   | "$lt"
   | "$lte"
   | "$max"
@@ -70,8 +81,10 @@ export type OperatorKey =
   | "$or"
   | "$regex"
   | "$replace"
+  | "$round"
   | "$size"
   | "$slice"
+  | "$some"
   | "$split"
   | "$substr"
   | "$subtract"
@@ -80,43 +93,51 @@ export type OperatorKey =
   | "$toLower"
   | "$toNumber"
   | "$toString"
-  | "$toUpper";
+  | "$toUpper"
+  | "$trim";
 
 export type OperatorInput =
   | AddOperatorInput
   | AbsOperatorInput
-  | SwitchOperatorInput
+  | AndOperatorInput
   | CeilOperatorInput
+  | CoalesceOperatorInput
   | ConcatOperatorInput
   | CondOperatorInput
   | DateDiffOperatorInput
   | DivideOperatorInput
   | EqOperatorInput
+  | EveryOperatorInput
+  | ExistsOperatorInput
   | FloorOperatorInput
+  | GtOperatorInput
+  | GteOperatorInput
   | IfNullOperatorInput
+  | InOperatorInput
+  | IsNaNOperatorInput
+  | IsNullOperatorInput
+  | IsNumberOperatorInput
+  | LtOperatorInput
+  | LteOperatorInput
   | MaxOperatorInput
   | MinOperatorInput
   | MultiplyOperatorInput
+  | NeOperatorInput
+  | NinOperatorInput
+  | NotOperatorInput
+  | OrOperatorInput
+  | RegexOperatorInput
+  | RoundOperatorInput
   | SizeOperatorInput
   | SliceOperatorInput
+  | SomeOperatorInput
   | SplitOperatorInput
   | SubstrOperatorInput
   | SubtractOperatorInput
+  | SwitchOperatorInput
+  | ToFixedOperatorInput
   | ToLowerOperatorInput
   | ToNumberOperatorInput
   | ToStringOperatorInput
   | ToUpperOperatorInput
-  | ToFixedOperatorInput
-  | GtOperatorInput
-  | GteOperatorInput
-  | LtOperatorInput
-  | LteOperatorInput
-  | RegexOperatorInput
-  | AndOperatorInput
-  | OrOperatorInput
-  | NotOperatorInput
-  | NeOperatorInput
-  | InOperatorInput
-  | NinOperatorInput
-  | ExistsOperatorInput
-  | IsNullOperatorInput;
+  | TrimOperatorInput;

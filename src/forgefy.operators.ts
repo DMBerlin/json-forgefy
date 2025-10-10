@@ -37,6 +37,13 @@ import { $nin } from "@operators/nin.operator";
 import { $exists } from "@operators/exists.operator";
 import { $isNull } from "@operators/is-null.operator";
 import { $replace } from "@operators/replace.operator";
+import { $isNumber } from "@operators/is-number.operator";
+import { $coalesce } from "@operators/coalesce.operator";
+import { $round } from "@operators/round.operator";
+import { $every } from "@operators/every.operator";
+import { $some } from "@operators/some.operator";
+import { $isNaN } from "@operators/is-nan.operator";
+import { $trim } from "@operators/trim.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -71,18 +78,22 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$add", $add)
   .set("$and", $and)
   .set("$ceil", $ceil)
+  .set("$coalesce", $coalesce)
   .set("$cond", $cond)
   .set("$concat", $concat)
   .set("$dateDiff", $dateDiff)
   .set("$divide", $divide)
   .set("$eq", $eq)
+  .set("$every", $every)
   .set("$exists", $exists)
   .set("$floor", $floor)
   .set("$gt", $gt)
   .set("$gte", $gte)
   .set("$ifNull", $ifNull)
   .set("$in", $in)
+  .set("$isNaN", $isNaN)
   .set("$isNull", $isNull)
+  .set("$isNumber", $isNumber)
   .set("$lt", $lt)
   .set("$lte", $lte)
   .set("$max", $max)
@@ -94,8 +105,10 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$or", $or)
   .set("$regex", $regex)
   .set("$replace", $replace)
+  .set("$round", $round)
   .set("$size", $size)
   .set("$slice", $slice)
+  .set("$some", $some)
   .set("$split", $split)
   .set("$substr", $substr)
   .set("$subtract", $subtract)
@@ -104,4 +117,5 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$toLower", $toLower)
   .set("$toNumber", $toNumber)
   .set("$toString", $toString)
-  .set("$toUpper", $toUpper);
+  .set("$toUpper", $toUpper)
+  .set("$trim", $trim);

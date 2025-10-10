@@ -7,7 +7,11 @@ import { ExistsOperatorInput } from "@lib-types/operator-input.types";
  * It returns true if the field path exists (even if the value is null or undefined),
  * false if the path does not exist in the object structure.
  *
- * @param ctx - Optional execution context containing the source object for path resolution
+ * Note: This operator is special - it needs the context to check path existence
+ * and expects to receive the raw path string (not resolved value) to perform
+ * the existence check on the object structure.
+ *
+ * @param ctx - Execution context containing the source object for path checking
  * @returns A function that returns true if the field path exists, false otherwise
  *
  * @example
@@ -29,10 +33,15 @@ export const $exists: ExecutableExpression<ExistsOperatorInput, boolean> = (
       return false;
     }
 
+    // The fieldPath should be a string path (already resolved by resolveArgs)
+    // but for $exists, we expect it to be the actual path string, not the resolved value
+    const pathString =
+      typeof fieldPath === "string" ? fieldPath : String(fieldPath);
+
     // Remove the $ prefix if present for path checking
-    const cleanPath = fieldPath.startsWith("$")
-      ? fieldPath.slice(1)
-      : fieldPath;
+    const cleanPath = pathString.startsWith("$")
+      ? pathString.slice(1)
+      : pathString;
 
     try {
       // Check if the path exists by traversing the object

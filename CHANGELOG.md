@@ -1,5 +1,119 @@
 # Changelog
 
+## [3.0.0](https://github.com/DMBerlin/json-forgefy/compare/v2.1.0...v3.0.0) (2025-10-10)
+
+### ⚠ BREAKING CHANGES
+
+* **core:** refactor expression resolution architecture for improved consistency
+  - Restructure `resolveExpression` to handle operator execution more uniformly
+  - All operators now follow a consistent pattern for argument resolution
+  - Operators receive pre-resolved arguments, simplifying operator implementations
+  - This change may affect custom operator implementations or advanced usage patterns
+
+### Features
+
+* **operators:** add new utility operators for enhanced data manipulation
+  - Add `$coalesce` operator for returning the first non-null value from a list
+  - Add `$every` operator for checking if all conditions in an array are truthy
+  - Add `$some` operator for checking if at least one condition in an array is truthy
+  - Add `$isNaN` operator for checking if a value is NaN (Not-a-Number)
+  - Add `$isNumber` operator for validating numeric values
+  - Add `$round` operator for rounding numbers with configurable precision
+  - Add `$trim` operator for trimming custom characters from strings (not just whitespace)
+
+* **testing:** add comprehensive end-to-end test suite with complex operator interoperability
+  - Add E2E test suite with 3 real-world scenarios demonstrating operator combinations
+  - **E-commerce Order Processing**: Complex pricing calculations with discounts, taxes, shipping, and customer tier logic using 20+ operators
+  - **User Profile Data Sanitization**: String manipulation, validation, and type conversion with deeply nested operator chains
+  - **Financial Report Generation**: Advanced calculations with nested conditionals, percentage computations, and performance ratings
+  - Include practical PIX debt transaction transformation example
+  - Validate recursive operator resolution (DFS bottom-up) with multiple nesting levels
+  - Test operators working together: arithmetic, string, logical, comparison, conditional, validation, and date operators
+  - Demonstrate real-world use cases: data transformation, validation, sanitization, and complex business logic
+
+* **playground:** add browser playground for testing and experimentation
+  - Create browser-based playground environment
+  - Add build configuration for browser compatibility
+  - Enable interactive testing of json-forgefy in the browser
+
+* **documentation:** add comprehensive generated documentation
+  - Add detailed architecture transformation documentation
+  - Include operator consistency guidelines
+  - Add implementation status reports and analysis
+  - Document coverage achievements and improvements
+
+### Improvements
+
+* **core:** significantly improve operator consistency and maintainability
+  - Refactor all operators to follow uniform implementation patterns
+  - Simplify operator logic by moving argument resolution to core
+  - Improve type safety across all operator implementations
+  - Enhance error handling and edge case coverage
+
+* **operators:** update existing operators for consistency
+  - Refactor `$and`, `$or`, `$not` logical operators for uniform behavior
+  - Update `$eq`, `$ne`, `$gt`, `$gte`, `$lt`, `$lte` comparison operators
+  - Improve `$in`, `$nin` membership operators with better expression handling
+  - Enhance `$cond`, `$switch`, `$ifNull` conditional operators
+  - Optimize `$divide`, `$multiply` arithmetic operators
+  - Standardize `$exists`, `$isNull` validation operators
+
+* **testing:** achieve and maintain 100% test coverage across the codebase
+  - Add comprehensive unit tests for all operators (374 total tests)
+  - Add tests for helper functions and utilities
+  - Include edge case and error scenario coverage
+  - Add tests for `date-time.helper`, `is-operator.helper`, and `is-valid-object-path.helper`
+  - Update `is-valid-object-path.helper` tests to reflect corrected path validation behavior
+
+* **build:** improve package distribution and configuration
+  - Add `.npmignore` file for cleaner npm package distribution
+  - Exclude test files, documentation, and development artifacts from published package
+  - Optimize package size for faster installation
+
+### Bug Fixes
+
+* **core:** fix critical path validation bug in nested operator expressions
+  - Fix `isValidObjectPath` to reject single `"$"` character as invalid path
+  - Prevent `"$"` in arrays from being incorrectly resolved as path reference
+  - Ensure proper validation requires at least one character after `"$"` symbol
+  - Resolves issue where operators like `$replace` with `"$"` in `searchValues` would fail with undefined values
+
+* **core:** fix expression resolution edge cases
+  - Fix handling of nested expressions in array contexts
+  - Improve null/undefined handling in path resolution
+  - Fix operator detection for edge cases
+
+### Refactoring
+
+* **tests:** convert integration tests to focused unit tests
+  - Refactor test suite to emphasize unit testing over integration
+  - Improve test isolation and maintainability
+  - Reduce test execution time and complexity
+
+### Chore
+
+* **dependencies:** upgrade TypeScript ESLint packages for TypeScript 5.9 compatibility
+  - Upgrade `@typescript-eslint/eslint-plugin` from v6.21.0 to v8.18.1
+  - Upgrade `@typescript-eslint/parser` from v6.21.0 to v8.18.1
+  - Resolve TypeScript 5.9 compatibility warnings
+  - Ensure full support for latest TypeScript features and syntax
+
+* **types:** improve type definitions for better TypeScript 5.9 compatibility
+  - Update `CondOperatorInput.if` from `Expression` to `ExpressionValues` to accept resolved primitive values
+  - Update `SwitchOperatorInput.branches[].case` from `Expression` to `ExpressionValues`
+  - Update `IfNullOperatorInput` to accept `ExpressionValues` for more flexible type handling
+  - Update `SizeOperatorInput` from `number[]` to `unknown[]` to support mixed-type arrays
+  - Simplify `DivideOperatorInput` from `Array<number | Expression>` to `number[]` for consistency
+  - Align type definitions with operator architecture where values are pre-resolved
+
+* **config:** update ESLint configuration for playground
+  - Add dedicated ESLint config for playground environment
+  - Ensure consistent code quality across all project areas
+
+* **version:** bump version to 3.0.0 for major release
+  - Update package.json to reflect breaking changes
+  - Prepare for npm publication
+
 ## [2.1.0](https://github.com/DMBerlin/json-forgefy/compare/v2.0.1...v2.1.0) (2025-10-09)
 
 ### Features

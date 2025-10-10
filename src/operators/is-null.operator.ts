@@ -1,6 +1,4 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 import { IsNullOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -8,7 +6,10 @@ import { IsNullOperatorInput } from "@lib-types/operator-input.types";
  * It returns true if the value is null or undefined, false otherwise.
  * This is different from $ifNull which provides a fallback value.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the value, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the null check.
+ *
  * @returns A function that returns true if the value is null or undefined, false otherwise
  *
  * @example
@@ -22,11 +23,12 @@ import { IsNullOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $isNull: ExecutableExpression<IsNullOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $isNull: ExecutableExpression<
+  IsNullOperatorInput,
+  boolean
+> = () => {
   return function (expression: IsNullOperatorInput): boolean {
-    const value = resolvePathOrExpression(expression, ctx);
-    return value === null || value === undefined;
+    // Expression is already resolved by resolveArgs
+    return expression === null || expression === undefined;
   };
 };

@@ -1,17 +1,15 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { IfNullOperatorInput } from "@lib-types/operator-input.types";
-import { isOperator } from "@helpers/is-operator.helper";
-import { resolveExpression } from "@common/resolve-expression.common";
-import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
-import { getValueByPath } from "@common/get-value-by-path.common";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 
 /**
  * The $ifNull operator provides null coalescing functionality.
  * It returns the first value if it's not null/undefined, otherwise returns the second value.
  * This is useful for providing default values when a field might be missing or null.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the null check.
+ *
  * @returns A function that returns the first non-null value or the fallback value
  *
  * @example
@@ -28,13 +26,9 @@ import { ExecutionContext } from "@interfaces/execution-context.interface";
 export const $ifNull: ExecutableExpression<
   IfNullOperatorInput,
   unknown | null
-> = (ctx?: ExecutionContext) => {
+> = () => {
   return function (values: IfNullOperatorInput): unknown {
-    if (typeof values[0] === "object" && isOperator(values[0])) {
-      values[0] = resolveExpression(ctx?.context, values[0]);
-    } else if (typeof values[0] === "string" && isValidObjectPath(values[0])) {
-      values[0] = getValueByPath(ctx?.context, values[0]);
-    }
+    // All values are already resolved by resolveArgs
     return values[0] ?? values[1];
   };
 };

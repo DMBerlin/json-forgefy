@@ -1,5 +1,3 @@
-import { resolveExpression } from "@common/resolve-expression.common";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { CondOperatorInput } from "@lib-types/operator-input.types";
 
@@ -8,7 +6,11 @@ import { CondOperatorInput } from "@lib-types/operator-input.types";
  * It evaluates a condition and returns one of two values based on the result.
  * This is similar to a ternary operator in programming languages.
  *
- * @param ctx - Optional execution context containing the source object for expression resolution
+ * Note: By the time this operator receives the value, all nested expressions
+ * (including value.if, value.then, and value.else) have already been resolved
+ * by resolveArgs in resolveExpression. The operator simply evaluates the
+ * boolean condition and returns the appropriate branch.
+ *
  * @returns A function that evaluates the condition and returns the appropriate value
  *
  * @example
@@ -32,10 +34,10 @@ import { CondOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $cond: ExecutableExpression<CondOperatorInput, unknown> = (
-  ctx?: ExecutionContext,
-) => {
+export const $cond: ExecutableExpression<CondOperatorInput, unknown> = () => {
   return function (value: CondOperatorInput): unknown {
-    return resolveExpression(ctx?.context, value.if) ? value.then : value.else;
+    // All expressions are already resolved by resolveArgs
+    // Simply evaluate the condition and return the appropriate branch
+    return value.if ? value.then : value.else;
   };
 };

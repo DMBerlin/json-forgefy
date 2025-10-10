@@ -1,6 +1,4 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 import { NinOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -8,7 +6,10 @@ import { NinOperatorInput } from "@lib-types/operator-input.types";
  * It returns true if the value is NOT found in the array, false if it is found.
  * It supports comparing literals, object paths, and nested operator expressions.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the array membership check.
+ *
  * @returns A function that returns true if the value does NOT exist in the array, false if it does
  *
  * @example
@@ -22,27 +23,17 @@ import { NinOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $nin: ExecutableExpression<NinOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $nin: ExecutableExpression<NinOperatorInput, boolean> = () => {
   return function (value: NinOperatorInput): boolean {
-    const [valueExpression, arrayExpression] = value;
-    const targetValue = resolvePathOrExpression(valueExpression, ctx);
-    const arrayValues = resolvePathOrExpression(arrayExpression, ctx);
+    // All values are already resolved by resolveArgs
+    const [targetValue, arrayValues] = value;
 
     // If not an array, consider the value as "not in" the array
     if (!Array.isArray(arrayValues)) {
       return true;
     }
 
-    // Resolve each element in the array and check if the target value matches any of them
-    for (const arrayElement of arrayValues) {
-      const resolvedElement = resolvePathOrExpression(arrayElement, ctx);
-      if (resolvedElement === targetValue) {
-        return false; // Found a match, so value IS in array
-      }
-    }
-
-    return true; // No match found, so value is NOT in array
+    // Check if the target value does NOT exist in the array
+    return !arrayValues.includes(targetValue);
   };
 };

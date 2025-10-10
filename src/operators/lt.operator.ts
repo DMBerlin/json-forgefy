@@ -1,13 +1,14 @@
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { LtOperatorInput } from "@lib-types/operator-input.types";
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 
 /**
  * The $lt operator performs a "less than" comparison between two values.
  * It supports comparing literals, object paths, and nested operator expressions.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the comparison.
+ *
  * @returns A function that returns true if the first value is less than the second, false otherwise
  *
  * @example
@@ -21,13 +22,10 @@ import { resolvePathOrExpression } from "@common/resolve-path-or-expression.comm
  * }
  * ```
  */
-export const $lt: ExecutableExpression<LtOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $lt: ExecutableExpression<LtOperatorInput, boolean> = () => {
   return function (value: LtOperatorInput): boolean {
-    const [firstExpression, secondExpression] = value;
-    const firstValue = resolvePathOrExpression(firstExpression, ctx);
-    const secondValue = resolvePathOrExpression(secondExpression, ctx);
+    // All values are already resolved by resolveArgs
+    const [firstValue, secondValue] = value;
     return firstValue < secondValue;
   };
 };
