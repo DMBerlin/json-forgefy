@@ -335,6 +335,8 @@ Transform and manipulate text data:
 | `$split` | Split string | `{ $split: { input: "a,b,c", delimiter: "," } }` | `["a", "b", "c"]` |
 | `$size` | Get length | `{ $size: "Hello" }` | `5` |
 | `$replace` | Replace multiple values | `{ $replace: { input: "123.456.789-10", searchValues: [".", "-"], replacement: "" } }` | `"12345678910"` |
+| `$regexReplace` | Regex replacement | `{ $regexReplace: { input: "hello      world", pattern: "\\s+", replacement: " " } }` | `"hello world"` |
+| `$trim` | Trim whitespace/chars | `{ $trim: { input: "  hello  " } }` | `"hello"` |
 
 ### ⚖️ Comparison & Logic
 Make decisions and validate data:
@@ -491,6 +493,70 @@ const validateAndClean = {
       else: "Invalid"
     }
   }
+};
+```
+
+### Pattern 5: Advanced Text Processing with RegexReplace
+Use regex patterns for complex string transformations:
+
+```typescript
+const textProcessing = {
+  // Normalize whitespace - handle any number of spaces
+  normalizedText: {
+    $trim: {
+      input: {
+        $regexReplace: {
+          input: "$userInput",              // "  hello      world  "
+          pattern: "\\s+",                   // Match one or more whitespace chars
+          replacement: " "
+        }
+      }
+    }
+  },  // Result: "hello world"
+  
+  // Clean phone number - remove all non-digits
+  cleanPhone: {
+    $regexReplace: {
+      input: "$phone",                      // "(555) 123-4567"
+      pattern: "\\D",                       // Match any non-digit
+      replacement: ""
+    }
+  },  // Result: "5551234567"
+  
+  // Remove HTML tags
+  plainText: {
+    $regexReplace: {
+      input: "$htmlContent",                // "<p>Hello <strong>World</strong></p>"
+      pattern: "<[^>]+>",                   // Match HTML tags
+      replacement: ""
+    }
+  },  // Result: "Hello World"
+  
+  // Case-insensitive replacement
+  sanitized: {
+    $regexReplace: {
+      input: "$text",                       // "Test TEST test"
+      pattern: "test",
+      replacement: "demo",
+      flags: "gi"                           // Global + case-insensitive
+    }
+  },  // Result: "demo demo demo"
+  
+  // Combine with other operators for validation
+  hasValidPhone: {
+    $eq: [
+      {
+        $size: {
+          $regexReplace: {
+            input: "$phone",
+            pattern: "\\D",
+            replacement: ""
+          }
+        }
+      },
+      10
+    ]
+  }  // Check if phone has exactly 10 digits
 };
 ```
 

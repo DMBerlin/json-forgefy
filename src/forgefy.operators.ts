@@ -28,6 +28,7 @@ import { $gte } from "@operators/gte.operator";
 import { $lt } from "@operators/lt.operator";
 import { $lte } from "@operators/lte.operator";
 import { $regex } from "@operators/regex.operator";
+import { $regexReplace } from "@operators/regex-replace.operator";
 import { $and } from "@operators/and.operator";
 import { $or } from "@operators/or.operator";
 import { $not } from "@operators/not.operator";
@@ -53,7 +54,7 @@ import { $trim } from "@operators/trim.operator";
  *
  * The operators are organized into categories:
  * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min
- * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace
+ * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace, $regexReplace, $trim
  * - Conditional: $cond, $switch, $ifNull
  * - Comparison: $eq, $gt, $gte, $lt, $lte, $ne, $regex
  * - Logical: $and, $or, $not
@@ -104,6 +105,7 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$not", $not)
   .set("$or", $or)
   .set("$regex", $regex)
+  .set("$regexReplace", $regexReplace)
   .set("$replace", $replace)
   .set("$round", $round)
   .set("$size", $size)

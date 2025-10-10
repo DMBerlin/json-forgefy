@@ -128,3 +128,10 @@ export type TrimOperatorInput = {
   input: string;
   chars?: string[];
 };
+
+export type RegexReplaceOperatorInput = {
+  input: string;
+  pattern: string;
+  replacement: string;
+  flags?: string;
+};

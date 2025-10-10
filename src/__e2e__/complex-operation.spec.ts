@@ -755,4 +755,340 @@ describe("E2E Complex Operator Interoperability", () => {
       });
     });
   });
+
+  describe("Scenario 4: Text Processing with RegexReplace", () => {
+    it("should sanitize and normalize text using regex patterns with operator interoperability", () => {
+      const textData = {
+        content: {
+          userInput: "  Hello      World!   How   are    you?  ",
+          phoneNumber: "(555) 123-4567",
+          document: "123.456.789-10",
+          email: "  USER@EXAMPLE.COM  ",
+          description: "Product123 is GREAT!!!   Buy456 now!!!",
+          htmlContent: "<p>Hello <strong>World</strong></p>",
+          url: "https://example.com/path?query=value",
+          messyText: "too...many....dots and!!!exclamation!!marks!",
+          code: "variable_name_123",
+        },
+        metadata: {
+          priority: 3,
+          status: "active",
+        },
+      };
+
+      const blueprint = {
+        // Whitespace normalization with trim
+        normalizedInput: {
+          $trim: {
+            input: {
+              $regexReplace: {
+                input: "$content.userInput",
+                pattern: "\\s+",
+                replacement: " ",
+              },
+            },
+          },
+        },
+        // Phone number sanitization
+        cleanPhone: {
+          $regexReplace: {
+            input: "$content.phoneNumber",
+            pattern: "[\\s\\(\\)\\-]",
+            replacement: "",
+          },
+        },
+        // Document cleaning (CPF)
+        cleanDocument: {
+          $regexReplace: {
+            input: "$content.document",
+            pattern: "[.\\-]",
+            replacement: "",
+          },
+        },
+        // Email processing with multiple operators
+        processedEmail: {
+          $toLower: {
+            $trim: {
+              input: {
+                $regexReplace: {
+                  input: "$content.email",
+                  pattern: "\\s+",
+                  replacement: "",
+                },
+              },
+            },
+          },
+        },
+        // Remove all numbers from description
+        descriptionNoNumbers: {
+          $regexReplace: {
+            input: "$content.description",
+            pattern: "\\d+",
+            replacement: "",
+          },
+        },
+        // Normalize multiple exclamation marks
+        normalizedDescription: {
+          $regexReplace: {
+            input: {
+              $regexReplace: {
+                input: "$content.description",
+                pattern: "!{2,}",
+                replacement: "!",
+              },
+            },
+            pattern: "\\s+",
+            replacement: " ",
+          },
+        },
+        // Remove HTML tags
+        plainText: {
+          $regexReplace: {
+            input: "$content.htmlContent",
+            pattern: "<[^>]+>",
+            replacement: "",
+          },
+        },
+        // Extract domain from URL
+        domain: {
+          $regexReplace: {
+            input: "$content.url",
+            pattern: "https?://",
+            replacement: "",
+          },
+        },
+        // Normalize punctuation
+        cleanPunctuation: {
+          $regexReplace: {
+            input: "$content.messyText",
+            pattern: "\\.{2,}",
+            replacement: ".",
+          },
+        },
+        // Convert snake_case to space-separated with case conversion
+        readableCode: {
+          $toUpper: {
+            $substr: {
+              value: {
+                $regexReplace: {
+                  input: "$content.code",
+                  pattern: "_",
+                  replacement: " ",
+                },
+              },
+              start: 0,
+              length: 1,
+            },
+          },
+        },
+        // Complex conditional with regex
+        sanitizedStatus: {
+          $cond: {
+            if: { $eq: ["$metadata.priority", 3] },
+            then: {
+              $concat: [
+                "HIGH-",
+                {
+                  $toUpper: {
+                    $regexReplace: {
+                      input: "$metadata.status",
+                      pattern: "[^a-z]",
+                      replacement: "",
+                      flags: "gi",
+                    },
+                  },
+                },
+              ],
+            },
+            else: "$metadata.status",
+          },
+        },
+        // Word count after normalization
+        wordCount: {
+          $size: {
+            $split: {
+              input: {
+                $trim: {
+                  input: {
+                    $regexReplace: {
+                      input: "$content.userInput",
+                      pattern: "\\s+",
+                      replacement: " ",
+                    },
+                  },
+                },
+              },
+              delimiter: " ",
+            },
+          },
+        },
+        // Case-insensitive replacement
+        replacedGreat: {
+          $regexReplace: {
+            input: "$content.description",
+            pattern: "great",
+            replacement: "excellent",
+            flags: "gi",
+          },
+        },
+      };
+
+      const result = Forgefy.this(textData, blueprint);
+
+      expect(result).toEqual({
+        normalizedInput: "Hello World! How are you?",
+        cleanPhone: "5551234567",
+        cleanDocument: "12345678910",
+        processedEmail: "user@example.com",
+        descriptionNoNumbers: "Product is GREAT!!!   Buy now!!!",
+        normalizedDescription: "Product123 is GREAT! Buy456 now!",
+        plainText: "Hello World",
+        domain: "example.com/path?query=value",
+        cleanPunctuation: "too.many.dots and!!!exclamation!!marks!",
+        readableCode: "V",
+        sanitizedStatus: "HIGH-ACTIVE",
+        wordCount: 5,
+        replacedGreat: "Product123 is excellent!!!   Buy456 now!!!",
+      });
+    });
+
+    it("should handle complex regex patterns with lookaheads and word boundaries", () => {
+      const data = {
+        text: "Replace Hello and World but not HelloWorld",
+        numbers: "abc123def456ghi789",
+        mixed: "TEST test TeSt",
+      };
+
+      const blueprint = {
+        // Word boundary replacement
+        replacedWords: {
+          $regexReplace: {
+            input: "$text",
+            pattern: "\\b(Hello|World)\\b",
+            replacement: "Goodbye",
+          },
+        },
+        // Extract only letters
+        onlyLetters: {
+          $regexReplace: {
+            input: "$numbers",
+            pattern: "\\d+",
+            replacement: "",
+          },
+        },
+        // Case insensitive with flag
+        unified: {
+          $regexReplace: {
+            input: "$mixed",
+            pattern: "test",
+            replacement: "demo",
+            flags: "gi",
+          },
+        },
+      };
+
+      const result = Forgefy.this(data, blueprint);
+
+      expect(result).toEqual({
+        replacedWords: "Replace Goodbye and Goodbye but not HelloWorld",
+        onlyLetters: "abcdefghi",
+        unified: "demo demo demo",
+      });
+    });
+
+    it("should combine regexReplace with other operators for data validation", () => {
+      const formData = {
+        fields: {
+          name: "  John   Doe  ",
+          email: "  JOHN.DOE@EXAMPLE.COM  ",
+          phone: "(555) 123-4567",
+          zip: "12345-6789",
+          bio: "Hello!!!   I   love   coding!!!",
+        },
+      };
+
+      const blueprint = {
+        cleanName: {
+          $trim: {
+            input: {
+              $regexReplace: {
+                input: "$fields.name",
+                pattern: "\\s+",
+                replacement: " ",
+              },
+            },
+          },
+        },
+        emailLower: {
+          $toLower: {
+            $trim: {
+              input: {
+                $regexReplace: {
+                  input: "$fields.email",
+                  pattern: "\\s",
+                  replacement: "",
+                },
+              },
+            },
+          },
+        },
+        phoneDigits: {
+          $regexReplace: {
+            input: "$fields.phone",
+            pattern: "\\D",
+            replacement: "",
+          },
+        },
+        zipCode: {
+          $regexReplace: {
+            input: "$fields.zip",
+            pattern: "-",
+            replacement: "",
+          },
+        },
+        bioNormalized: {
+          $trim: {
+            input: {
+              $regexReplace: {
+                input: {
+                  $regexReplace: {
+                    input: "$fields.bio",
+                    pattern: "!+",
+                    replacement: "!",
+                  },
+                },
+                pattern: "\\s+",
+                replacement: " ",
+              },
+            },
+          },
+        },
+        hasValidPhone: {
+          $eq: [
+            {
+              $size: {
+                $regexReplace: {
+                  input: "$fields.phone",
+                  pattern: "\\D",
+                  replacement: "",
+                },
+              },
+            },
+            10,
+          ],
+        },
+      };
+
+      const result = Forgefy.this(formData, blueprint);
+
+      expect(result).toEqual({
+        cleanName: "John Doe",
+        emailLower: "john.doe@example.com",
+        phoneDigits: "5551234567",
+        zipCode: "123456789",
+        bioNormalized: "Hello! I love coding!",
+        hasValidPhone: true,
+      });
+    });
+  });
 });

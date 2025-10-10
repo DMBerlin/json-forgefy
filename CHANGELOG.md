@@ -20,12 +20,19 @@
   - Add `$isNumber` operator for validating numeric values
   - Add `$round` operator for rounding numbers with configurable precision
   - Add `$trim` operator for trimming custom characters from strings (not just whitespace)
+  - Add `$regexReplace` operator for regex-based string replacement with pattern matching
+    - Support full regex patterns for complex transformations (e.g., normalize multiple spaces with `\s+`)
+    - Include optional flags parameter for case-insensitive and multiline matching
+    - Enable advanced text processing: whitespace normalization, HTML tag removal, phone number cleaning
+    - Provide comprehensive unit tests with 60+ test cases covering edge cases and real-world scenarios
+    - Add extensive e2e tests demonstrating interoperability with other string, conditional, and validation operators
 
 * **testing:** add comprehensive end-to-end test suite with complex operator interoperability
-  - Add E2E test suite with 3 real-world scenarios demonstrating operator combinations
+  - Add E2E test suite with 4 real-world scenarios demonstrating operator combinations
   - **E-commerce Order Processing**: Complex pricing calculations with discounts, taxes, shipping, and customer tier logic using 20+ operators
   - **User Profile Data Sanitization**: String manipulation, validation, and type conversion with deeply nested operator chains
   - **Financial Report Generation**: Advanced calculations with nested conditionals, percentage computations, and performance ratings
+  - **Text Processing with RegexReplace**: Advanced regex-based text sanitization combining `$regexReplace` with string, conditional, and validation operators
   - Include practical PIX debt transaction transformation example
   - Validate recursive operator resolution (DFS bottom-up) with multiple nesting levels
   - Test operators working together: arithmetic, string, logical, comparison, conditional, validation, and date operators
