@@ -1,5 +1,6 @@
 import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
 import { getValueByPath } from "./get-value-by-path.common";
+import { isOperator } from "@helpers/is-operator.helper";
 import { operators } from "@/forgefy.operators";
 import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
 import { ExpressionValues } from "@lib-types/expression.types";
@@ -37,9 +38,30 @@ export function resolveExpression<T>(
 ): T {
   try {
     const key: OperatorKey = Object.keys(expression)[0] as OperatorKey;
-    const args = isValidObjectPath(expression[key])
-      ? getValueByPath(source, expression[key])
-      : expression[key];
+
+    // Recursively resolve nested expressions in arguments
+    const resolveArgs = (args: any): any => {
+      if (Array.isArray(args)) {
+        return args.map(resolveArgs);
+      } else if (typeof args === "string" && isValidObjectPath(args)) {
+        return getValueByPath(source, args);
+      } else if (typeof args === "object" && args !== null) {
+        if (isOperator(args)) {
+          return resolveExpression(source, args);
+        } else {
+          // Handle nested objects that might contain expressions
+          const resolved: any = {};
+          for (const [k, v] of Object.entries(args)) {
+            resolved[k] = resolveArgs(v);
+          }
+          return resolved;
+        }
+      } else {
+        return args;
+      }
+    };
+
+    const args = resolveArgs(expression[key]);
     const operator: OperatorValue = operators.get(key);
     return operator({ context: source })(args);
   } catch {
