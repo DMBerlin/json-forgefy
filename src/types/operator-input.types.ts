@@ -103,3 +103,28 @@ export type ReplaceOperatorInput = {
   searchValues: string[];
   replacement: string;
 };
+export type IsNumberOperatorInput = unknown;
+export type DefaultOperatorInput = unknown[];
+export type RoundOperatorInput = {
+  value: number;
+  precision?: number;
+};
+
+export type EveryOperatorInput = {
+  conditions: unknown[];
+  then: unknown;
+  else: unknown;
+};
+
+export type SomeOperatorInput = {
+  conditions: unknown[];
+  then: unknown;
+  else: unknown;
+};
+
+export type IsNaNOperatorInput = unknown;
+
+export type TrimOperatorInput = {
+  input: string;
+  chars?: string[];
+};

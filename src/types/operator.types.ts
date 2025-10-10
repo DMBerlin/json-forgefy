@@ -36,6 +36,13 @@ import {
   NinOperatorInput,
   ExistsOperatorInput,
   IsNullOperatorInput,
+  IsNumberOperatorInput,
+  DefaultOperatorInput,
+  RoundOperatorInput,
+  EveryOperatorInput,
+  SomeOperatorInput,
+  IsNaNOperatorInput,
+  TrimOperatorInput,
 } from "./operator-input.types";
 
 export type OperatorValue = (
@@ -50,6 +57,7 @@ export type OperatorKey =
   | "$cond"
   | "$concat"
   | "$dateDiff"
+  | "$default"
   | "$divide"
   | "$eq"
   | "$exists"
@@ -59,6 +67,7 @@ export type OperatorKey =
   | "$ifNull"
   | "$in"
   | "$isNull"
+  | "$isNumber"
   | "$lt"
   | "$lte"
   | "$max"
@@ -70,6 +79,7 @@ export type OperatorKey =
   | "$or"
   | "$regex"
   | "$replace"
+  | "$round"
   | "$size"
   | "$slice"
   | "$split"
@@ -80,7 +90,11 @@ export type OperatorKey =
   | "$toLower"
   | "$toNumber"
   | "$toString"
-  | "$toUpper";
+  | "$toUpper"
+  | "$every"
+  | "$some"
+  | "$isNaN"
+  | "$trim";
 
 export type OperatorInput =
   | AddOperatorInput
@@ -90,13 +104,16 @@ export type OperatorInput =
   | ConcatOperatorInput
   | CondOperatorInput
   | DateDiffOperatorInput
+  | DefaultOperatorInput
   | DivideOperatorInput
   | EqOperatorInput
   | FloorOperatorInput
   | IfNullOperatorInput
+  | IsNumberOperatorInput
   | MaxOperatorInput
   | MinOperatorInput
   | MultiplyOperatorInput
+  | RoundOperatorInput
   | SizeOperatorInput
   | SliceOperatorInput
   | SplitOperatorInput
@@ -119,4 +136,8 @@ export type OperatorInput =
   | InOperatorInput
   | NinOperatorInput
   | ExistsOperatorInput
-  | IsNullOperatorInput;
+  | IsNullOperatorInput
+  | EveryOperatorInput
+  | SomeOperatorInput
+  | IsNaNOperatorInput
+  | TrimOperatorInput;

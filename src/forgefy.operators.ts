@@ -37,6 +37,13 @@ import { $nin } from "@operators/nin.operator";
 import { $exists } from "@operators/exists.operator";
 import { $isNull } from "@operators/is-null.operator";
 import { $replace } from "@operators/replace.operator";
+import { $isNumber } from "@operators/is-number.operator";
+import { $default } from "@operators/default.operator";
+import { $round } from "@operators/round.operator";
+import { $every } from "@operators/every.operator";
+import { $some } from "@operators/some.operator";
+import { $isNaN } from "@operators/is-nan.operator";
+import { $trim } from "@operators/trim.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -94,6 +101,7 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$or", $or)
   .set("$regex", $regex)
   .set("$replace", $replace)
+  .set("$round", $round)
   .set("$size", $size)
   .set("$slice", $slice)
   .set("$split", $split)
@@ -104,4 +112,10 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$toLower", $toLower)
   .set("$toNumber", $toNumber)
   .set("$toString", $toString)
-  .set("$toUpper", $toUpper);
+  .set("$toUpper", $toUpper)
+  .set("$isNumber", $isNumber)
+  .set("$default", $default)
+  .set("$every", $every)
+  .set("$some", $some)
+  .set("$isNaN", $isNaN)
+  .set("$trim", $trim);
