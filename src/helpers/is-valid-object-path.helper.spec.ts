@@ -34,6 +34,6 @@ describe("isValidObjectPath", () => {
   });
 
   it("should return false for just $", () => {
-    expect(isValidObjectPath("$")).toBe(true); // This is a valid path to root
+    expect(isValidObjectPath("$")).toBe(false); // "$" alone is not a valid path, needs at least one character after
   });
 });

@@ -25,6 +25,7 @@ export function isValidObjectPath(value: string): boolean {
   return (
     typeof value === "string" &&
     value.startsWith("$") &&
+    value.length > 1 && // Must have at least one character after "$"
     !operators.has(value as OperatorKey)
   );
 }
