@@ -169,12 +169,12 @@ describe("E2E PIX DEBIT Transaction", () => {
           },
           then: "",
           else: {
-            $replace: {
+            $regexReplace: {
               input: {
                 $toString:
                   "$transaction.paymentData.receiver.documentNumber.value",
               },
-              pattern: "/\\D+/g",
+              pattern: "\\D+",
               replacement: "",
             },
           },
