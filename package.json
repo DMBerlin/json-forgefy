@@ -76,7 +76,6 @@
       "/node_modules/",
       "/__fixtures__/",
       "/__mocks__/",
-      "/__tests__/",
       "/interfaces/",
       "/types/",
       "/index.ts"
