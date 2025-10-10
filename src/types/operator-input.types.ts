@@ -7,7 +7,7 @@ export type AddOperatorInput = number[];
 export type AbsOperatorInput = number;
 
 export type SwitchOperatorInput = {
-  branches: Array<{ case: Expression; then: unknown }>;
+  branches: Array<{ case: ExpressionValues; then: unknown }>;
   default: JsonValidTypes;
 };
 
@@ -16,7 +16,7 @@ export type CeilOperatorInput = number;
 export type ConcatOperatorInput = string[];
 
 export type CondOperatorInput = {
-  if: Expression;
+  if: ExpressionValues;
   then: unknown;
   else: unknown;
 };
@@ -27,7 +27,7 @@ export type DateDiffOperatorInput = {
   unit: "days" | "months" | "years";
 };
 
-export type DivideOperatorInput = Array<number | Expression>;
+export type DivideOperatorInput = number[];
 
 export type EqOperatorInput = [
   Omit<Expression, "$eq"> | number | string | boolean,
@@ -37,8 +37,8 @@ export type EqOperatorInput = [
 export type FloorOperatorInput = number;
 
 export type IfNullOperatorInput = [
-  Expression | ObjectPathValue,
-  JsonValidTypes,
+  ExpressionValues | ObjectPathValue,
+  ExpressionValues,
 ];
 
 export type MaxOperatorInput = number[];
@@ -52,7 +52,7 @@ export type RegexOperatorInput = {
   pattern: string;
 };
 
-export type SizeOperatorInput = number[];
+export type SizeOperatorInput = unknown[];
 
 export type SliceOperatorInput = {
   input: string;
