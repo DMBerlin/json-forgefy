@@ -106,7 +106,7 @@ export function resolveExpression<T>(
 
     const args = resolveArgs(expression[key]);
     return operator({ context: source })(args);
-  } catch (error) {
+  } catch {
     // For backward compatibility, return null on errors
     // In a future version, consider throwing errors for better debugging
     return null;
