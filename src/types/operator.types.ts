@@ -43,6 +43,7 @@ import {
   SomeOperatorInput,
   IsNaNOperatorInput,
   TrimOperatorInput,
+  RegexReplaceOperatorInput,
 } from "./operator-input.types";
 
 export type OperatorValue = (
@@ -80,6 +81,7 @@ export type OperatorKey =
   | "$not"
   | "$or"
   | "$regex"
+  | "$regexReplace"
   | "$replace"
   | "$round"
   | "$size"
@@ -127,6 +129,7 @@ export type OperatorInput =
   | NotOperatorInput
   | OrOperatorInput
   | RegexOperatorInput
+  | RegexReplaceOperatorInput
   | RoundOperatorInput
   | SizeOperatorInput
   | SliceOperatorInput
