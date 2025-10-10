@@ -41,8 +41,9 @@ describe("Divide operator", () => {
     const values = [0.0];
     expect($divide()(values)).toBe(0);
   });
-  it("should resolve expressions before dividing", () => {
-    const values = [6, { $add: [2, 3] }];
-    expect($divide({ context: { $add: [2, 3] } })(values)).toBe(1.2);
+  it("should handle already resolved values", () => {
+    // These values would come already resolved from resolveArgs
+    const values = [6, 5]; // Simulating resolved { $add: [2, 3] } = 5
+    expect($divide()(values)).toBe(1.2);
   });
 });

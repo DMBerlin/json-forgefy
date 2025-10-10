@@ -1,6 +1,4 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 import { InOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -8,7 +6,10 @@ import { InOperatorInput } from "@lib-types/operator-input.types";
  * It returns true if the value is found in the array, false otherwise.
  * It supports comparing literals, object paths, and nested operator expressions.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the array membership check.
+ *
  * @returns A function that returns true if the value exists in the array, false otherwise
  *
  * @example
@@ -22,27 +23,17 @@ import { InOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $in: ExecutableExpression<InOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $in: ExecutableExpression<InOperatorInput, boolean> = () => {
   return function (value: InOperatorInput): boolean {
-    const [valueExpression, arrayExpression] = value;
-    const targetValue = resolvePathOrExpression(valueExpression, ctx);
-    const arrayValues = resolvePathOrExpression(arrayExpression, ctx);
+    // All values are already resolved by resolveArgs
+    const [targetValue, arrayValues] = value;
 
     // Ensure we have an array to check against
     if (!Array.isArray(arrayValues)) {
       return false;
     }
 
-    // Resolve each element in the array and check if the target value matches any of them
-    for (const arrayElement of arrayValues) {
-      const resolvedElement = resolvePathOrExpression(arrayElement, ctx);
-      if (resolvedElement === targetValue) {
-        return true;
-      }
-    }
-
-    return false;
+    // Check if the target value exists in the array
+    return arrayValues.includes(targetValue);
   };
 };

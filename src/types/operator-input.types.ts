@@ -104,7 +104,7 @@ export type ReplaceOperatorInput = {
   replacement: string;
 };
 export type IsNumberOperatorInput = unknown;
-export type DefaultOperatorInput = unknown[];
+export type CoalesceOperatorInput = unknown[];
 export type RoundOperatorInput = {
   value: number;
   precision?: number;

@@ -16,4 +16,24 @@ describe("isValidObjectPath", () => {
   it("should return false if the value is an operator", () => {
     expect(isValidObjectPath("$eq")).toBe(false);
   });
+
+  it("should return true for nested paths", () => {
+    expect(isValidObjectPath("$user.name")).toBe(true);
+    expect(isValidObjectPath("$data.items.0.value")).toBe(true);
+  });
+
+  it("should return false for all registered operators", () => {
+    expect(isValidObjectPath("$add")).toBe(false);
+    expect(isValidObjectPath("$multiply")).toBe(false);
+    expect(isValidObjectPath("$gt")).toBe(false);
+    expect(isValidObjectPath("$and")).toBe(false);
+  });
+
+  it("should return false for empty string", () => {
+    expect(isValidObjectPath("")).toBe(false);
+  });
+
+  it("should return false for just $", () => {
+    expect(isValidObjectPath("$")).toBe(true); // This is a valid path to root
+  });
 });

@@ -1,6 +1,4 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 import { NeOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -8,7 +6,10 @@ import { NeOperatorInput } from "@lib-types/operator-input.types";
  * It returns true if the values are not equal, false if they are equal.
  * It supports comparing literals, object paths, and nested operator expressions.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the comparison.
+ *
  * @returns A function that returns true if the values are not equal, false if they are equal
  *
  * @example
@@ -22,13 +23,10 @@ import { NeOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $ne: ExecutableExpression<NeOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $ne: ExecutableExpression<NeOperatorInput, boolean> = () => {
   return function (value: NeOperatorInput): boolean {
-    const [firstExpression, secondExpression] = value;
-    const firstValue = resolvePathOrExpression(firstExpression, ctx);
-    const secondValue = resolvePathOrExpression(secondExpression, ctx);
+    // All values are already resolved by resolveArgs
+    const [firstValue, secondValue] = value;
     return firstValue !== secondValue;
   };
 };

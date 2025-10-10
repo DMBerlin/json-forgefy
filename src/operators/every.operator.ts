@@ -1,6 +1,4 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
-import { resolveExpression } from "@common/resolve-expression.common";
 import { EveryOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -40,21 +38,16 @@ import { EveryOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $every: ExecutableExpression<EveryOperatorInput, unknown> = (
-  ctx?: ExecutionContext,
-) => {
+export const $every: ExecutableExpression<EveryOperatorInput, unknown> = () => {
   return function (value: EveryOperatorInput): unknown {
-    const source = ctx?.context;
-
-    // Check if all conditions are true
-    const allConditionsMet = value.conditions.every((condition) => {
-      const result = resolveExpression(source, condition);
-      return Boolean(result);
-    });
+    // All conditions are already resolved by resolveArgs
+    // Check if all conditions are truthy
+    const allConditionsMet = value.conditions.every((condition) =>
+      Boolean(condition),
+    );
 
     // Return 'then' if all conditions met, 'else' otherwise
-    return allConditionsMet
-      ? resolveExpression(source, value.then)
-      : resolveExpression(source, value.else);
+    // Both branches are already resolved by resolveArgs
+    return allConditionsMet ? value.then : value.else;
   };
 };

@@ -1,15 +1,14 @@
-import { isOperator } from "@helpers/is-operator.helper";
-import { resolveExpression } from "@common/resolve-expression.common";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { DivideOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $divide operator performs division on an array of numbers.
  * It divides the first number by each subsequent number in sequence.
- * Supports nested operator expressions that resolve to numbers.
  *
- * @param ctx - Optional execution context containing the source object for expression resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the division.
+ *
  * @returns A function that divides the first number by all subsequent numbers
  *
  * @example
@@ -23,18 +22,13 @@ import { DivideOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $divide: ExecutableExpression<DivideOperatorInput, number> = (
-  ctx?: ExecutionContext,
-) => {
+export const $divide: ExecutableExpression<
+  DivideOperatorInput,
+  number
+> = () => {
   return function (values: DivideOperatorInput): number {
-    const prepare: number[] = values.map(
-      (value: number | Record<string, any>) =>
-        (typeof value === "object" && isOperator(value)
-          ? resolveExpression<number>(ctx.context, value)
-          : value) as number,
-    );
-
-    return prepare.reduce(
+    // All values are already resolved by resolveArgs
+    return values.reduce(
       (accumulator: number, base: number) => accumulator / base,
     );
   };

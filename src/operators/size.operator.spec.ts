@@ -6,4 +6,16 @@ describe("size operator", () => {
     const result = $size()(input);
     expect(result).toEqual(5);
   });
+
+  it("should return 0 for empty array", () => {
+    expect($size()([])).toBe(0);
+  });
+
+  it("should handle single element array", () => {
+    expect($size()([1])).toBe(1);
+  });
+
+  it("should handle arrays with mixed types", () => {
+    expect($size()([1, "text", true, null, undefined])).toBe(5);
+  });
 });

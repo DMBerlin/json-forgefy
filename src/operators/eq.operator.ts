@@ -1,8 +1,3 @@
-import { isOperator } from "@helpers/is-operator.helper";
-import { resolveExpression } from "@common/resolve-expression.common";
-import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
-import { getValueByPath } from "@common/get-value-by-path.common";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { EqOperatorInput } from "@lib-types/operator-input.types";
 
@@ -11,7 +6,10 @@ import { EqOperatorInput } from "@lib-types/operator-input.types";
  * It supports comparing literals, object paths, and nested operator expressions.
  * The comparison uses strict equality (===).
  *
- * @param ctx - Optional execution context containing the source object for path resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the comparison.
+ *
  * @returns A function that takes two values and returns true if they are equal, false otherwise
  *
  * @example
@@ -25,19 +23,9 @@ import { EqOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $eq: ExecutableExpression<EqOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $eq: ExecutableExpression<EqOperatorInput, boolean> = () => {
   return function (values: EqOperatorInput): boolean {
-    const prepare: Array<unknown> = values.map((value) => {
-      if (typeof value === "object" && isOperator(value)) {
-        return resolveExpression(ctx?.context, value);
-      }
-      if (typeof value === "string" && isValidObjectPath(value)) {
-        return getValueByPath(ctx?.context, value);
-      }
-      return value;
-    });
-    return prepare[0] === prepare[1];
+    // All values are already resolved by resolveArgs
+    return values[0] === values[1];
   };
 };

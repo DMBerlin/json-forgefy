@@ -1,6 +1,4 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 import { NotOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -8,7 +6,10 @@ import { NotOperatorInput } from "@lib-types/operator-input.types";
  * It returns the opposite boolean value of the expression result.
  * If the expression is truthy, it returns false; if falsy, it returns true.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the expression, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the logical NOT.
+ *
  * @returns A function that returns the logical negation of the expression result
  *
  * @example
@@ -22,11 +23,9 @@ import { NotOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $not: ExecutableExpression<NotOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $not: ExecutableExpression<NotOperatorInput, boolean> = () => {
   return function (expression: NotOperatorInput): boolean {
-    const result = resolvePathOrExpression(expression, ctx);
-    return !result;
+    // Expression is already resolved by resolveArgs
+    return !expression;
   };
 };

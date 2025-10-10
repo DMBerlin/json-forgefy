@@ -37,7 +37,7 @@ import {
   ExistsOperatorInput,
   IsNullOperatorInput,
   IsNumberOperatorInput,
-  DefaultOperatorInput,
+  CoalesceOperatorInput,
   RoundOperatorInput,
   EveryOperatorInput,
   SomeOperatorInput,
@@ -54,18 +54,20 @@ export type OperatorKey =
   | "$add"
   | "$and"
   | "$ceil"
+  | "$coalesce"
   | "$cond"
   | "$concat"
   | "$dateDiff"
-  | "$default"
   | "$divide"
   | "$eq"
+  | "$every"
   | "$exists"
   | "$floor"
   | "$gt"
   | "$gte"
   | "$ifNull"
   | "$in"
+  | "$isNaN"
   | "$isNull"
   | "$isNumber"
   | "$lt"
@@ -82,6 +84,7 @@ export type OperatorKey =
   | "$round"
   | "$size"
   | "$slice"
+  | "$some"
   | "$split"
   | "$substr"
   | "$subtract"
@@ -91,53 +94,50 @@ export type OperatorKey =
   | "$toNumber"
   | "$toString"
   | "$toUpper"
-  | "$every"
-  | "$some"
-  | "$isNaN"
   | "$trim";
 
 export type OperatorInput =
   | AddOperatorInput
   | AbsOperatorInput
-  | SwitchOperatorInput
+  | AndOperatorInput
   | CeilOperatorInput
+  | CoalesceOperatorInput
   | ConcatOperatorInput
   | CondOperatorInput
   | DateDiffOperatorInput
-  | DefaultOperatorInput
   | DivideOperatorInput
   | EqOperatorInput
+  | EveryOperatorInput
+  | ExistsOperatorInput
   | FloorOperatorInput
+  | GtOperatorInput
+  | GteOperatorInput
   | IfNullOperatorInput
+  | InOperatorInput
+  | IsNaNOperatorInput
+  | IsNullOperatorInput
   | IsNumberOperatorInput
+  | LtOperatorInput
+  | LteOperatorInput
   | MaxOperatorInput
   | MinOperatorInput
   | MultiplyOperatorInput
+  | NeOperatorInput
+  | NinOperatorInput
+  | NotOperatorInput
+  | OrOperatorInput
+  | RegexOperatorInput
   | RoundOperatorInput
   | SizeOperatorInput
   | SliceOperatorInput
+  | SomeOperatorInput
   | SplitOperatorInput
   | SubstrOperatorInput
   | SubtractOperatorInput
+  | SwitchOperatorInput
+  | ToFixedOperatorInput
   | ToLowerOperatorInput
   | ToNumberOperatorInput
   | ToStringOperatorInput
   | ToUpperOperatorInput
-  | ToFixedOperatorInput
-  | GtOperatorInput
-  | GteOperatorInput
-  | LtOperatorInput
-  | LteOperatorInput
-  | RegexOperatorInput
-  | AndOperatorInput
-  | OrOperatorInput
-  | NotOperatorInput
-  | NeOperatorInput
-  | InOperatorInput
-  | NinOperatorInput
-  | ExistsOperatorInput
-  | IsNullOperatorInput
-  | EveryOperatorInput
-  | SomeOperatorInput
-  | IsNaNOperatorInput
   | TrimOperatorInput;

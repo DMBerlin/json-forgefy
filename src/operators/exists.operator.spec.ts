@@ -193,4 +193,21 @@ describe("$exists operator", () => {
     const result = $exists(errorContext)("errorProperty.nested");
     expect(result).toBe(false);
   });
+
+  it("should handle non-string field paths", () => {
+    // Test with non-string input
+    const result = $exists(mockContext)(123 as any);
+    expect(result).toBe(false);
+  });
+
+  it("should handle paths with array-like objects", () => {
+    const arrayContext = {
+      context: {
+        items: { "0": "first", "1": "second", length: 2 },
+      },
+    };
+    expect($exists(arrayContext)("items.0")).toBe(true);
+    expect($exists(arrayContext)("items.1")).toBe(true);
+    expect($exists(arrayContext)("items.2")).toBe(false);
+  });
 });

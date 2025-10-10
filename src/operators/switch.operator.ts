@@ -1,5 +1,3 @@
-import { resolveExpression } from "@common/resolve-expression.common";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { SwitchOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -7,7 +5,11 @@ import { SwitchOperatorInput } from "@lib-types/operator-input.types";
  * It evaluates multiple case conditions in order and returns the value of the first matching case.
  * If no cases match, it returns the default value. This is similar to switch statements in programming.
  *
- * @param ctx - Optional execution context containing the source object for expression resolution
+ * Note: By the time this operator receives the value, all nested expressions
+ * (including branch.case values) have already been resolved by resolveArgs in
+ * resolveExpression. The operator simply checks which case is truthy and returns
+ * the corresponding branch value.
+ *
  * @returns A function that evaluates cases and returns the matching branch value or default
  *
  * @example
@@ -38,10 +40,12 @@ import { SwitchOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $switch = (ctx?: ExecutionContext) => {
+export const $switch = () => {
   return function (value: SwitchOperatorInput) {
+    // All case expressions are already resolved by resolveArgs
+    // Simply check which case is truthy and return the corresponding branch
     for (const branch of value.branches) {
-      if (resolveExpression(ctx?.context, branch.case)) return branch.then;
+      if (branch.case) return branch.then;
     }
     return value.default;
   };

@@ -4,8 +4,8 @@ describe("E2E PIX DEBIT Transaction", () => {
   const actual = {
     transaction: {
       id: "bfb2821f-b8ba-4595-9e4e-484e20f576d0",
-      description: "Transferência enviada|Karla Polla Dias",
-      descriptionRaw: "Transferência enviada|Karla Polla Dias",
+      description: "Transferência enviada|K**** P**** D***",
+      descriptionRaw: "Transferência enviada|K**** P**** D****",
       currencyCode: "BRL",
       amount: -0.02,
       amountInAccountCurrency: null,
@@ -22,7 +22,7 @@ describe("E2E PIX DEBIT Transaction", () => {
           branchNumber: null,
           documentNumber: {
             type: "CPF",
-            value: "122.163.529-85",
+            value: "1**.1**.5**-8*",
           },
           name: null,
           routingNumber: null,
@@ -31,15 +31,15 @@ describe("E2E PIX DEBIT Transaction", () => {
         paymentMethod: "PIX",
         reason: null,
         receiver: {
-          accountNumber: "01002583-7",
-          branchNumber: "2491",
+          accountNumber: "0100****-7",
+          branchNumber: "2****",
           documentNumber: {
             type: "CPF",
-            value: "122.163.529-85",
+            value: "1**.1**.5**-8*",
           },
           name: null,
-          routingNumber: "033",
-          routingNumberISPB: "90400888",
+          routingNumber: "0**",
+          routingNumberISPB: "9040****",
         },
         receiverReferenceId: null,
         referenceNumber: null,
@@ -60,7 +60,7 @@ describe("E2E PIX DEBIT Transaction", () => {
     id: "$transaction.id",
     type: "DEBIT",
     operation_type: "PIX_DEBIT",
-    description: { $default: ["$transaction.description", ""] },
+    description: { $coalesce: ["$transaction.description", ""] },
     balance: {
       $cond: {
         if: { $isNull: "$transaction.balance" },
@@ -142,10 +142,10 @@ describe("E2E PIX DEBIT Transaction", () => {
         },
       },
       bank_branch_number: {
-        $default: ["$transaction.paymentData.receiver.branchNumber", ""],
+        $coalesce: ["$transaction.paymentData.receiver.branchNumber", ""],
       },
       bank_account_number: {
-        $default: ["$transaction.paymentData.receiver.accountNumber", ""],
+        $coalesce: ["$transaction.paymentData.receiver.accountNumber", ""],
       },
     },
     id_end_to_end: "",
@@ -208,11 +208,11 @@ describe("E2E PIX DEBIT Transaction", () => {
     balance: "",
     document: "",
     receiver: {
-      document: "12216352985",
-      bank_branch_number: "2491",
-      bank_account_number: "01002583-7",
+      document: "1**1**5**8*",
+      bank_branch_number: "2****",
+      bank_account_number: "0100****-7",
     },
-    description: "Transferência enviada|Karla Polla Dias",
+    description: "Transferência enviada|K**** P**** D***",
     id_end_to_end: "",
     transfer_type: "1",
     amount_details: {

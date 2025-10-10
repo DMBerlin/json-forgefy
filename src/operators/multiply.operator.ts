@@ -1,15 +1,14 @@
-import { isOperator } from "@helpers/is-operator.helper";
-import { resolveExpression } from "@common/resolve-expression.common";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { MultiplyOperatorInput } from "@lib-types/operator-input.types";
 
 /**
  * The $multiply operator performs multiplication on an array of numbers.
  * It multiplies all the provided values together and returns the product.
- * Supports nested operator expressions that resolve to numbers.
  *
- * @param ctx - Optional execution context containing the source object for expression resolution
+ * Note: By the time this operator receives the values, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the multiplication.
+ *
  * @returns A function that multiplies all numbers in the array and returns the product
  *
  * @example
@@ -23,17 +22,13 @@ import { MultiplyOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $multiply: ExecutableExpression<MultiplyOperatorInput, number> = (
-  ctx?: ExecutionContext,
-) => {
+export const $multiply: ExecutableExpression<
+  MultiplyOperatorInput,
+  number
+> = () => {
   return function (values: MultiplyOperatorInput): number {
-    const prepare: number[] = values.map(
-      (value: number | Record<string, any>) =>
-        (typeof value === "object" && isOperator(value)
-          ? resolveExpression<number>(ctx.context, value)
-          : value) as number,
-    );
-    return prepare.reduce(
+    // All values are already resolved by resolveArgs
+    return values.reduce(
       (accumulator: number, base: number) => accumulator * base,
     );
   };

@@ -1,6 +1,4 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
 import { OrOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -8,7 +6,10 @@ import { OrOperatorInput } from "@lib-types/operator-input.types";
  * It returns true if ANY expression evaluates to true, false if all are false.
  * Uses short-circuit evaluation - stops at the first true expression.
  *
- * @param ctx - Optional execution context containing the source object for path/expression resolution
+ * Note: By the time this operator receives the expressions, all nested expressions
+ * (including paths and nested operators) have already been resolved by resolveArgs
+ * in resolveExpression. The operator simply performs the logical OR.
+ *
  * @returns A function that returns true if any expression is truthy, false if all are falsy
  *
  * @example
@@ -31,19 +32,17 @@ import { OrOperatorInput } from "@lib-types/operator-input.types";
  * }
  * ```
  */
-export const $or: ExecutableExpression<OrOperatorInput, boolean> = (
-  ctx?: ExecutionContext,
-) => {
+export const $or: ExecutableExpression<OrOperatorInput, boolean> = () => {
   return function (expressions: OrOperatorInput): boolean {
     // Return false for empty array
     if (expressions.length === 0) {
       return false;
     }
 
+    // All expressions are already resolved by resolveArgs
     // Short-circuit evaluation: return true on first truthy expression
     for (const expression of expressions) {
-      const result = resolvePathOrExpression(expression, ctx);
-      if (result) {
+      if (expression) {
         return true;
       }
     }

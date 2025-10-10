@@ -16,4 +16,12 @@ describe("toLowerCase", () => {
     const result = $toLower()(value);
     expect(result).toBe("hello");
   });
+
+  it("should handle empty string", () => {
+    expect($toLower()("")).toBe("");
+  });
+
+  it("should handle strings with numbers", () => {
+    expect($toLower()("HELLO123")).toBe("hello123");
+  });
 });

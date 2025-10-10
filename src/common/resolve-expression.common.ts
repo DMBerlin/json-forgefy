@@ -37,34 +37,78 @@ export function resolveExpression<T>(
   expression: ExpressionValues,
 ): T {
   try {
-    const key: OperatorKey = Object.keys(expression)[0] as OperatorKey;
+    // Handle primitive values (shouldn't normally happen, but be defensive)
+    if (typeof expression !== "object" || expression === null) {
+      return expression as T;
+    }
+
+    // Handle arrays (shouldn't normally happen, but be defensive)
+    if (Array.isArray(expression)) {
+      return expression.map((item) => resolveExpression(source, item)) as T;
+    }
+
+    // Get operator key
+    const keys = Object.keys(expression);
+
+    // Validate single operator key
+    if (keys.length !== 1) {
+      throw new Error(
+        `Expression must have exactly one operator key, found ${keys.length}`,
+      );
+    }
+
+    const key = keys[0] as OperatorKey;
+
+    // Validate operator exists
+    const operator: OperatorValue = operators.get(key);
+    if (!operator) {
+      throw new Error(`Unknown operator: ${key}`);
+    }
 
     // Recursively resolve nested expressions in arguments
     const resolveArgs = (args: any): any => {
-      if (Array.isArray(args)) {
-        return args.map(resolveArgs);
-      } else if (typeof args === "string" && isValidObjectPath(args)) {
-        return getValueByPath(source, args);
-      } else if (typeof args === "object" && args !== null) {
-        if (isOperator(args)) {
-          return resolveExpression(source, args);
-        } else {
-          // Handle nested objects that might contain expressions
-          const resolved: any = {};
-          for (const [k, v] of Object.entries(args)) {
-            resolved[k] = resolveArgs(v);
-          }
-          return resolved;
-        }
-      } else {
+      // Handle null/undefined
+      if (args === null || args === undefined) {
         return args;
       }
+
+      // Handle arrays
+      if (Array.isArray(args)) {
+        return args.map(resolveArgs);
+      }
+
+      // Handle strings (check for paths)
+      if (typeof args === "string") {
+        if (isValidObjectPath(args)) {
+          return getValueByPath(source, args);
+        }
+        return args;
+      }
+
+      // Handle objects
+      if (typeof args === "object") {
+        // Check if it's an operator expression
+        if (isOperator(args)) {
+          return resolveExpression(source, args);
+        }
+
+        // Handle nested objects that might contain expressions
+        const resolved: any = {};
+        for (const [k, v] of Object.entries(args)) {
+          resolved[k] = resolveArgs(v);
+        }
+        return resolved;
+      }
+
+      // Return primitives as-is
+      return args;
     };
 
     const args = resolveArgs(expression[key]);
-    const operator: OperatorValue = operators.get(key);
     return operator({ context: source })(args);
-  } catch {
+  } catch (error) {
+    // For backward compatibility, return null on errors
+    // In a future version, consider throwing errors for better debugging
     return null;
   }
 }

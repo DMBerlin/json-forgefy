@@ -1,34 +1,34 @@
 import { $lt } from "./lt.operator";
-import { ExecutionContext } from "@interfaces/execution-context.interface";
 
 describe("LtOperator", () => {
-  describe("asserting raw values", () => {
-    it("should assert correctly for raw values", () => {
-      expect($lt()([5, 4])).toBe(false);
-      expect($lt()([4, 4])).toBe(false);
-      expect($lt()([3, 4])).toBe(true);
-    });
+  it("should return false when first value is greater than second", () => {
+    expect($lt()([5, 4])).toBe(false);
+    expect($lt()([10, 1])).toBe(false);
   });
-  describe("asserting path values", () => {
-    it("should assert correctly for path values", () => {
-      const ctx: ExecutionContext = { context: { value: 10 } };
-      expect($lt(ctx)(["$value", 1])).toBe(false);
-      expect($lt(ctx)(["$value", 10])).toBe(false);
-      expect($lt(ctx)(["$value", 11])).toBe(true);
-      expect($lt(ctx)([1, "$value"])).toBe(true);
-      expect($lt(ctx)([10, "$value"])).toBe(false);
-      expect($lt(ctx)([11, "$value"])).toBe(false);
-    });
+
+  it("should return false when values are equal", () => {
+    expect($lt()([4, 4])).toBe(false);
+    expect($lt()([10, 10])).toBe(false);
   });
-  describe("asserting expression values", () => {
-    it("should assert correctly for expression values", () => {
-      const ctx: ExecutionContext = { context: { value: 10 } };
-      expect($lt(ctx)([{ $add: [5, 6] }, "$value"])).toBe(false);
-      expect($lt(ctx)([{ $add: [5, 5] }, "$value"])).toBe(false);
-      expect($lt(ctx)([{ $add: [5, 4] }, "$value"])).toBe(true);
-      expect($lt(ctx)(["$value", { $add: [6, 5] }])).toBe(true);
-      expect($lt(ctx)(["$value", { $add: [5, 5] }])).toBe(false);
-      expect($lt(ctx)(["$value", { $add: [4, 5] }])).toBe(false);
-    });
+
+  it("should return true when first value is less than second", () => {
+    expect($lt()([3, 4])).toBe(true);
+    expect($lt()([1, 10])).toBe(true);
+  });
+
+  it("should work with negative numbers", () => {
+    expect($lt()([-2, -1])).toBe(true);
+    expect($lt()([-1, -2])).toBe(false);
+    expect($lt()([-1, 0])).toBe(true);
+  });
+
+  it("should work with decimal numbers", () => {
+    expect($lt()([5.4, 5.5])).toBe(true);
+    expect($lt()([5.5, 5.4])).toBe(false);
+  });
+
+  it("should work with string comparison", () => {
+    expect($lt()(["a", "b"])).toBe(true);
+    expect($lt()(["b", "a"])).toBe(false);
   });
 });

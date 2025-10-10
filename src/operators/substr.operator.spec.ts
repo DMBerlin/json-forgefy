@@ -17,4 +17,22 @@ describe("substr operator", () => {
     };
     expect($substr()(input)).toBe("1234");
   });
+
+  it("should handle substring from middle", () => {
+    expect($substr()({ value: "hello world", start: 6, length: 5 })).toBe(
+      "world",
+    );
+  });
+
+  it("should handle start beyond string length", () => {
+    expect($substr()({ value: "hello", start: 10, length: 5 })).toBe("");
+  });
+
+  it("should handle zero length", () => {
+    expect($substr()({ value: "hello", start: 0, length: 0 })).toBe("");
+  });
+
+  it("should handle partial substring at end", () => {
+    expect($substr()({ value: "hello", start: 3, length: 10 })).toBe("lo");
+  });
 });
