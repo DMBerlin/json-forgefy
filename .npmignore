@@ -1,0 +1,63 @@
+# Source files (only include dist/)
+src/
+tsconfig.json
+tsconfig.build.json
+tsconfig.tsbuildinfo
+
+# Development files
+playground/
+docs/
+coverage/
+node_modules/
+.pnpm-store/
+
+# Test files - exclude all test-related files
+*.spec.ts
+*.spec.js
+*.test.ts
+*.test.js
+__tests__/
+__fixtures__/
+__mocks__/
+dist/__tests__/
+dist/__fixtures__/
+dist/**/*.spec.*
+dist/**/*.test.*
+dist/**/*.spec.d.ts
+dist/**/*.spec.js
+dist/**/*.spec.js.map
+dist/**/*.test.d.ts
+dist/**/*.test.js
+dist/**/*.test.js.map
+
+# Development tools
+.eslintrc.js
+.prettierrc
+.gitignore
+.github/
+.husky/
+Makefile
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.log
+*.tgz
+*.tar.gz
+
+# Release files
+CHANGELOG.md
+release-please-config.json
