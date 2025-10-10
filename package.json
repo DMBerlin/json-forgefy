@@ -1,7 +1,7 @@
 {
   "name": "json-forgefy",
-  "version": "4.0.0",
-  "description": "Transform JSON data with custom operators including powerful array transformations and date operations.",
+  "version": "3.1.0",
+  "description": "Creates a new JSON Object, based on a blueprint object with params.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
