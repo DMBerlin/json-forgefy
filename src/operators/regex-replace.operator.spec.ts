@@ -320,4 +320,3 @@ describe("RegexReplace operator", () => {
     });
   });
 });
-

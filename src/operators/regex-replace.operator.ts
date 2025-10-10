@@ -20,7 +20,7 @@ import { RegexReplaceOperatorInput } from "@lib-types/operator-input.types";
  *       replacement: " "
  *     }
  *   }, // "hello world"
- *   
+ *
  *   // Remove all digits
  *   cleanText: {
  *     $regexReplace: {
@@ -29,7 +29,7 @@ import { RegexReplaceOperatorInput } from "@lib-types/operator-input.types";
  *       replacement: ""
  *     }
  *   }, // "abcdef"
- *   
+ *
  *   // Replace multiple patterns with word boundaries
  *   sanitized: {
  *     $regexReplace: {
@@ -38,7 +38,7 @@ import { RegexReplaceOperatorInput } from "@lib-types/operator-input.types";
  *       replacement: "Goodbye"
  *     }
  *   }, // "Goodbye Goodbye!"
- *   
+ *
  *   // Case-insensitive replacement
  *   cleaned: {
  *     $regexReplace: {
@@ -48,7 +48,7 @@ import { RegexReplaceOperatorInput } from "@lib-types/operator-input.types";
  *       flags: "gi"
  *     }
  *   }, // "demo demo"
- *   
+ *
  *   // Trim and normalize combined
  *   formatted: {
  *     $regexReplace: {
@@ -74,4 +74,3 @@ export const $regexReplace: ExecutableExpression<
     return input.replace(regex, replacement);
   };
 };
-
