@@ -21,10 +21,15 @@
   - Add `$round` operator for rounding numbers with configurable precision
   - Add `$trim` operator for trimming custom characters from strings (not just whitespace)
 
-* **testing:** add comprehensive end-to-end test suite
-  - Add E2E test suite with real-world scenarios
-  - Include practical examples like PIX debt calculation
-  - Validate complex operator combinations and nested expressions
+* **testing:** add comprehensive end-to-end test suite with complex operator interoperability
+  - Add E2E test suite with 3 real-world scenarios demonstrating operator combinations
+  - **E-commerce Order Processing**: Complex pricing calculations with discounts, taxes, shipping, and customer tier logic using 20+ operators
+  - **User Profile Data Sanitization**: String manipulation, validation, and type conversion with deeply nested operator chains
+  - **Financial Report Generation**: Advanced calculations with nested conditionals, percentage computations, and performance ratings
+  - Include practical PIX debt transaction transformation example
+  - Validate recursive operator resolution (DFS bottom-up) with multiple nesting levels
+  - Test operators working together: arithmetic, string, logical, comparison, conditional, validation, and date operators
+  - Demonstrate real-world use cases: data transformation, validation, sanitization, and complex business logic
 
 * **playground:** add browser playground for testing and experimentation
   - Create browser-based playground environment
@@ -53,11 +58,12 @@
   - Optimize `$divide`, `$multiply` arithmetic operators
   - Standardize `$exists`, `$isNull` validation operators
 
-* **testing:** achieve 100% test coverage across the codebase
-  - Add comprehensive unit tests for all operators
+* **testing:** achieve and maintain 100% test coverage across the codebase
+  - Add comprehensive unit tests for all operators (374 total tests)
   - Add tests for helper functions and utilities
   - Include edge case and error scenario coverage
   - Add tests for `date-time.helper`, `is-operator.helper`, and `is-valid-object-path.helper`
+  - Update `is-valid-object-path.helper` tests to reflect corrected path validation behavior
 
 * **build:** improve package distribution and configuration
   - Add `.npmignore` file for cleaner npm package distribution
@@ -65,6 +71,12 @@
   - Optimize package size for faster installation
 
 ### Bug Fixes
+
+* **core:** fix critical path validation bug in nested operator expressions
+  - Fix `isValidObjectPath` to reject single `"$"` character as invalid path
+  - Prevent `"$"` in arrays from being incorrectly resolved as path reference
+  - Ensure proper validation requires at least one character after `"$"` symbol
+  - Resolves issue where operators like `$replace` with `"$"` in `searchValues` would fail with undefined values
 
 * **core:** fix expression resolution edge cases
   - Fix handling of nested expressions in array contexts
@@ -79,6 +91,20 @@
   - Reduce test execution time and complexity
 
 ### Chore
+
+* **dependencies:** upgrade TypeScript ESLint packages for TypeScript 5.9 compatibility
+  - Upgrade `@typescript-eslint/eslint-plugin` from v6.21.0 to v8.18.1
+  - Upgrade `@typescript-eslint/parser` from v6.21.0 to v8.18.1
+  - Resolve TypeScript 5.9 compatibility warnings
+  - Ensure full support for latest TypeScript features and syntax
+
+* **types:** improve type definitions for better TypeScript 5.9 compatibility
+  - Update `CondOperatorInput.if` from `Expression` to `ExpressionValues` to accept resolved primitive values
+  - Update `SwitchOperatorInput.branches[].case` from `Expression` to `ExpressionValues`
+  - Update `IfNullOperatorInput` to accept `ExpressionValues` for more flexible type handling
+  - Update `SizeOperatorInput` from `number[]` to `unknown[]` to support mixed-type arrays
+  - Simplify `DivideOperatorInput` from `Array<number | Expression>` to `number[]` for consistency
+  - Align type definitions with operator architecture where values are pre-resolved
 
 * **config:** update ESLint configuration for playground
   - Add dedicated ESLint config for playground environment
