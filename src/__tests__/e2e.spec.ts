@@ -61,79 +61,37 @@ describe("E2E PIX DEBIT Transaction", () => {
     type: "DEBIT",
     operation_type: "PIX_DEBIT",
     description: {
-      $ifNull: ["$transaction.description", ""],
+      $coalesce: ["$transaction.description", ""],
     },
     balance: {
       $cond: {
         if: {
-          $or: [
-            {
-              $isNull: "$transaction.balance",
-            },
-            {
-              $eq: [
-                {
-                  $toString: "$transaction.balance",
-                },
-                "",
-              ],
-            },
-            {
-              $not: {
-                $or: [
-                  {
-                    $eq: ["$transaction.balance", 0],
-                  },
-                  {
-                    $regex: {
-                      value: {
-                        $toString: "$transaction.balance",
-                      },
-                      pattern: "^-?\\d+(\\.\\d+)?$",
-                    },
-                  },
-                ],
-              },
-            },
+          $and: [
+            { $not: { $isNull: "$transaction.balance" } },
+            { $isNumber: "$transaction.balance" },
           ],
         },
-        then: "",
-        else: {
+        then: {
           $toString: {
-            $toFixed: {
-              value: {
-                $multiply: [
-                  {
-                    $toNumber: "$transaction.balance",
-                  },
-                  100,
-                ],
-              },
+            $round: {
+              value: { $multiply: ["$transaction.balance", 100] },
               precision: 0,
             },
           },
         },
+        else: "",
       },
     },
     amount: {
       $toString: {
-        $toFixed: {
+        $round: {
           value: {
             $abs: {
               $multiply: [
                 {
                   $cond: {
-                    if: {
-                      $regex: {
-                        value: {
-                          $toString: "$transaction.amount",
-                        },
-                        pattern: "^-?\\d+(\\.\\d+)?$",
-                      },
-                    },
-                    then: {
-                      $toNumber: "$transaction.amount",
-                    },
+                    if: { $isNumber: "$transaction.amount" },
+                    then: "$transaction.amount",
                     else: 0,
                   },
                 },
@@ -158,10 +116,7 @@ describe("E2E PIX DEBIT Transaction", () => {
               },
               {
                 $eq: [
-                  {
-                    $toString:
-                      "$transaction.paymentData.receiver.documentNumber.value",
-                  },
+                  "$transaction.paymentData.receiver.documentNumber.value",
                   "",
                 ],
               },
@@ -181,10 +136,10 @@ describe("E2E PIX DEBIT Transaction", () => {
         },
       },
       bank_branch_number: {
-        $ifNull: ["$transaction.paymentData.receiver.branchNumber", ""],
+        $coalesce: ["$transaction.paymentData.receiver.branchNumber", ""],
       },
       bank_account_number: {
-        $ifNull: ["$transaction.paymentData.receiver.accountNumber", ""],
+        $coalesce: ["$transaction.paymentData.receiver.accountNumber", ""],
       },
     },
     id_end_to_end: "",
@@ -197,23 +152,14 @@ describe("E2E PIX DEBIT Transaction", () => {
       },
       final: {
         $toString: {
-          $toFixed: {
+          $round: {
             value: {
               $abs: {
                 $multiply: [
                   {
                     $cond: {
-                      if: {
-                        $regex: {
-                          value: {
-                            $toString: "$transaction.amount",
-                          },
-                          pattern: "^-?\\d+(\\.\\d+)?$",
-                        },
-                      },
-                      then: {
-                        $toNumber: "$transaction.amount",
-                      },
+                      if: { $isNumber: "$transaction.amount" },
+                      then: "$transaction.amount",
                       else: 0,
                     },
                   },
@@ -227,23 +173,14 @@ describe("E2E PIX DEBIT Transaction", () => {
       },
       original: {
         $toString: {
-          $toFixed: {
+          $round: {
             value: {
               $abs: {
                 $multiply: [
                   {
                     $cond: {
-                      if: {
-                        $regex: {
-                          value: {
-                            $toString: "$transaction.amount",
-                          },
-                          pattern: "^-?\\d+(\\.\\d+)?$",
-                        },
-                      },
-                      then: {
-                        $toNumber: "$transaction.amount",
-                      },
+                      if: { $isNumber: "$transaction.amount" },
+                      then: "$transaction.amount",
                       else: 0,
                     },
                   },
