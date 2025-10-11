@@ -135,3 +135,5 @@ export type RegexReplaceOperatorInput = {
   replacement: string;
   flags?: string;
 };
+
+export type NoneOperatorInput = ExpressionValues[];
