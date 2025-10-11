@@ -27,18 +27,23 @@ Successfully implemented the `$none` logical operator for json-forgefy v3.2.0. T
 2. **src/types/operator-input.types.ts**
    - Added `NoneOperatorInput` type definition: `ExpressionValues[]`
 
-3. **README.md**
+3. **src/types/operator.types.ts**
+   - Added `"$none"` to `OperatorKey` union type
+   - Added `NoneOperatorInput` import
+   - Added `NoneOperatorInput` to `OperatorInput` union type
+
+4. **README.md**
    - Added `$none` to logical operators reference table
    - Included example usage and expected output
 
-4. **CHANGELOG.md**
+5. **CHANGELOG.md**
    - Added comprehensive v3.2.0 release notes
    - Documented features, testing, and documentation updates
 
-5. **package.json**
+6. **package.json**
    - Bumped version from 3.1.0 to 3.2.0
 
-6. **src/__e2e__/complex-operation.spec.ts**
+7. **src/__e2e__/complex-operation.spec.ts**
    - Added "Scenario 5: $none Operator with Complex Validation"
    - 5 comprehensive e2e test cases demonstrating real-world usage
 

@@ -34,6 +34,7 @@ import {
   NeOperatorInput,
   InOperatorInput,
   NinOperatorInput,
+  NoneOperatorInput,
   ExistsOperatorInput,
   IsNullOperatorInput,
   IsNumberOperatorInput,
@@ -78,6 +79,7 @@ export type OperatorKey =
   | "$multiply"
   | "$ne"
   | "$nin"
+  | "$none"
   | "$not"
   | "$or"
   | "$regex"
@@ -126,6 +128,7 @@ export type OperatorInput =
   | MultiplyOperatorInput
   | NeOperatorInput
   | NinOperatorInput
+  | NoneOperatorInput
   | NotOperatorInput
   | OrOperatorInput
   | RegexOperatorInput
