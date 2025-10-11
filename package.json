@@ -10,7 +10,7 @@
     "pretest": "eslint . --fix && prettier --write ./src/**/*.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix && prettier \"{src,apps,libs,test}/**/*.ts\" --write",
-    "prepush": "pnpm run test",
+    "prepush": "pnpm build && pnpm test",
     "precommit": "lint-staged",
     "prepare": "husky",
     "test": "jest --runInBand",
