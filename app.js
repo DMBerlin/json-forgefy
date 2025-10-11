@@ -147,9 +147,16 @@ const examples = {
 function loadExample(exampleKey) {
     const example = examples[exampleKey];
     if (!example) return;
+    
+    const payloadValue = JSON.stringify(example.payload, null, 2);
+    const projectionValue = JSON.stringify(example.projection, null, 2);
+    
+    // Save as original values for undo functionality
+    originalValues.payload = payloadValue;
+    originalValues.projection = projectionValue;
 
-    payloadTextarea.value = JSON.stringify(example.payload, null, 2);
-    projectionTextarea.value = JSON.stringify(example.projection, null, 2);
+    payloadTextarea.value = payloadValue;
+    projectionTextarea.value = projectionValue;
     clearAllErrors();
     resultPre.textContent = '';
     highlightTextarea(payloadTextarea);
@@ -430,23 +437,26 @@ window.addEventListener('load', () => {
 
 // Original values for undo
 const originalValues = {
-    payload: '',
-    projection: ''
+    payload: null,
+    projection: null
 };
 
 // Undo functionality
 function undoChanges(targetId) {
     const element = document.getElementById(targetId);
-    if (element && originalValues[targetId] !== undefined) {
+    if (element && originalValues[targetId] !== null) {
         element.value = originalValues[targetId];
         validateJSON(targetId);
+        highlightTextarea(element);
         showToast('✓ Reverted to original', 'success');
+    } else {
+        showToast('No original data to revert to', 'error');
     }
 }
 
 // Save original values
 function saveOriginalValue(targetId, value) {
-    if (originalValues[targetId] === '') {
+    if (originalValues[targetId] === null) {
         originalValues[targetId] = value;
     }
 }
