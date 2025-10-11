@@ -1,0 +1,16 @@
+{
+  "name": "json-forgefy-playground",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive playground for testing json-forgefy",
+  "scripts": {
+    "install:latest": "pnpm add json-forgefy@latest",
+    "build": "node ../scripts/build-forgefy-browser.js",
+    "serve": "python -m http.server 8000 || python3 -m http.server 8000",
+    "dev": "pnpm run build && pnpm run serve"
+  },
+  "dependencies": {
+    "json-forgefy": "latest"
+  },
+  "devDependencies": {}
+}

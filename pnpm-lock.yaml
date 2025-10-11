@@ -1,0 +1,22 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      json-forgefy:
+        specifier: latest
+        version: 3.1.0
+
+packages:
+
+  json-forgefy@3.1.0:
+    resolution: {integrity: sha512-9sroqVVqunGlixHxFtR+JSt2PKl7ZccescISpKJ4SbeB3CgT5xOhRfuu566mPfzMTc/gVt5KZ4/iWMAuWS00Xg==}
+
+snapshots:
+
+  json-forgefy@3.1.0: {}
