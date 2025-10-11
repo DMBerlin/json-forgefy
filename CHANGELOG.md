@@ -1,5 +1,38 @@
 # Changelog
 
+## [3.2.0](https://github.com/DMBerlin/json-forgefy/compare/v3.1.0...v3.2.0) (2025-10-11)
+
+### Features
+
+* **operators:** add `$none` logical operator for checking all conditions are falsy
+  - Add `$none` operator that returns true only if ALL expressions evaluate to false (are falsy)
+  - Inverse of `$or` operator - checks that no conditions are met
+  - Perfect for validation scenarios: checking for absence of errors, restrictions, or issues
+  - Uses short-circuit evaluation for performance optimization
+  - Add comprehensive unit tests with 60+ test cases covering edge cases and boolean coercion
+  - Add extensive e2e tests with 5 real-world scenarios:
+    - **System Health Monitoring**: Validate no errors, warnings, or resource issues
+    - **User Permission Validation**: Check for absence of admin rights and restrictions
+    - **Order Processing**: Combine with `$every`, `$some`, and `$and` for complex validation
+    - **Security Checks**: Detect absence of threats and malicious patterns
+    - **Complex Negation Patterns**: Advanced security validation with nested operators
+  - Register operator in main operator registry with proper type definitions
+  - Update documentation with examples and use cases
+
+### Documentation
+
+* **readme:** add `$none` operator to logical operators reference table
+  - Include operator description, example usage, and expected output
+  - Position alongside other logical operators (`$and`, `$or`, `$not`)
+
+### Testing
+
+* **e2e:** add comprehensive end-to-end tests for `$none` operator interoperability
+  - Test combinations with `$and`, `$or`, `$not`, `$every`, `$some`
+  - Test integration with `$cond`, `$switch` conditional operators
+  - Test with `$exists`, `$eq`, `$gt`, `$gte` comparison operators
+  - Validate real-world use cases: health checks, permissions, security, order validation
+
 ## [3.0.0](https://github.com/DMBerlin/json-forgefy/compare/v2.1.0...v3.0.0) (2025-10-10)
 
 ### ⚠ BREAKING CHANGES

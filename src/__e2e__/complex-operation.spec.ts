@@ -1092,3 +1092,385 @@ describe("E2E Complex Operator Interoperability", () => {
     });
   });
 });
+
+describe("Scenario 5: $none Operator with Complex Validation", () => {
+  it("should validate system health with $none checking for absence of errors", () => {
+    const systemData = {
+      server: {
+        errors: {},
+        metrics: {
+          errorCount: 0,
+          warningCount: 0,
+          cpuUsage: 45,
+          memoryUsage: 60,
+          diskUsage: 70,
+        },
+        status: "running",
+        lastError: null,
+      },
+    };
+
+    const blueprint = {
+      systemHealth: {
+        noErrors: {
+          $none: [
+            { $exists: "server.errors.critical" },
+            { $exists: "server.errors.warning" },
+            { $gt: ["$server.metrics.errorCount", 0] },
+          ],
+        },
+        noWarnings: {
+          $none: [
+            { $exists: "server.errors.warning" },
+            { $gt: ["$server.metrics.warningCount", 0] },
+          ],
+        },
+        resourcesHealthy: {
+          $none: [
+            { $gte: ["$server.metrics.cpuUsage", 90] },
+            { $gte: ["$server.metrics.memoryUsage", 90] },
+            { $gte: ["$server.metrics.diskUsage", 95] },
+          ],
+        },
+        isHealthy: {
+          $and: [
+            {
+              $none: [
+                { $exists: "server.errors.critical" },
+                { $gt: ["$server.metrics.errorCount", 0] },
+              ],
+            },
+            { $eq: ["$server.status", "running"] },
+          ],
+        },
+      },
+      status: {
+        $cond: {
+          if: {
+            $none: [
+              { $exists: "server.errors.critical" },
+              { $exists: "server.errors.warning" },
+              { $gt: ["$server.metrics.errorCount", 0] },
+            ],
+          },
+          then: "HEALTHY",
+          else: "DEGRADED",
+        },
+      },
+    };
+
+    const result = Forgefy.this(systemData, blueprint);
+
+    expect(result).toEqual({
+      systemHealth: {
+        noErrors: true,
+        noWarnings: true,
+        resourcesHealthy: true,
+        isHealthy: true,
+      },
+      status: "HEALTHY",
+    });
+  });
+
+  it("should validate user permissions with $none checking for restricted access", () => {
+    const userData = {
+      user: {
+        role: "viewer",
+        permissions: {
+          canEdit: false,
+          canDelete: false,
+          canAdmin: false,
+        },
+        flags: {
+          isBanned: false,
+          isSuspended: false,
+          isRestricted: false,
+        },
+        violations: 0,
+      },
+    };
+
+    const blueprint = {
+      access: {
+        hasNoAdminRights: {
+          $none: [
+            { $eq: ["$user.role", "admin"] },
+            { $eq: ["$user.role", "moderator"] },
+            "$user.permissions.canAdmin",
+          ],
+        },
+        hasNoEditRights: {
+          $none: [
+            "$user.permissions.canEdit",
+            "$user.permissions.canDelete",
+            "$user.permissions.canAdmin",
+          ],
+        },
+        hasNoRestrictions: {
+          $none: [
+            "$user.flags.isBanned",
+            "$user.flags.isSuspended",
+            "$user.flags.isRestricted",
+            { $gt: ["$user.violations", 0] },
+          ],
+        },
+        isReadOnly: {
+          $and: [
+            { $eq: ["$user.role", "viewer"] },
+            {
+              $none: [
+                "$user.permissions.canEdit",
+                "$user.permissions.canDelete",
+              ],
+            },
+          ],
+        },
+      },
+      userStatus: {
+        $switch: {
+          branches: [
+            {
+              case: {
+                $none: [
+                  "$user.flags.isBanned",
+                  "$user.flags.isSuspended",
+                  "$user.flags.isRestricted",
+                ],
+              },
+              then: "ACTIVE",
+            },
+            {
+              case: {
+                $or: ["$user.flags.isBanned", "$user.flags.isSuspended"],
+              },
+              then: "BLOCKED",
+            },
+          ],
+          default: "RESTRICTED",
+        },
+      },
+    };
+
+    const result = Forgefy.this(userData, blueprint);
+
+    expect(result).toEqual({
+      access: {
+        hasNoAdminRights: true,
+        hasNoEditRights: true,
+        hasNoRestrictions: true,
+        isReadOnly: true,
+      },
+      userStatus: "ACTIVE",
+    });
+  });
+
+  it("should combine $none with $every and $some for complex validation", () => {
+    const orderData = {
+      order: {
+        items: [
+          { outOfStock: false, discontinued: false, restricted: false },
+          { outOfStock: false, discontinued: false, restricted: false },
+          { outOfStock: false, discontinued: false, restricted: false },
+        ],
+        payment: {
+          failed: false,
+          declined: false,
+          fraudulent: false,
+        },
+        shipping: {
+          unavailable: false,
+          delayed: false,
+        },
+        customer: {
+          blocked: false,
+          suspended: false,
+          limitExceeded: false,
+        },
+      },
+    };
+
+    const blueprint = {
+      validation: {
+        allItemsAvailable: {
+          $every: {
+            conditions: [
+              {
+                $none: [
+                  { $eq: ["$order.items.0.outOfStock", true] },
+                  { $eq: ["$order.items.0.discontinued", true] },
+                ],
+              },
+              {
+                $none: [
+                  { $eq: ["$order.items.1.outOfStock", true] },
+                  { $eq: ["$order.items.1.discontinued", true] },
+                ],
+              },
+              {
+                $none: [
+                  { $eq: ["$order.items.2.outOfStock", true] },
+                  { $eq: ["$order.items.2.discontinued", true] },
+                ],
+              },
+            ],
+            then: true,
+            else: false,
+          },
+        },
+        noPaymentIssues: {
+          $none: [
+            "$order.payment.failed",
+            "$order.payment.declined",
+            "$order.payment.fraudulent",
+          ],
+        },
+        noShippingIssues: {
+          $none: ["$order.shipping.unavailable", "$order.shipping.delayed"],
+        },
+        customerCanOrder: {
+          $none: [
+            "$order.customer.blocked",
+            "$order.customer.suspended",
+            "$order.customer.limitExceeded",
+          ],
+        },
+        canProcessOrder: {
+          $and: [
+            {
+              $none: ["$order.payment.failed", "$order.payment.declined"],
+            },
+            {
+              $none: ["$order.customer.blocked", "$order.customer.suspended"],
+            },
+            {
+              $none: ["$order.shipping.unavailable"],
+            },
+          ],
+        },
+      },
+      orderStatus: {
+        $cond: {
+          if: {
+            $and: [
+              {
+                $none: [
+                  "$order.payment.failed",
+                  "$order.payment.declined",
+                  "$order.payment.fraudulent",
+                ],
+              },
+              {
+                $none: ["$order.customer.blocked", "$order.customer.suspended"],
+              },
+            ],
+          },
+          then: "APPROVED",
+          else: "REJECTED",
+        },
+      },
+    };
+
+    const result = Forgefy.this(orderData, blueprint);
+
+    expect(result).toEqual({
+      validation: {
+        allItemsAvailable: true,
+        noPaymentIssues: true,
+        noShippingIssues: true,
+        customerCanOrder: true,
+        canProcessOrder: true,
+      },
+      orderStatus: "APPROVED",
+    });
+  });
+
+  it("should use $none with negation patterns for security checks", () => {
+    const securityData = {
+      request: {
+        headers: {
+          xssAttempt: false,
+          sqlInjection: false,
+          csrfToken: "valid",
+        },
+        payload: {
+          maliciousScript: false,
+          suspiciousPattern: false,
+        },
+        user: {
+          authenticated: true,
+          authorized: true,
+          rateLimited: false,
+        },
+      },
+    };
+
+    const blueprint = {
+      security: {
+        noThreatsDetected: {
+          $none: [
+            "$request.headers.xssAttempt",
+            "$request.headers.sqlInjection",
+            "$request.payload.maliciousScript",
+            "$request.payload.suspiciousPattern",
+          ],
+        },
+        noUserIssues: {
+          $none: [
+            { $not: "$request.user.authenticated" },
+            { $not: "$request.user.authorized" },
+            "$request.user.rateLimited",
+          ],
+        },
+        isSecureRequest: {
+          $and: [
+            {
+              $none: [
+                "$request.headers.xssAttempt",
+                "$request.headers.sqlInjection",
+              ],
+            },
+            "$request.user.authenticated",
+            "$request.user.authorized",
+          ],
+        },
+      },
+      decision: {
+        $switch: {
+          branches: [
+            {
+              case: {
+                $none: [
+                  "$request.headers.xssAttempt",
+                  "$request.headers.sqlInjection",
+                  "$request.payload.maliciousScript",
+                ],
+              },
+              then: "ALLOW",
+            },
+            {
+              case: {
+                $or: [
+                  "$request.headers.xssAttempt",
+                  "$request.headers.sqlInjection",
+                ],
+              },
+              then: "BLOCK",
+            },
+          ],
+          default: "REVIEW",
+        },
+      },
+    };
+
+    const result = Forgefy.this(securityData, blueprint);
+
+    expect(result).toEqual({
+      security: {
+        noThreatsDetected: true,
+        noUserIssues: true,
+        isSecureRequest: true,
+      },
+      decision: "ALLOW",
+    });
+  });
+});
