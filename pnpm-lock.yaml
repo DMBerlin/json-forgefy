@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       json-forgefy:
-        specifier: latest
-        version: 3.1.0
+        specifier: ^3.2.0
+        version: 3.2.0
     devDependencies:
       http-server:
         specifier: ^14.1.1
@@ -137,8 +137,8 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
-  json-forgefy@3.1.0:
-    resolution: {integrity: sha512-9sroqVVqunGlixHxFtR+JSt2PKl7ZccescISpKJ4SbeB3CgT5xOhRfuu566mPfzMTc/gVt5KZ4/iWMAuWS00Xg==}
+  json-forgefy@3.2.0:
+    resolution: {integrity: sha512-i8p10PNh07KQAEI5dPZjGvfxGxsRM6V68jJ3815rX0Yz7NuqEqpl0Z3KTfT/eaBX9u9qFMobUO9SwJjzZ8zQIw==}
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -338,7 +338,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  json-forgefy@3.1.0: {}
+  json-forgefy@3.2.0: {}
 
   math-intrinsics@1.1.0: {}
 

@@ -2,6 +2,43 @@
 
 All notable changes to the JSON Forgefy Playground will be documented in this file.
 
+## [3.0.0] - 2025-10-11
+
+### 🚀 Major Update - json-forgefy 3.2.0
+
+#### Added
+- **Updated to json-forgefy 3.2.0** - Latest version with new operators and improvements
+- **New Operators Support**:
+  - `$round` - Round numbers to specified precision
+  - `$none` - Check if all conditions are false
+  - `$every` - Check if all conditions are true
+  - `$some` - Check if any condition is true
+  - `$coalesce` - Return first non-null value
+  - `$default` - Provide default value for null/undefined
+  - `$regexReplace` - Advanced regex-based string replacement with flags support
+  - `$replace` - Replace multiple values in strings
+  - `$dateDiff` - Calculate difference between dates
+  - `$isNumber` - Validate if value is a number
+  - `$isNaN` - Check if value is NaN
+  - `$isNull` - Check if value is null/undefined
+  - `$exists` - Check if field exists
+  - `$regex` - Pattern matching with regex
+- **Enhanced Autocomplete** - Added all new operators with examples and descriptions
+- **Version Display** - Discrete version tag in playground footer
+
+#### Changed
+- **Operator List**: Updated autocomplete with 50+ operators from json-forgefy 3.2.0
+- **Documentation**: Updated README with complete operator reference
+- **Examples**: Enhanced examples to showcase new operators
+
+#### Improved
+- **Type Safety**: Better type conversion operators
+- **String Operations**: Advanced regex and replacement capabilities
+- **Validation**: More validation operators for data integrity
+- **Conditional Logic**: Enhanced conditional operators for complex scenarios
+
+---
+
 ## [2.0.0] - 2025-10-10
 
 ### 🎨 Major UI Overhaul
