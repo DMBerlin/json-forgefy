@@ -320,6 +320,7 @@ Perfect for calculations, aggregations, and numeric transformations:
 | `$max` | Maximum value | `{ $max: [1, 5, 3] }` | `5` |
 | `$min` | Minimum value | `{ $min: [1, 5, 3] }` | `1` |
 | `$toFixed` | Format decimals | `{ $toFixed: { value: 3.14159, precision: 2 } }` | `3.14` |
+| `$round` | Round to precision | `{ $round: { value: 3.14159, precision: 2 } }` | `3.14` |
 
 ### 📝 String Operations
 Transform and manipulate text data:
@@ -336,7 +337,7 @@ Transform and manipulate text data:
 | `$size` | Get length | `{ $size: "Hello" }` | `5` |
 | `$replace` | Replace multiple values | `{ $replace: { input: "123.456.789-10", searchValues: [".", "-"], replacement: "" } }` | `"12345678910"` |
 | `$regexReplace` | Regex replacement | `{ $regexReplace: { input: "hello      world", pattern: "\\s+", replacement: " " } }` | `"hello world"` |
-| `$trim` | Trim whitespace/chars | `{ $trim: { input: "  hello  " } }` | `"hello"` |
+| `$trim` | Trim whitespace/chars | `{ $trim: { input: "  hello  ", chars: [" "] } }` | `"hello"` |
 
 ### ⚖️ Comparison & Logic
 Make decisions and validate data:
@@ -356,6 +357,9 @@ Make decisions and validate data:
 | `$nin` | Value not in array | `{ $nin: ["c", ["a", "b"]] }` | `true` |
 | `$exists` | Field exists | `{ $exists: "$field" }` | `true/false` |
 | `$isNull` | Is null/undefined | `{ $isNull: null }` | `true` |
+| `$isNumber` | Is valid number | `{ $isNumber: 123 }` | `true` |
+| `$isNaN` | Is NaN | `{ $isNaN: NaN }` | `true` |
+| `$regex` | Pattern matching | `{ $regex: { value: "$email", pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" } }` | `true/false` |
 
 ### 🔀 Conditional Logic
 Handle complex decision-making:
@@ -365,6 +369,9 @@ Handle complex decision-making:
 | `$cond` | If-then-else | `{ $cond: { if: "$age > 18", then: "Adult", else: "Minor" } }` |
 | `$switch` | Multi-branch | `{ $switch: { branches: [{ case: "$type === 'A'", then: "Type A" }], default: "Other" } }` |
 | `$ifNull` | Null coalescing | `{ $ifNull: ["$optional", "default"] }` |
+| `$coalesce` | First non-null value | `{ $coalesce: ["$displayName", "$firstName", "Anonymous"] }` |
+| `$every` | All conditions true | `{ $every: { conditions: [...], then: "valid", else: "invalid" } }` |
+| `$some` | Any condition true | `{ $some: { conditions: [...], then: "found", else: "none" } }` |
 
 ### 🔄 Type Conversion
 Convert between data types safely:
@@ -381,12 +388,7 @@ Work with dates and time:
 |----------|-------------|---------|
 | `$dateDiff` | Calculate difference | `{ $dateDiff: { startDate: "$start", endDate: "$end", unit: "days" } }` |
 
-### 🔍 Advanced Operations
-Powerful utilities for complex scenarios:
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `$regex` | Pattern matching | `{ $regex: { value: "$email", pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" } }` |
 
 ## 🎯 Common Patterns & Best Practices
 
