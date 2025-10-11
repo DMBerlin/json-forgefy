@@ -45,6 +45,7 @@ import { $every } from "@operators/every.operator";
 import { $some } from "@operators/some.operator";
 import { $isNaN } from "@operators/is-nan.operator";
 import { $trim } from "@operators/trim.operator";
+import { $none } from "@operators/none.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -57,7 +58,7 @@ import { $trim } from "@operators/trim.operator";
  * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace, $regexReplace, $trim
  * - Conditional: $cond, $switch, $ifNull
  * - Comparison: $eq, $gt, $gte, $lt, $lte, $ne, $regex
- * - Logical: $and, $or, $not
+ * - Logical: $and, $or, $not, $none
  * - Array: $in, $nin
  * - Utility: $exists, $isNull
  * - Type Conversion: $toNumber, $toString
@@ -102,6 +103,7 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$multiply", $multiply)
   .set("$ne", $ne)
   .set("$nin", $nin)
+  .set("$none", $none)
   .set("$not", $not)
   .set("$or", $or)
   .set("$regex", $regex)

@@ -353,6 +353,7 @@ Make decisions and validate data:
 | `$and` | Logical AND | `{ $and: [true, false] }` | `false` |
 | `$or` | Logical OR | `{ $or: [true, false] }` | `true` |
 | `$not` | Logical NOT | `{ $not: true }` | `false` |
+| `$none` | All conditions false | `{ $none: [false, false] }` | `true` |
 | `$in` | Value in array | `{ $in: ["a", ["a", "b"]] }` | `true` |
 | `$nin` | Value not in array | `{ $nin: ["c", ["a", "b"]] }` | `true` |
 | `$exists` | Field exists | `{ $exists: "$field" }` | `true/false` |
