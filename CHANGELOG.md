@@ -7,8 +7,9 @@ All notable changes to the JSON Forgefy Playground will be documented in this fi
 ### 🎨 Major UI Overhaul
 
 #### Added
-- **Dracula Theme by Default** - Professional dark theme inspired by Dracula
-- **Light Theme Option** - Toggle between dark and light modes
+- **Material Oceanic Theme by Default** - Professional dark theme inspired by Material Design
+- **Dreamweaver Light Theme** - Classic light theme option
+- **Menlo Font** - Professional monospace font for better code readability
 - **IDE-like Experience** - VSCode-inspired editor with syntax highlighting
 - **Product-Focused Examples** - Real-world business use cases
 - **Copy to Clipboard** - One-click result copying
@@ -20,10 +21,11 @@ All notable changes to the JSON Forgefy Playground will be documented in this fi
 - **Smooth Transitions** - Polished animations throughout
 
 #### Changed
-- **Default Theme**: Changed from light to dark (Dracula)
-- **File Structure**: Moved app files to `src/` folder
+- **Default Theme**: Changed from light to dark (Material Oceanic)
+- **File Structure**: Moved app files to `src/` folder, scripts to `src/scripts/`
 - **Layout**: Full-screen IDE-like layout
-- **Colors**: Professional Dracula color scheme
+- **Colors**: Professional Material Oceanic color scheme
+- **Font**: Changed to Menlo for better readability
 - **Typography**: Better font choices and sizing
 - **Buttons**: More prominent and accessible
 - **Error Messages**: Better formatting and visibility

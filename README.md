@@ -8,7 +8,7 @@
 
 ## 🌟 Features
 
-- **🎨 Beautiful Dracula Theme** - Professional dark theme by default with light mode option
+- **🎨 Material Oceanic Theme** - Professional dark theme by default with Dreamweaver Light mode option
 - **⚡ Real-time Transformation** - Instant JSON transformation with MongoDB-style operators
 - **💡 Smart Examples** - Product-focused examples to get you started
 - **✨ Auto-formatting** - Beautify JSON with one click
@@ -135,7 +135,7 @@ json-forgefy supports a wide range of MongoDB-style operators:
 
 ## 🎨 Theme
 
-The playground uses a beautiful **Dracula theme** by default, with an optional light mode. Your preference is saved automatically.
+The playground uses a beautiful **Material Oceanic theme** by default (dark), with an optional **Dreamweaver Light** mode. Your preference is saved automatically. The editor uses **Menlo** font for optimal code readability.
 
 ## 🤝 Contributing
 
@@ -152,7 +152,7 @@ ISC License - see [LICENSE](https://github.com/DMBerlin/json-forgefy/blob/main/L
 ## 🙏 Credits
 
 - **Library**: [json-forgefy](https://github.com/DMBerlin/json-forgefy)
-- **Theme**: Inspired by [Dracula Theme](https://draculatheme.com/)
+- **Theme**: Material Oceanic (dark) and Dreamweaver Light
 - **Built by**: [Daniel Marinho](https://github.com/DMBerlin)
 
 ---

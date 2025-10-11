@@ -1,6 +1,6 @@
 // JSON Forgefy Browser Bundle
 // Browser-compatible version of the JSON Forgefy library
-// Generated: 2025-10-11T02:19:53.738Z
+// Generated: 2025-10-11T02:29:22.546Z
 
 (function(global) {
     'use strict';

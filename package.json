@@ -5,7 +5,7 @@
   "description": "Interactive playground for testing json-forgefy",
   "scripts": {
     "install:latest": "pnpm add json-forgefy@latest",
-    "build": "node src/scripts/build-browser.js",
+    "build": "node build-browser.js",
     "serve": "npx http-server -p 8000 -o",
     "dev": "pnpm run build && pnpm run serve"
   },
