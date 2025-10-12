@@ -1,6 +1,6 @@
 {
   "name": "json-forgefy-playground",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "private": true,
   "description": "Interactive playground for testing json-forgefy",
   "scripts": {
@@ -9,10 +9,11 @@
     "serve": "npx http-server -p 8000 -o",
     "dev": "pnpm run build && pnpm run serve"
   },
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "http-server": "^14.1.1"
+  },
   "dependencies": {
     "json-forgefy": "^3.2.0"
-  },
-  "devDependencies": {
-    "http-server": "^14.1.1"
   }
 }

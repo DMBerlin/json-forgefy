@@ -4,38 +4,36 @@ All notable changes to the JSON Forgefy Playground will be documented in this fi
 
 ## [3.0.0] - 2025-10-11
 
-### 🚀 Major Update - json-forgefy 3.2.0
+### 🚀 Major Update - Full json-forgefy 3.2.0 Integration
 
 #### Added
-- **Updated to json-forgefy 3.2.0** - Latest version with new operators and improvements
-- **New Operators Support**:
+- **esbuild Integration** - Now using esbuild to bundle the actual json-forgefy library
+- **All 47 Operators** - Full support for all json-forgefy 3.2.0 operators including:
   - `$round` - Round numbers to specified precision
   - `$none` - Check if all conditions are false
   - `$every` - Check if all conditions are true
   - `$some` - Check if any condition is true
   - `$coalesce` - Return first non-null value
-  - `$default` - Provide default value for null/undefined
   - `$regexReplace` - Advanced regex-based string replacement with flags support
   - `$replace` - Replace multiple values in strings
   - `$dateDiff` - Calculate difference between dates
   - `$isNumber` - Validate if value is a number
   - `$isNaN` - Check if value is NaN
-  - `$isNull` - Check if value is null/undefined
-  - `$exists` - Check if field exists
   - `$regex` - Pattern matching with regex
-- **Enhanced Autocomplete** - Added all new operators with examples and descriptions
+  - `$switch` - Multi-branch conditional logic
+  - `$slice`, `$split`, `$trim` - Advanced string operations
+- **Enhanced Autocomplete** - All operators with examples and descriptions
 - **Version Display** - Discrete version tag in playground footer
 
 #### Changed
-- **Operator List**: Updated autocomplete with 50+ operators from json-forgefy 3.2.0
+- **Build System**: Replaced custom implementation with esbuild bundler
+- **Operator Support**: Now using real json-forgefy library instead of custom subset
 - **Documentation**: Updated README with complete operator reference
-- **Examples**: Enhanced examples to showcase new operators
 
 #### Improved
-- **Type Safety**: Better type conversion operators
-- **String Operations**: Advanced regex and replacement capabilities
-- **Validation**: More validation operators for data integrity
-- **Conditional Logic**: Enhanced conditional operators for complex scenarios
+- **Reliability**: Using official library implementation ensures correctness
+- **Completeness**: All operators from json-forgefy 3.2.0 now available
+- **Maintainability**: Automatic updates when json-forgefy is updated
 
 ---
 

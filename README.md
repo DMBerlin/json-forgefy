@@ -111,13 +111,13 @@ json-forgefy-playground/
 
 ## 🔧 Available Operators (json-forgefy 3.2.0)
 
-json-forgefy supports 50+ MongoDB-style operators:
+The playground uses the full json-forgefy 3.2.0 library with 47 MongoDB-style operators:
 
 ### Mathematical
 `$add`, `$subtract`, `$multiply`, `$divide`, `$abs`, `$ceil`, `$floor`, `$max`, `$min`, `$round`, `$toFixed`
 
 ### String Operations
-`$concat`, `$substr`, `$slice`, `$toLower`, `$toUpper`, `$toString`, `$split`, `$size`, `$trim`, `$replace`, `$regexReplace`
+`$concat`, `$substr`, `$slice`, `$toLower`, `$toUpper`, `$toString`, `$split`, `$size`, `$trim`, `$replace`, `$regexReplace`, `$regex`
 
 ### Comparison
 `$eq`, `$ne`, `$gt`, `$gte`, `$lt`, `$lte`
@@ -126,21 +126,21 @@ json-forgefy supports 50+ MongoDB-style operators:
 `$and`, `$or`, `$not`, `$none`
 
 ### Conditional
-`$cond`, `$switch`, `$ifNull`, `$coalesce`, `$default`, `$every`, `$some`
+`$cond`, `$switch`, `$ifNull`, `$coalesce`, `$every`, `$some`
 
 ### Array
-`$in`, `$nin`, `$size`, `$filter`, `$map`
+`$in`, `$nin`
 
 ### Type Conversion
 `$toNumber`, `$toString`
 
 ### Validation
-`$exists`, `$isNull`, `$isNumber`, `$isNaN`, `$regex`
+`$exists`, `$isNull`, `$isNumber`, `$isNaN`
 
 ### Date Operations
 `$dateDiff`
 
-[See full documentation →](https://github.com/DMBerlin/json-forgefy#readme)
+[See complete documentation with examples →](https://github.com/DMBerlin/json-forgefy#readme)
 
 ## 🎨 Theme
 

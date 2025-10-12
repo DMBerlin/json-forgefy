@@ -496,7 +496,7 @@ function handleTabKey(e) {
     textarea.addEventListener('keydown', handleTabKey);
 });
 
-// Forgefy Operators Autocomplete with examples (json-forgefy 3.2.0)
+// Forgefy Operators Autocomplete - json-forgefy 3.2.0 (47 operators)
 const forgefyOperators = [
     { op: '$add', desc: 'Add numbers together', category: 'Math', 
       usage: 'Adds multiple numbers', 
@@ -643,11 +643,14 @@ const forgefyOperators = [
       usage: 'Checks if all elements match',
       example: '{ $every: { input: "$items", cond: { $gt: ["$$this", 0] } } }' },
     { op: '$coalesce', desc: 'First non-null value', category: 'Conditional',
-      usage: 'Returns first non-null value',
+      usage: 'Returns first non-null/undefined value',
       example: '{ $coalesce: [null, undefined, "value"] } → "value"' },
-    { op: '$default', desc: 'Default value', category: 'Conditional',
-      usage: 'Provides default if null/undefined',
-      example: '{ $default: { value: null, default: "N/A" } } → "N/A"' }
+    { op: '$some', desc: 'Any condition true', category: 'Conditional',
+      usage: 'Checks if any condition is true',
+      example: '{ $some: { conditions: [true, false], then: "yes", else: "no" } } → "yes"' },
+    { op: '$every', desc: 'All conditions true', category: 'Conditional',
+      usage: 'Checks if all conditions are true',
+      example: '{ $every: { conditions: [true, true], then: "yes", else: "no" } } → "yes"' }
 ];
 
 let autocompleteState = {
