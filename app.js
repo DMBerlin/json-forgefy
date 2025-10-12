@@ -501,9 +501,14 @@ function handleTabKey(e) {
 // Forgefy Operators Autocomplete - json-forgefy 3.2.0 (47 operators)
 const forgefyOperators = [
     {
-        op: '$add', desc: 'Add numbers together', category: 'Math',
-        usage: 'Adds multiple numbers',
-        example: '{ $add: [10, 20, 30] } → 60'
+        op: '$add',
+        desc: 'Add numbers together',
+        category: 'Math',
+        usage: 'Adds multiple numbers and returns their sum',
+        params: 'Array of numbers',
+        returns: 'Number - The sum of all values',
+        example: '{ $add: [10, 20, 30] } → 60',
+        notes: 'Useful for calculating totals, sums, and aggregations'
     },
     {
         op: '$subtract', desc: 'Subtract numbers', category: 'Math',
@@ -556,9 +561,14 @@ const forgefyOperators = [
         example: '{ $toFixed: { value: 3.14159, precision: 2 } } → "3.14"'
     },
     {
-        op: '$concat', desc: 'Concatenate strings', category: 'String',
-        usage: 'Joins strings together',
-        example: '{ $concat: ["Hello", " ", "World"] } → "Hello World"'
+        op: '$concat',
+        desc: 'Concatenates multiple strings into a single string',
+        category: 'String',
+        usage: 'Joins an array of strings together in order',
+        params: 'Array of strings or expressions that resolve to strings',
+        returns: 'String - The concatenated result of all input strings',
+        example: '{ $concat: ["$user.firstName", " ", "$user.lastName"] } → "John Doe"',
+        notes: 'Commonly used for building full names, addresses, or formatted text. Non-string values are automatically converted to strings.'
     },
     {
         op: '$toUpper', desc: 'Convert to uppercase', category: 'String',
@@ -661,9 +671,14 @@ const forgefyOperators = [
         example: '{ $none: [false, false] } → true'
     },
     {
-        op: '$cond', desc: 'If-then-else condition', category: 'Conditional',
-        usage: 'Conditional expression',
-        example: '{ $cond: { if: true, then: "yes", else: "no" } } → "yes"'
+        op: '$cond',
+        desc: 'Evaluates a condition and returns one of two values',
+        category: 'Conditional',
+        usage: 'If-then-else conditional expression that evaluates a boolean condition',
+        params: 'Object with "if" (condition), "then" (value if true), "else" (value if false)',
+        returns: 'Any - Returns "then" value if condition is true, otherwise "else" value',
+        example: '{ $cond: { if: { $gt: ["$age", 18] }, then: "Adult", else: "Minor" } }',
+        notes: 'Essential for conditional logic in transformations. The "if" field can contain any comparison or logical operator.'
     },
     {
         op: '$switch', desc: 'Switch statement', category: 'Conditional',
@@ -741,9 +756,14 @@ const forgefyOperators = [
         example: '{ $every: { input: "$items", cond: { $gt: ["$$this", 0] } } }'
     },
     {
-        op: '$coalesce', desc: 'First non-null value', category: 'Conditional',
-        usage: 'Returns first non-null/undefined value',
-        example: '{ $coalesce: [null, undefined, "value"] } → "value"'
+        op: '$coalesce',
+        desc: 'Returns the first non-null and non-undefined value',
+        category: 'Conditional',
+        usage: 'Evaluates expressions in order and returns the first value that is not null or undefined',
+        params: 'Array of values or expressions to evaluate',
+        returns: 'Any - The first non-null/undefined value, or null if all are null/undefined',
+        example: '{ $coalesce: [null, undefined, "value", "fallback"] } → "value"',
+        notes: 'Similar to SQL COALESCE or JavaScript nullish coalescing (??). Useful for providing fallback values when data might be missing.'
     },
     {
         op: '$some', desc: 'Any condition true', category: 'Conditional',
@@ -1119,14 +1139,41 @@ function showOperatorDetail(operatorName) {
     const icon = categoryIcons[operator.category] || '📌';
 
     // Generate detailed view
-    const html = `
+    let html = `
         <div class="api-detail-header">
             <div class="api-detail-title">${operator.op}</div>
             <div class="api-detail-category">${icon} ${operator.category}</div>
             <div class="api-detail-desc">${operator.desc}</div>
             <div class="api-detail-usage">${operator.usage}</div>
         </div>
+    `;
 
+    // Parameters section (if available)
+    if (operator.params) {
+        html += `
+            <div class="api-detail-section">
+                <div class="api-detail-section-title">📥 Parameters</div>
+                <div class="api-detail-example">
+                    <div class="api-detail-code">${escapeHtml(operator.params)}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Returns section (if available)
+    if (operator.returns) {
+        html += `
+            <div class="api-detail-section">
+                <div class="api-detail-section-title">📤 Returns</div>
+                <div class="api-detail-example">
+                    <div class="api-detail-code">${escapeHtml(operator.returns)}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Example section
+    html += `
         <div class="api-detail-section">
             <div class="api-detail-section-title">📋 Example</div>
             <div class="api-detail-example">
@@ -1144,7 +1191,21 @@ function showOperatorDetail(operatorName) {
 }</div>
             </div>
         </div>
+    `;
 
+    // Notes section (if available)
+    if (operator.notes) {
+        html += `
+            <div class="api-detail-section">
+                <div class="api-detail-section-title">💭 Notes</div>
+                <div class="api-detail-example">
+                    <div class="api-detail-code">${escapeHtml(operator.notes)}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    html += `
         <div class="api-detail-actions">
             <button class="api-detail-btn api-detail-btn-primary" onclick="copyOperatorExample('${operator.op}')">
                 📋 Copy Example
