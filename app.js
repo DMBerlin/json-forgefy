@@ -147,10 +147,10 @@ const examples = {
 function loadExample(exampleKey) {
     const example = examples[exampleKey];
     if (!example) return;
-    
+
     const payloadValue = JSON.stringify(example.payload, null, 2);
     const projectionValue = JSON.stringify(example.projection, null, 2);
-    
+
     // Save as original values for undo functionality
     originalValues.payload = payloadValue;
     originalValues.projection = projectionValue;
@@ -392,28 +392,30 @@ document.addEventListener('keydown', (e) => {
 // Theme management
 function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    if (savedTheme === 'light') {
+    const isLight = savedTheme === 'light';
+
+    if (isLight) {
         document.body.classList.add('light-theme');
-        themeToggle.textContent = '🌙';
-        themeToggle.title = 'Switch to dark mode';
+        themeToggle.checked = true;
     } else {
         document.body.classList.remove('light-theme');
-        themeToggle.textContent = '☀️';
-        themeToggle.title = 'Switch to light mode';
+        themeToggle.checked = false;
     }
 }
 
 function toggleTheme() {
-    document.body.classList.toggle('light-theme');
-    const isLight = document.body.classList.contains('light-theme');
+    const isLight = themeToggle.checked;
 
-    themeToggle.textContent = isLight ? '🌙' : '☀️';
-    themeToggle.title = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+    if (isLight) {
+        document.body.classList.add('light-theme');
+    } else {
+        document.body.classList.remove('light-theme');
+    }
 
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
-themeToggle.addEventListener('click', toggleTheme);
+themeToggle.addEventListener('change', toggleTheme);
 
 // Initialize
 window.addEventListener('load', () => {
@@ -469,14 +471,14 @@ function handleTabKey(e) {
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
         const value = textarea.value;
-        
+
         if (e.shiftKey) {
             // Shift+Tab: Remove 2 spaces from the beginning of the line
             const lineStart = value.lastIndexOf('\n', start - 1) + 1;
             const lineEnd = value.indexOf('\n', start);
             const actualLineEnd = lineEnd === -1 ? value.length : lineEnd;
             const line = value.substring(lineStart, actualLineEnd);
-            
+
             // Check if line starts with spaces
             if (line.startsWith('  ')) {
                 // Remove 2 spaces
@@ -498,159 +500,261 @@ function handleTabKey(e) {
 
 // Forgefy Operators Autocomplete - json-forgefy 3.2.0 (47 operators)
 const forgefyOperators = [
-    { op: '$add', desc: 'Add numbers together', category: 'Math', 
-      usage: 'Adds multiple numbers', 
-      example: '{ $add: [10, 20, 30] } → 60' },
-    { op: '$subtract', desc: 'Subtract numbers', category: 'Math',
-      usage: 'Subtracts numbers from first value',
-      example: '{ $subtract: [100, 20, 10] } → 70' },
-    { op: '$multiply', desc: 'Multiply numbers', category: 'Math',
-      usage: 'Multiplies numbers together',
-      example: '{ $multiply: [5, 4, 2] } → 40' },
-    { op: '$divide', desc: 'Divide numbers', category: 'Math',
-      usage: 'Divides first number by others',
-      example: '{ $divide: [100, 2, 5] } → 10' },
-    { op: '$abs', desc: 'Absolute value', category: 'Math',
-      usage: 'Returns absolute value',
-      example: '{ $abs: -42 } → 42' },
-    { op: '$ceil', desc: 'Round up', category: 'Math',
-      usage: 'Rounds up to nearest integer',
-      example: '{ $ceil: 4.2 } → 5' },
-    { op: '$floor', desc: 'Round down', category: 'Math',
-      usage: 'Rounds down to nearest integer',
-      example: '{ $floor: 4.8 } → 4' },
-    { op: '$max', desc: 'Maximum value', category: 'Math',
-      usage: 'Returns largest number',
-      example: '{ $max: [10, 50, 30] } → 50' },
-    { op: '$min', desc: 'Minimum value', category: 'Math',
-      usage: 'Returns smallest number',
-      example: '{ $min: [10, 50, 30] } → 10' },
-    { op: '$round', desc: 'Round to precision', category: 'Math',
-      usage: 'Rounds to specified decimal places',
-      example: '{ $round: { value: 3.14159, precision: 2 } } → 3.14' },
-    { op: '$toFixed', desc: 'Format decimal places', category: 'Math',
-      usage: 'Formats number with fixed decimals',
-      example: '{ $toFixed: { value: 3.14159, precision: 2 } } → "3.14"' },
-    { op: '$concat', desc: 'Concatenate strings', category: 'String',
-      usage: 'Joins strings together',
-      example: '{ $concat: ["Hello", " ", "World"] } → "Hello World"' },
-    { op: '$toUpper', desc: 'Convert to uppercase', category: 'String',
-      usage: 'Converts string to uppercase',
-      example: '{ $toUpper: "hello" } → "HELLO"' },
-    { op: '$toLower', desc: 'Convert to lowercase', category: 'String',
-      usage: 'Converts string to lowercase',
-      example: '{ $toLower: "HELLO" } → "hello"' },
-    { op: '$substr', desc: 'Extract substring', category: 'String',
-      usage: 'Extracts part of string',
-      example: '{ $substr: { value: "Hello", start: 1, length: 3 } } → "ell"' },
-    { op: '$slice', desc: 'Slice string/array', category: 'String',
-      usage: 'Slices string or array',
-      example: '{ $slice: { input: "Hello", start: 0, end: 2 } } → "He"' },
-    { op: '$split', desc: 'Split string', category: 'String',
-      usage: 'Splits string into array',
-      example: '{ $split: { input: "a,b,c", delimiter: "," } } → ["a","b","c"]' },
-    { op: '$trim', desc: 'Trim whitespace/chars', category: 'String',
-      usage: 'Removes leading/trailing characters',
-      example: '{ $trim: { input: "  hello  ", chars: [" "] } } → "hello"' },
-    { op: '$replace', desc: 'Replace multiple values', category: 'String',
-      usage: 'Replaces multiple search values',
-      example: '{ $replace: { input: "123.456-78", searchValues: [".", "-"], replacement: "" } } → "12345678"' },
-    { op: '$size', desc: 'Get length/size', category: 'String',
-      usage: 'Returns length of string/array',
-      example: '{ $size: "Hello" } → 5' },
-    { op: '$toString', desc: 'Convert to string', category: 'Type',
-      usage: 'Converts value to string',
-      example: '{ $toString: 123 } → "123"' },
-    { op: '$toNumber', desc: 'Convert to number', category: 'Type',
-      usage: 'Converts value to number',
-      example: '{ $toNumber: "123" } → 123' },
-    { op: '$eq', desc: 'Equal to', category: 'Comparison',
-      usage: 'Checks if values are equal',
-      example: '{ $eq: [5, 5] } → true' },
-    { op: '$ne', desc: 'Not equal to', category: 'Comparison',
-      usage: 'Checks if values are not equal',
-      example: '{ $ne: [5, 3] } → true' },
-    { op: '$gt', desc: 'Greater than', category: 'Comparison',
-      usage: 'Checks if first > second',
-      example: '{ $gt: [10, 5] } → true' },
-    { op: '$gte', desc: 'Greater than or equal', category: 'Comparison',
-      usage: 'Checks if first >= second',
-      example: '{ $gte: [5, 5] } → true' },
-    { op: '$lt', desc: 'Less than', category: 'Comparison',
-      usage: 'Checks if first < second',
-      example: '{ $lt: [3, 5] } → true' },
-    { op: '$lte', desc: 'Less than or equal', category: 'Comparison',
-      usage: 'Checks if first <= second',
-      example: '{ $lte: [5, 5] } → true' },
-    { op: '$and', desc: 'Logical AND', category: 'Logical',
-      usage: 'Returns true if all are true',
-      example: '{ $and: [true, true, false] } → false' },
-    { op: '$or', desc: 'Logical OR', category: 'Logical',
-      usage: 'Returns true if any is true',
-      example: '{ $or: [false, true, false] } → true' },
-    { op: '$not', desc: 'Logical NOT', category: 'Logical',
-      usage: 'Inverts boolean value',
-      example: '{ $not: true } → false' },
-    { op: '$none', desc: 'All conditions false', category: 'Logical',
-      usage: 'Returns true if all are false',
-      example: '{ $none: [false, false] } → true' },
-    { op: '$cond', desc: 'If-then-else condition', category: 'Conditional',
-      usage: 'Conditional expression',
-      example: '{ $cond: { if: true, then: "yes", else: "no" } } → "yes"' },
-    { op: '$switch', desc: 'Switch statement', category: 'Conditional',
-      usage: 'Multi-branch conditional',
-      example: '{ $switch: { branches: [{ case: true, then: "A" }], default: "B" } }' },
-    { op: '$ifNull', desc: 'Null coalescing', category: 'Conditional',
-      usage: 'Returns first non-null value',
-      example: '{ $ifNull: [null, "default"] } → "default"' },
-    { op: '$in', desc: 'Value in array', category: 'Array',
-      usage: 'Checks if value exists in array',
-      example: '{ $in: ["a", ["a", "b", "c"]] } → true' },
-    { op: '$nin', desc: 'Value not in array', category: 'Array',
-      usage: 'Checks if value not in array',
-      example: '{ $nin: ["d", ["a", "b", "c"]] } → true' },
-    { op: '$filter', desc: 'Filter array', category: 'Array',
-      usage: 'Filters array by condition',
-      example: '{ $filter: { input: "$items", cond: { $gt: ["$$this.price", 10] } } }' },
-    { op: '$map', desc: 'Map array', category: 'Array',
-      usage: 'Transforms each array element',
-      example: '{ $map: { input: "$items", as: "item", in: "$$item.name" } }' },
-    { op: '$exists', desc: 'Check if field exists', category: 'Validation',
-      usage: 'Checks if field is defined',
-      example: '{ $exists: "$user.email" } → true/false' },
-    { op: '$isNull', desc: 'Check if null', category: 'Validation',
-      usage: 'Checks if value is null/undefined',
-      example: '{ $isNull: null } → true' },
-    { op: '$isNumber', desc: 'Check if number', category: 'Validation',
-      usage: 'Checks if value is a valid number',
-      example: '{ $isNumber: 123 } → true' },
-    { op: '$isNaN', desc: 'Check if NaN', category: 'Validation',
-      usage: 'Checks if value is NaN',
-      example: '{ $isNaN: NaN } → true' },
-    { op: '$regex', desc: 'Regular expression match', category: 'String',
-      usage: 'Tests string against regex pattern',
-      example: '{ $regex: { value: "test@email.com", pattern: "^[^@]+@[^@]+$" } } → true' },
-    { op: '$regexReplace', desc: 'Regex replace', category: 'String',
-      usage: 'Replaces text using regex with flags',
-      example: '{ $regexReplace: { input: "hello  world", pattern: "\\s+", replacement: " " } } → "hello world"' },
-    { op: '$dateDiff', desc: 'Date difference', category: 'Date',
-      usage: 'Calculates difference between dates',
-      example: '{ $dateDiff: { startDate: "$date1", endDate: "$date2", unit: "days" } }' },
-    { op: '$some', desc: 'Array some', category: 'Array',
-      usage: 'Checks if any element matches',
-      example: '{ $some: { input: "$items", cond: { $gt: ["$$this", 10] } } }' },
-    { op: '$every', desc: 'Array every', category: 'Array',
-      usage: 'Checks if all elements match',
-      example: '{ $every: { input: "$items", cond: { $gt: ["$$this", 0] } } }' },
-    { op: '$coalesce', desc: 'First non-null value', category: 'Conditional',
-      usage: 'Returns first non-null/undefined value',
-      example: '{ $coalesce: [null, undefined, "value"] } → "value"' },
-    { op: '$some', desc: 'Any condition true', category: 'Conditional',
-      usage: 'Checks if any condition is true',
-      example: '{ $some: { conditions: [true, false], then: "yes", else: "no" } } → "yes"' },
-    { op: '$every', desc: 'All conditions true', category: 'Conditional',
-      usage: 'Checks if all conditions are true',
-      example: '{ $every: { conditions: [true, true], then: "yes", else: "no" } } → "yes"' }
+    {
+        op: '$add', desc: 'Add numbers together', category: 'Math',
+        usage: 'Adds multiple numbers',
+        example: '{ $add: [10, 20, 30] } → 60'
+    },
+    {
+        op: '$subtract', desc: 'Subtract numbers', category: 'Math',
+        usage: 'Subtracts numbers from first value',
+        example: '{ $subtract: [100, 20, 10] } → 70'
+    },
+    {
+        op: '$multiply', desc: 'Multiply numbers', category: 'Math',
+        usage: 'Multiplies numbers together',
+        example: '{ $multiply: [5, 4, 2] } → 40'
+    },
+    {
+        op: '$divide', desc: 'Divide numbers', category: 'Math',
+        usage: 'Divides first number by others',
+        example: '{ $divide: [100, 2, 5] } → 10'
+    },
+    {
+        op: '$abs', desc: 'Absolute value', category: 'Math',
+        usage: 'Returns absolute value',
+        example: '{ $abs: -42 } → 42'
+    },
+    {
+        op: '$ceil', desc: 'Round up', category: 'Math',
+        usage: 'Rounds up to nearest integer',
+        example: '{ $ceil: 4.2 } → 5'
+    },
+    {
+        op: '$floor', desc: 'Round down', category: 'Math',
+        usage: 'Rounds down to nearest integer',
+        example: '{ $floor: 4.8 } → 4'
+    },
+    {
+        op: '$max', desc: 'Maximum value', category: 'Math',
+        usage: 'Returns largest number',
+        example: '{ $max: [10, 50, 30] } → 50'
+    },
+    {
+        op: '$min', desc: 'Minimum value', category: 'Math',
+        usage: 'Returns smallest number',
+        example: '{ $min: [10, 50, 30] } → 10'
+    },
+    {
+        op: '$round', desc: 'Round to precision', category: 'Math',
+        usage: 'Rounds to specified decimal places',
+        example: '{ $round: { value: 3.14159, precision: 2 } } → 3.14'
+    },
+    {
+        op: '$toFixed', desc: 'Format decimal places', category: 'Math',
+        usage: 'Formats number with fixed decimals',
+        example: '{ $toFixed: { value: 3.14159, precision: 2 } } → "3.14"'
+    },
+    {
+        op: '$concat', desc: 'Concatenate strings', category: 'String',
+        usage: 'Joins strings together',
+        example: '{ $concat: ["Hello", " ", "World"] } → "Hello World"'
+    },
+    {
+        op: '$toUpper', desc: 'Convert to uppercase', category: 'String',
+        usage: 'Converts string to uppercase',
+        example: '{ $toUpper: "hello" } → "HELLO"'
+    },
+    {
+        op: '$toLower', desc: 'Convert to lowercase', category: 'String',
+        usage: 'Converts string to lowercase',
+        example: '{ $toLower: "HELLO" } → "hello"'
+    },
+    {
+        op: '$substr', desc: 'Extract substring', category: 'String',
+        usage: 'Extracts part of string',
+        example: '{ $substr: { value: "Hello", start: 1, length: 3 } } → "ell"'
+    },
+    {
+        op: '$slice', desc: 'Slice string/array', category: 'String',
+        usage: 'Slices string or array',
+        example: '{ $slice: { input: "Hello", start: 0, end: 2 } } → "He"'
+    },
+    {
+        op: '$split', desc: 'Split string', category: 'String',
+        usage: 'Splits string into array',
+        example: '{ $split: { input: "a,b,c", delimiter: "," } } → ["a","b","c"]'
+    },
+    {
+        op: '$trim', desc: 'Trim whitespace/chars', category: 'String',
+        usage: 'Removes leading/trailing characters',
+        example: '{ $trim: { input: "  hello  ", chars: [" "] } } → "hello"'
+    },
+    {
+        op: '$replace', desc: 'Replace multiple values', category: 'String',
+        usage: 'Replaces multiple search values',
+        example: '{ $replace: { input: "123.456-78", searchValues: [".", "-"], replacement: "" } } → "12345678"'
+    },
+    {
+        op: '$size', desc: 'Get length/size', category: 'String',
+        usage: 'Returns length of string/array',
+        example: '{ $size: "Hello" } → 5'
+    },
+    {
+        op: '$toString', desc: 'Convert to string', category: 'Type',
+        usage: 'Converts value to string',
+        example: '{ $toString: 123 } → "123"'
+    },
+    {
+        op: '$toNumber', desc: 'Convert to number', category: 'Type',
+        usage: 'Converts value to number',
+        example: '{ $toNumber: "123" } → 123'
+    },
+    {
+        op: '$eq', desc: 'Equal to', category: 'Comparison',
+        usage: 'Checks if values are equal',
+        example: '{ $eq: [5, 5] } → true'
+    },
+    {
+        op: '$ne', desc: 'Not equal to', category: 'Comparison',
+        usage: 'Checks if values are not equal',
+        example: '{ $ne: [5, 3] } → true'
+    },
+    {
+        op: '$gt', desc: 'Greater than', category: 'Comparison',
+        usage: 'Checks if first > second',
+        example: '{ $gt: [10, 5] } → true'
+    },
+    {
+        op: '$gte', desc: 'Greater than or equal', category: 'Comparison',
+        usage: 'Checks if first >= second',
+        example: '{ $gte: [5, 5] } → true'
+    },
+    {
+        op: '$lt', desc: 'Less than', category: 'Comparison',
+        usage: 'Checks if first < second',
+        example: '{ $lt: [3, 5] } → true'
+    },
+    {
+        op: '$lte', desc: 'Less than or equal', category: 'Comparison',
+        usage: 'Checks if first <= second',
+        example: '{ $lte: [5, 5] } → true'
+    },
+    {
+        op: '$and', desc: 'Logical AND', category: 'Logical',
+        usage: 'Returns true if all are true',
+        example: '{ $and: [true, true, false] } → false'
+    },
+    {
+        op: '$or', desc: 'Logical OR', category: 'Logical',
+        usage: 'Returns true if any is true',
+        example: '{ $or: [false, true, false] } → true'
+    },
+    {
+        op: '$not', desc: 'Logical NOT', category: 'Logical',
+        usage: 'Inverts boolean value',
+        example: '{ $not: true } → false'
+    },
+    {
+        op: '$none', desc: 'All conditions false', category: 'Logical',
+        usage: 'Returns true if all are false',
+        example: '{ $none: [false, false] } → true'
+    },
+    {
+        op: '$cond', desc: 'If-then-else condition', category: 'Conditional',
+        usage: 'Conditional expression',
+        example: '{ $cond: { if: true, then: "yes", else: "no" } } → "yes"'
+    },
+    {
+        op: '$switch', desc: 'Switch statement', category: 'Conditional',
+        usage: 'Multi-branch conditional',
+        example: '{ $switch: { branches: [{ case: true, then: "A" }], default: "B" } }'
+    },
+    {
+        op: '$ifNull', desc: 'Null coalescing', category: 'Conditional',
+        usage: 'Returns first non-null value',
+        example: '{ $ifNull: [null, "default"] } → "default"'
+    },
+    {
+        op: '$in', desc: 'Value in array', category: 'Array',
+        usage: 'Checks if value exists in array',
+        example: '{ $in: ["a", ["a", "b", "c"]] } → true'
+    },
+    {
+        op: '$nin', desc: 'Value not in array', category: 'Array',
+        usage: 'Checks if value not in array',
+        example: '{ $nin: ["d", ["a", "b", "c"]] } → true'
+    },
+    {
+        op: '$filter', desc: 'Filter array', category: 'Array',
+        usage: 'Filters array by condition',
+        example: '{ $filter: { input: "$items", cond: { $gt: ["$$this.price", 10] } } }'
+    },
+    {
+        op: '$map', desc: 'Map array', category: 'Array',
+        usage: 'Transforms each array element',
+        example: '{ $map: { input: "$items", as: "item", in: "$$item.name" } }'
+    },
+    {
+        op: '$exists', desc: 'Check if field exists', category: 'Validation',
+        usage: 'Checks if field is defined',
+        example: '{ $exists: "$user.email" } → true/false'
+    },
+    {
+        op: '$isNull', desc: 'Check if null', category: 'Validation',
+        usage: 'Checks if value is null/undefined',
+        example: '{ $isNull: null } → true'
+    },
+    {
+        op: '$isNumber', desc: 'Check if number', category: 'Validation',
+        usage: 'Checks if value is a valid number',
+        example: '{ $isNumber: 123 } → true'
+    },
+    {
+        op: '$isNaN', desc: 'Check if NaN', category: 'Validation',
+        usage: 'Checks if value is NaN',
+        example: '{ $isNaN: NaN } → true'
+    },
+    {
+        op: '$regex', desc: 'Regular expression match', category: 'String',
+        usage: 'Tests string against regex pattern',
+        example: '{ $regex: { value: "test@email.com", pattern: "^[^@]+@[^@]+$" } } → true'
+    },
+    {
+        op: '$regexReplace', desc: 'Regex replace', category: 'String',
+        usage: 'Replaces text using regex with flags',
+        example: '{ $regexReplace: { input: "hello  world", pattern: "\\s+", replacement: " " } } → "hello world"'
+    },
+    {
+        op: '$dateDiff', desc: 'Date difference', category: 'Date',
+        usage: 'Calculates difference between dates',
+        example: '{ $dateDiff: { startDate: "$date1", endDate: "$date2", unit: "days" } }'
+    },
+    {
+        op: '$some', desc: 'Array some', category: 'Array',
+        usage: 'Checks if any element matches',
+        example: '{ $some: { input: "$items", cond: { $gt: ["$$this", 10] } } }'
+    },
+    {
+        op: '$every', desc: 'Array every', category: 'Array',
+        usage: 'Checks if all elements match',
+        example: '{ $every: { input: "$items", cond: { $gt: ["$$this", 0] } } }'
+    },
+    {
+        op: '$coalesce', desc: 'First non-null value', category: 'Conditional',
+        usage: 'Returns first non-null/undefined value',
+        example: '{ $coalesce: [null, undefined, "value"] } → "value"'
+    },
+    {
+        op: '$some', desc: 'Any condition true', category: 'Conditional',
+        usage: 'Checks if any condition is true',
+        example: '{ $some: { conditions: [true, false], then: "yes", else: "no" } } → "yes"'
+    },
+    {
+        op: '$every', desc: 'All conditions true', category: 'Conditional',
+        usage: 'Checks if all conditions are true',
+        example: '{ $every: { conditions: [true, true], then: "yes", else: "no" } } → "yes"'
+    }
 ];
 
 let autocompleteState = {
@@ -729,7 +833,7 @@ function showAutocomplete(textarea, query, cursorPos) {
             }
         });
     });
-    
+
     // Add expand button handlers
     container.querySelectorAll('.autocomplete-expand').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -737,11 +841,11 @@ function showAutocomplete(textarea, query, cursorPos) {
             const index = btn.dataset.index;
             const details = container.querySelector(`.autocomplete-details[data-index="${index}"]`);
             const isVisible = details.classList.contains('visible');
-            
+
             // Close all other details
             container.querySelectorAll('.autocomplete-details').forEach(d => d.classList.remove('visible'));
             container.querySelectorAll('.autocomplete-expand').forEach(b => b.classList.remove('expanded'));
-            
+
             // Toggle current
             if (!isVisible) {
                 details.classList.add('visible');
@@ -859,5 +963,275 @@ document.addEventListener('click', (e) => {
         !e.target.closest('.autocomplete-container') &&
         e.target !== projectionTextarea) {
         hideAutocomplete();
+    }
+});
+
+
+// API Reference Sidebar
+const apiReferenceSidebar = document.getElementById('api-reference-sidebar');
+const apiReferenceOverlay = document.getElementById('api-reference-overlay');
+const apiReferenceBtn = document.getElementById('api-reference-btn');
+const closeApiReferenceBtn = document.getElementById('close-api-reference');
+const apiSearchInput = document.getElementById('api-search');
+const apiReferenceContent = document.getElementById('api-reference-content');
+const apiReferenceDetail = document.getElementById('api-reference-detail');
+
+let selectedOperator = null;
+
+// Open API Reference
+function openApiReference() {
+    apiReferenceSidebar.classList.add('active');
+    apiReferenceOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close API Reference
+function closeApiReference() {
+    apiReferenceSidebar.classList.remove('active');
+    apiReferenceOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Generate Operator List (Right Column)
+function generateApiReferenceContent(searchTerm = '') {
+    // Group operators by category
+    const categories = {};
+
+    forgefyOperators.forEach(op => {
+        if (!categories[op.category]) {
+            categories[op.category] = [];
+        }
+        categories[op.category].push(op);
+    });
+
+    // Filter by search term
+    let filteredCategories = {};
+    if (searchTerm) {
+        Object.keys(categories).forEach(category => {
+            const filtered = categories[category].filter(op =>
+                op.op.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                op.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                op.usage.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            if (filtered.length > 0) {
+                filteredCategories[category] = filtered;
+            }
+        });
+    } else {
+        filteredCategories = categories;
+    }
+
+    // Check if no results
+    if (Object.keys(filteredCategories).length === 0) {
+        apiReferenceContent.innerHTML = `
+            <div class="api-no-results">
+                <div class="api-no-results-icon">🔍</div>
+                <p>No operators found matching "${searchTerm}"</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Category order
+    const categoryOrder = ['Math', 'String', 'Type', 'Comparison', 'Logical', 'Conditional', 'Array', 'Validation', 'Date'];
+    const categoryIcons = {
+        'Math': '🔢',
+        'String': '📝',
+        'Type': '🔄',
+        'Comparison': '⚖️',
+        'Logical': '🔀',
+        'Conditional': '🔀',
+        'Array': '📊',
+        'Validation': '✅',
+        'Date': '📅'
+    };
+
+    // Generate HTML
+    let html = '';
+    categoryOrder.forEach(category => {
+        if (filteredCategories[category]) {
+            const operators = filteredCategories[category];
+            const icon = categoryIcons[category] || '📌';
+
+            html += `
+                <div class="api-category">
+                    <div class="api-category-title" onclick="toggleCategory(this)">
+                        <div class="api-category-title-left">
+                            <span>${icon} ${category}</span>
+                            <span class="api-category-count">(${operators.length})</span>
+                        </div>
+                        <span class="api-category-arrow">▼</span>
+                    </div>
+                    <div class="api-category-items">
+            `;
+
+            operators.forEach(op => {
+                const isActive = selectedOperator === op.op ? 'active' : '';
+                html += `
+                    <div class="api-operator-item ${isActive}" data-operator="${op.op}" onclick="showOperatorDetail('${op.op}')">
+                        <div class="api-operator-item-name">${op.op}</div>
+                        <div class="api-operator-item-desc">${op.desc}</div>
+                    </div>
+                `;
+            });
+
+            html += '</div></div>';
+        }
+    });
+
+    apiReferenceContent.innerHTML = html;
+}
+
+// Toggle category accordion
+function toggleCategory(element) {
+    const category = element.closest('.api-category');
+    category.classList.toggle('collapsed');
+}
+
+// Show Operator Detail (Left Column)
+function showOperatorDetail(operatorName) {
+    const operator = forgefyOperators.find(op => op.op === operatorName);
+    if (!operator) return;
+
+    selectedOperator = operatorName;
+
+    // Update active state in list
+    document.querySelectorAll('.api-operator-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.operator === operatorName) {
+            item.classList.add('active');
+        }
+    });
+
+    // Category icons
+    const categoryIcons = {
+        'Math': '🔢',
+        'String': '📝',
+        'Type': '🔄',
+        'Comparison': '⚖️',
+        'Logical': '🔀',
+        'Conditional': '🔀',
+        'Array': '📊',
+        'Validation': '✅',
+        'Date': '📅'
+    };
+
+    const icon = categoryIcons[operator.category] || '📌';
+
+    // Generate detailed view
+    const html = `
+        <div class="api-detail-header">
+            <div class="api-detail-title">${operator.op}</div>
+            <div class="api-detail-category">${icon} ${operator.category}</div>
+            <div class="api-detail-desc">${operator.desc}</div>
+            <div class="api-detail-usage">${operator.usage}</div>
+        </div>
+
+        <div class="api-detail-section">
+            <div class="api-detail-section-title">📋 Example</div>
+            <div class="api-detail-example">
+                <div class="api-detail-example-label">Usage</div>
+                <div class="api-detail-code">${escapeHtml(operator.example)}</div>
+            </div>
+        </div>
+
+        <div class="api-detail-section">
+            <div class="api-detail-section-title">💡 How to Use</div>
+            <div class="api-detail-example">
+                <div class="api-detail-example-label">In your projection</div>
+                <div class="api-detail-code">{
+  "result": ${escapeHtml(operator.example.match(/\{[^}]+\}/)?.[0] || operator.op)}
+}</div>
+            </div>
+        </div>
+
+        <div class="api-detail-actions">
+            <button class="api-detail-btn api-detail-btn-primary" onclick="copyOperatorExample('${operator.op}')">
+                📋 Copy Example
+            </button>
+        </div>
+    `;
+
+    apiReferenceDetail.innerHTML = html;
+}
+
+// Escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Copy operator example
+function copyOperatorExample(operatorName) {
+    const operator = forgefyOperators.find(op => op.op === operatorName);
+    if (!operator) return;
+
+    const exampleMatch = operator.example.match(/\{[^}]+\}/);
+    if (exampleMatch) {
+        navigator.clipboard.writeText(exampleMatch[0]).then(() => {
+            showToast('✓ Example copied!', 'success');
+        });
+    }
+}
+
+// Try operator - insert example into projection
+function tryOperator(operatorName) {
+    const operator = forgefyOperators.find(op => op.op === operatorName);
+    if (!operator) return;
+
+    // Extract just the operator part from the example
+    const exampleMatch = operator.example.match(/\{[^}]+\}/);
+    if (exampleMatch) {
+        const operatorExample = exampleMatch[0];
+
+        // Create a simple projection with the operator
+        const projection = {
+            result: JSON.parse(operatorExample)
+        };
+
+        projectionTextarea.value = JSON.stringify(projection, null, 2);
+        highlightTextarea(projectionTextarea);
+
+        // Close sidebar
+        closeApiReference();
+
+        // Focus on projection textarea
+        projectionTextarea.focus();
+
+        showToast(`✓ ${operatorName} example loaded!`, 'success');
+    }
+}
+
+// Event listeners
+apiReferenceBtn.addEventListener('click', () => {
+    openApiReference();
+    generateApiReferenceContent();
+});
+
+closeApiReferenceBtn.addEventListener('click', closeApiReference);
+apiReferenceOverlay.addEventListener('click', closeApiReference);
+
+// Search functionality
+apiSearchInput.addEventListener('input', (e) => {
+    generateApiReferenceContent(e.target.value);
+});
+
+// Keyboard shortcut to open API Reference (Ctrl+K or Cmd+K)
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        if (apiReferenceSidebar.classList.contains('active')) {
+            closeApiReference();
+        } else {
+            openApiReference();
+            generateApiReferenceContent();
+            setTimeout(() => apiSearchInput.focus(), 100);
+        }
+    }
+
+    // ESC to close
+    if (e.key === 'Escape' && apiReferenceSidebar.classList.contains('active')) {
+        closeApiReference();
     }
 });
