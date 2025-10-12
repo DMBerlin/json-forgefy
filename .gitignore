@@ -26,3 +26,17 @@ pnpm-debug.log*
 # Temporary files
 *.tmp
 .cache/
+
+# Coverage
+coverage
+
+# Kiro
+.kiro
+
+# Builds
+
+/dist
+/out
+
+# Generated Docs
+/docs
