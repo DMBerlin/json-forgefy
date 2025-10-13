@@ -139,6 +139,13 @@ describe("DateTimeHelper", () => {
       );
     });
 
+    it("should throw error for ISO-8601 format with invalid date values", () => {
+      // This passes the regex but creates an invalid date (month 13 doesn't exist)
+      expect(() => parseDate("2025-13-01")).toThrow("Invalid date string");
+      // Note: JavaScript Date auto-corrects some invalid dates like 2025-02-30 to 2025-03-02
+      // so we test with a clearly invalid month instead
+    });
+
     it("should throw error for timestamp out of range", () => {
       expect(() => parseDate(9999999999999999)).toThrow(
         "Timestamp out of representable range",
@@ -146,6 +153,11 @@ describe("DateTimeHelper", () => {
       expect(() => parseDate(-9999999999999999)).toThrow(
         "Timestamp out of representable range",
       );
+    });
+
+    it("should throw error for invalid timestamp that creates NaN date", () => {
+      // NaN is within the range check but creates an invalid date
+      expect(() => parseDate(NaN)).toThrow("Invalid timestamp");
     });
 
     it("should throw error for unsupported input type", () => {
