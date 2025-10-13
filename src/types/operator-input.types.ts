@@ -137,3 +137,9 @@ export type RegexReplaceOperatorInput = {
 };
 
 export type NoneOperatorInput = ExpressionValues[];
+
+export type TypeOperatorInput = unknown;
+export type IsArrayOperatorInput = unknown;
+export type IsStringOperatorInput = unknown;
+export type IsBooleanOperatorInput = unknown;
+export type IsDateOperatorInput = unknown;

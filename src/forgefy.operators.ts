@@ -46,6 +46,11 @@ import { $some } from "@operators/some.operator";
 import { $isNaN } from "@operators/is-nan.operator";
 import { $trim } from "@operators/trim.operator";
 import { $none } from "@operators/none.operator";
+import { $type } from "@operators/type.operator";
+import { $isArray } from "@operators/is-array.operator";
+import { $isString } from "@operators/is-string.operator";
+import { $isBoolean } from "@operators/is-boolean.operator";
+import { $isDate } from "@operators/is-date.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -122,4 +127,9 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$toNumber", $toNumber)
   .set("$toString", $toString)
   .set("$toUpper", $toUpper)
-  .set("$trim", $trim);
+  .set("$trim", $trim)
+  .set("$type", $type)
+  .set("$isArray", $isArray)
+  .set("$isString", $isString)
+  .set("$isBoolean", $isBoolean)
+  .set("$isDate", $isDate);

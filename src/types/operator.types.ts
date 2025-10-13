@@ -45,6 +45,11 @@ import {
   IsNaNOperatorInput,
   TrimOperatorInput,
   RegexReplaceOperatorInput,
+  TypeOperatorInput,
+  IsArrayOperatorInput,
+  IsStringOperatorInput,
+  IsBooleanOperatorInput,
+  IsDateOperatorInput,
 } from "./operator-input.types";
 
 export type OperatorValue = (
@@ -98,7 +103,12 @@ export type OperatorKey =
   | "$toNumber"
   | "$toString"
   | "$toUpper"
-  | "$trim";
+  | "$trim"
+  | "$type"
+  | "$isArray"
+  | "$isString"
+  | "$isBoolean"
+  | "$isDate";
 
 export type OperatorInput =
   | AddOperatorInput
@@ -146,4 +156,9 @@ export type OperatorInput =
   | ToNumberOperatorInput
   | ToStringOperatorInput
   | ToUpperOperatorInput
-  | TrimOperatorInput;
+  | TrimOperatorInput
+  | TypeOperatorInput
+  | IsArrayOperatorInput
+  | IsStringOperatorInput
+  | IsBooleanOperatorInput
+  | IsDateOperatorInput;
