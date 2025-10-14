@@ -4,6 +4,8 @@ import { isOperator } from "@helpers/is-operator.helper";
 import { operators } from "@/forgefy.operators";
 import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
 import { ExpressionValues } from "@lib-types/expression.types";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { resolveExpressionWithContext } from "@helpers/execution-context.helper";
 
 /**
  * Resolves an operator expression by executing the appropriate operator function with the given arguments.
@@ -13,6 +15,7 @@ import { ExpressionValues } from "@lib-types/expression.types";
  * @template T - The expected return type of the resolved expression
  * @param source - The source object used as context for path resolution and operator execution
  * @param expression - The expression object containing an operator key and its arguments
+ * @param executionContext - Optional execution context for array operators with special variables
  * @returns The result of executing the operator, or null if an error occurs
  *
  * @example
@@ -30,12 +33,27 @@ import { ExpressionValues } from "@lib-types/expression.types";
  * // Resolve a string operation
  * const stringExpr = { $toString: "$amount" };
  * const result3 = resolveExpression<string>(source, stringExpr); // Returns "100"
+ *
+ * // Resolve with execution context (for array operators)
+ * const context: ExecutionContext = { $current: { name: "John" }, $index: 0 };
+ * const contextExpr = { $concat: ["User: ", "$current.name"] };
+ * const result4 = resolveExpression<string>(source, contextExpr, context); // Returns "User: John"
  * ```
  */
 export function resolveExpression<T>(
   source: Record<string, any>,
   expression: ExpressionValues,
+  executionContext?: ExecutionContext,
 ): T {
+  // If execution context is provided, use the context-aware resolver
+  if (executionContext) {
+    return resolveExpressionWithContext<T>(
+      source,
+      expression,
+      executionContext,
+    );
+  }
+
   try {
     // Handle primitive values (shouldn't normally happen, but be defensive)
     if (typeof expression !== "object" || expression === null) {
