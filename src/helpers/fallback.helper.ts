@@ -1,4 +1,6 @@
-import { resolvePathOrExpression } from "@common/resolve-path-or-expression.common";
+import { resolveValue } from "@common/resolve-value.common";
+import { resolveExpression } from "@common/resolve-expression.common";
+import { isOperator } from "@helpers/is-operator.helper";
 import { FallbackValue } from "@lib-types/fallback.types";
 
 /**
@@ -38,7 +40,15 @@ export function resolveFallback<T = any>(
     throw error;
   }
 
-  // Use the same mechanism of resolution that already exists in the core
-  // This automatically handles static values, paths, and expressions
-  return resolvePathOrExpression(fallback, { context: payload }) as T;
+  // Check if it's an operator expression
+  if (
+    typeof fallback === "object" &&
+    fallback !== null &&
+    isOperator(fallback)
+  ) {
+    return resolveExpression(payload, fallback, { context: payload }) as T;
+  }
+
+  // Otherwise use resolveValue for paths and primitives
+  return resolveValue(fallback, payload, { context: payload }) as T;
 }
