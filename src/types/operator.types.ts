@@ -50,6 +50,10 @@ import {
   IsStringOperatorInput,
   IsBooleanOperatorInput,
   IsDateOperatorInput,
+  ModOperatorInput,
+  PowOperatorInput,
+  SqrtOperatorInput,
+  TruncOperatorInput,
 } from "./operator-input.types";
 
 export type OperatorValue = (
@@ -108,7 +112,11 @@ export type OperatorKey =
   | "$isArray"
   | "$isString"
   | "$isBoolean"
-  | "$isDate";
+  | "$isDate"
+  | "$mod"
+  | "$pow"
+  | "$sqrt"
+  | "$trunc";
 
 export type OperatorInput =
   | AddOperatorInput
@@ -161,4 +169,8 @@ export type OperatorInput =
   | IsArrayOperatorInput
   | IsStringOperatorInput
   | IsBooleanOperatorInput
-  | IsDateOperatorInput;
+  | IsDateOperatorInput
+  | ModOperatorInput
+  | PowOperatorInput
+  | SqrtOperatorInput
+  | TruncOperatorInput;

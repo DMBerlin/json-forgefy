@@ -1,7 +1,7 @@
 import { $trunc } from "@operators/trunc.operator";
 
 describe("$trunc operator", () => {
-  const payload = { fallbackValue: 0 };
+  const payload = { context: { fallbackValue: 0 } };
 
   describe("basic functionality", () => {
     it("should truncate positive decimal to integer", () => {

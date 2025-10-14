@@ -1,7 +1,7 @@
 import { $mod } from "@operators/mod.operator";
 
 describe("$mod operator", () => {
-  const payload = { fallbackValue: 5 };
+  const payload = { context: { fallbackValue: 5 } };
 
   describe("basic functionality", () => {
     it("should return the remainder of division", () => {

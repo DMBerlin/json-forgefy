@@ -1,4 +1,5 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { SqrtOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
 
@@ -20,8 +21,9 @@ import { resolveFallback } from "@helpers/fallback.helper";
  * ```
  */
 export const $sqrt: ExecutableExpression<SqrtOperatorInput, number> = (
-  payload: Record<string, any>,
+  ctx?: ExecutionContext,
 ) => {
+  const payload = ctx?.context || {};
   return function (input: SqrtOperatorInput): number {
     try {
       const { value } = input;

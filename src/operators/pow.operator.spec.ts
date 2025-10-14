@@ -1,7 +1,7 @@
 import { $pow } from "@operators/pow.operator";
 
 describe("$pow operator", () => {
-  const payload = { fallbackValue: 1 };
+  const payload = { context: { fallbackValue: 1 } };
 
   describe("basic functionality", () => {
     it("should calculate power with positive exponent", () => {

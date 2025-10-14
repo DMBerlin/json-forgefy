@@ -1,7 +1,7 @@
 import { $sqrt } from "@operators/sqrt.operator";
 
 describe("$sqrt operator", () => {
-  const payload = { fallbackValue: 0 };
+  const payload = { context: { fallbackValue: 0 } };
 
   describe("basic functionality", () => {
     it("should calculate square root of positive number", () => {

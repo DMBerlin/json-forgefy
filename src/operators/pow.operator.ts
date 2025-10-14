@@ -1,4 +1,5 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { PowOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
 
@@ -21,8 +22,9 @@ import { resolveFallback } from "@helpers/fallback.helper";
  * ```
  */
 export const $pow: ExecutableExpression<PowOperatorInput, number> = (
-  payload: Record<string, any>,
+  ctx?: ExecutionContext,
 ) => {
+  const payload = ctx?.context || {};
   return function (input: PowOperatorInput): number {
     try {
       const { base, exponent } = input;
