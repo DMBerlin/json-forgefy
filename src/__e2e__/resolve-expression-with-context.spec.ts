@@ -1,4 +1,4 @@
-import { resolveExpression } from "./resolve-expression.common";
+import { resolveExpression } from "@common/resolve-expression.common";
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 
 describe("resolveExpression with ExecutionContext Integration", () => {
