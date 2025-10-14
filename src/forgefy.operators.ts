@@ -51,6 +51,10 @@ import { $isArray } from "@operators/is-array.operator";
 import { $isString } from "@operators/is-string.operator";
 import { $isBoolean } from "@operators/is-boolean.operator";
 import { $isDate } from "@operators/is-date.operator";
+import { $mod } from "@operators/mod.operator";
+import { $pow } from "@operators/pow.operator";
+import { $sqrt } from "@operators/sqrt.operator";
+import { $trunc } from "@operators/trunc.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -59,7 +63,7 @@ import { $isDate } from "@operators/is-date.operator";
  * implementation function.
  *
  * The operators are organized into categories:
- * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min
+ * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min, $mod, $pow, $sqrt, $trunc
  * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace, $regexReplace, $trim
  * - Conditional: $cond, $switch, $ifNull
  * - Comparison: $eq, $gt, $gte, $lt, $lte, $ne, $regex
@@ -67,6 +71,7 @@ import { $isDate } from "@operators/is-date.operator";
  * - Array: $in, $nin
  * - Utility: $exists, $isNull
  * - Type Conversion: $toNumber, $toString
+ * - Type Checking: $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN
  * - Date: $dateDiff
  * - Utility: $toFixed
  *
@@ -132,4 +137,8 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$isArray", $isArray)
   .set("$isString", $isString)
   .set("$isBoolean", $isBoolean)
-  .set("$isDate", $isDate);
+  .set("$isDate", $isDate)
+  .set("$mod", $mod)
+  .set("$pow", $pow)
+  .set("$sqrt", $sqrt)
+  .set("$trunc", $trunc);

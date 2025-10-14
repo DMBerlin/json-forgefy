@@ -143,3 +143,25 @@ export type IsArrayOperatorInput = unknown;
 export type IsStringOperatorInput = unknown;
 export type IsBooleanOperatorInput = unknown;
 export type IsDateOperatorInput = unknown;
+
+export type ModOperatorInput = {
+  dividend: number;
+  divisor: number;
+  fallback?: unknown;
+};
+
+export type PowOperatorInput = {
+  base: number;
+  exponent: number;
+  fallback?: unknown;
+};
+
+export type SqrtOperatorInput = {
+  value: number;
+  fallback?: unknown;
+};
+
+export type TruncOperatorInput = {
+  value: number;
+  fallback?: unknown;
+};
