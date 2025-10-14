@@ -55,6 +55,11 @@ import { $mod } from "@operators/mod.operator";
 import { $pow } from "@operators/pow.operator";
 import { $sqrt } from "@operators/sqrt.operator";
 import { $trunc } from "@operators/trunc.operator";
+import { $ltrim } from "@operators/ltrim.operator";
+import { $rtrim } from "@operators/rtrim.operator";
+import { $indexOf } from "@operators/index-of.operator";
+import { $replaceOne } from "@operators/replace-one.operator";
+import { $replaceAll } from "@operators/replace-all.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -64,7 +69,7 @@ import { $trunc } from "@operators/trunc.operator";
  *
  * The operators are organized into categories:
  * - Mathematical: $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min, $mod, $pow, $sqrt, $trunc
- * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace, $regexReplace, $trim
+ * - String: $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace, $regexReplace, $trim, $ltrim, $rtrim, $indexOf, $replaceOne, $replaceAll
  * - Conditional: $cond, $switch, $ifNull
  * - Comparison: $eq, $gt, $gte, $lt, $lte, $ne, $regex
  * - Logical: $and, $or, $not, $none
@@ -141,4 +146,9 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$mod", $mod)
   .set("$pow", $pow)
   .set("$sqrt", $sqrt)
-  .set("$trunc", $trunc);
+  .set("$trunc", $trunc)
+  .set("$ltrim", $ltrim)
+  .set("$rtrim", $rtrim)
+  .set("$indexOf", $indexOf)
+  .set("$replaceOne", $replaceOne)
+  .set("$replaceAll", $replaceAll);

@@ -73,5 +73,11 @@ describe("$sqrt operator", () => {
       const result = $sqrt(payload)(problematicInput as any);
       expect(result).toBe(99);
     });
+
+    it("should handle null context gracefully", () => {
+      const ctx = { context: null as any };
+      const result = $sqrt(ctx)({ value: 16 });
+      expect(result).toBe(4);
+    });
   });
 });

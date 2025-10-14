@@ -93,5 +93,11 @@ describe("$pow operator", () => {
       const result = $pow(payload)(problematicInput as any);
       expect(result).toBe(99);
     });
+
+    it("should handle null context gracefully", () => {
+      const ctx = { context: null as any };
+      const result = $pow(ctx)({ base: 2, exponent: 3 });
+      expect(result).toBe(8);
+    });
   });
 });

@@ -75,5 +75,11 @@ describe("$trunc operator", () => {
       const result = $trunc(payload)(problematicInput as any);
       expect(result).toBe(99);
     });
+
+    it("should handle null context gracefully", () => {
+      const ctx = { context: null as any };
+      const result = $trunc(ctx)({ value: 3.7 });
+      expect(result).toBe(3);
+    });
   });
 });

@@ -83,5 +83,11 @@ describe("$mod operator", () => {
       const result = $mod(payload)(problematicInput as any);
       expect(result).toBe(99);
     });
+
+    it("should handle null context gracefully", () => {
+      const ctx = { context: null as any };
+      const result = $mod(ctx)({ dividend: 10, divisor: 3 });
+      expect(result).toBe(1);
+    });
   });
 });

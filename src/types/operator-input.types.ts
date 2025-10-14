@@ -165,3 +165,36 @@ export type TruncOperatorInput = {
   value: number;
   fallback?: unknown;
 };
+
+export type LtrimOperatorInput = {
+  input: string;
+  chars?: string[];
+  fallback?: unknown;
+};
+
+export type RtrimOperatorInput = {
+  input: string;
+  chars?: string[];
+  fallback?: unknown;
+};
+
+export type IndexOfOperatorInput = {
+  input: string;
+  substring: string;
+  start?: number;
+  fallback?: unknown;
+};
+
+export type ReplaceOneOperatorInput = {
+  input: string;
+  search: string;
+  replacement: string;
+  fallback?: unknown;
+};
+
+export type ReplaceAllOperatorInput = {
+  input: string;
+  search: string;
+  replacement: string;
+  fallback?: unknown;
+};

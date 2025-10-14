@@ -116,7 +116,12 @@ export type OperatorKey =
   | "$mod"
   | "$pow"
   | "$sqrt"
-  | "$trunc";
+  | "$trunc"
+  | "$ltrim"
+  | "$rtrim"
+  | "$indexOf"
+  | "$replaceOne"
+  | "$replaceAll";
 
 export type OperatorInput =
   | AddOperatorInput
