@@ -198,3 +198,154 @@ export type ReplaceAllOperatorInput = {
   replacement: string;
   fallback?: unknown;
 };
+
+// Date operator types
+export type ToDateOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      value: string | number | Date;
+      fallback?: unknown;
+    };
+
+export type DayOfWeekOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type DayOfMonthOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type DayOfYearOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type DateShiftOperatorInput = {
+  date: string | number | Date;
+  strategy?: "rollForward" | "rollBackward" | "keep";
+  holidays?: string[];
+  weekends?: number[];
+  timezone?: string;
+  maxIterations?: number;
+  fallback?: unknown;
+};
+
+// Additional date operator types
+export type IsWeekendOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      weekends?: number[];
+      fallback?: unknown;
+    };
+
+export type IsHolidayOperatorInput = {
+  date: string | number | Date;
+  holidays: string[];
+  timezone?: string;
+  fallback?: unknown;
+};
+
+export type AddDaysOperatorInput = {
+  date: string | number | Date;
+  days: number;
+  timezone?: string;
+  fallback?: unknown;
+};
+
+export type MonthOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type YearOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type IsLeapYearOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      value: string | number | Date;
+      fallback?: unknown;
+    };
+
+// Array operator types
+export type MapOperatorInput = {
+  input: unknown[];
+  expression: Expression;
+  fallback?: unknown;
+};
+
+export type FilterOperatorInput = {
+  input: unknown[];
+  condition: Expression;
+  fallback?: unknown;
+};
+
+export type ReduceOperatorInput = {
+  input: unknown[];
+  initialValue: unknown;
+  expression: Expression;
+  fallback?: unknown;
+};
+
+export type ArrayAtOperatorInput = {
+  input: unknown[];
+  index: number;
+  fallback?: unknown;
+};
+
+export type ArrayFirstOperatorInput = {
+  input: unknown[];
+  fallback?: unknown;
+};
+
+export type ArrayLastOperatorInput = {
+  input: unknown[];
+  fallback?: unknown;
+};
+
+export type AvgOperatorInput = {
+  values: number[];
+  fallback?: unknown;
+};
+
+export type SumOperatorInput = {
+  values: number[];
+  fallback?: unknown;
+};

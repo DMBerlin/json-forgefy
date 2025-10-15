@@ -1,65 +1,84 @@
 import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
-import { $toString } from "@operators/to-string.operator";
-import { $toNumber } from "@operators/to-number.operator";
-import { $multiply } from "@operators/multiply.operator";
-import { $subtract } from "@operators/subtract.operator";
-import { $toUpper } from "@operators/to-upper.operator";
-import { $toLower } from "@operators/to-lower.operator";
-import { $ifNull } from "@operators/if-null.operator";
-import { $substr } from "@operators/substr.operator";
-import { $divide } from "@operators/divide.operator";
-import { $concat } from "@operators/concat.operator";
-import { $slice } from "@operators/slice.operator";
-import { $split } from "@operators/split.operator";
-import { $size } from "@operators/size.operator";
-import { $add } from "@operators/add.operator";
-import { $eq } from "@operators/eq.operator";
-import { $switch } from "@operators/switch.operator";
-import { $cond } from "@operators/cond.operator";
-import { $abs } from "@operators/abs.operator";
-import { $ceil } from "@operators/ceil.operator";
-import { $floor } from "@operators/floor.operator";
-import { $max } from "@operators/max.operator";
-import { $min } from "@operators/min.operator";
-import { $dateDiff } from "@operators/date-diff.operator";
-import { $toFixed } from "@operators/to-fixed.operator";
-import { $gt } from "@operators/gt.operator";
-import { $gte } from "@operators/gte.operator";
-import { $lt } from "@operators/lt.operator";
-import { $lte } from "@operators/lte.operator";
-import { $regex } from "@operators/regex.operator";
-import { $regexReplace } from "@operators/regex-replace.operator";
-import { $and } from "@operators/and.operator";
-import { $or } from "@operators/or.operator";
-import { $not } from "@operators/not.operator";
-import { $ne } from "@operators/ne.operator";
-import { $in } from "@operators/in.operator";
-import { $nin } from "@operators/nin.operator";
-import { $exists } from "@operators/exists.operator";
-import { $isNull } from "@operators/is-null.operator";
-import { $replace } from "@operators/replace.operator";
-import { $isNumber } from "@operators/is-number.operator";
-import { $coalesce } from "@operators/coalesce.operator";
-import { $round } from "@operators/round.operator";
-import { $every } from "@operators/every.operator";
-import { $some } from "@operators/some.operator";
-import { $isNaN } from "@operators/is-nan.operator";
-import { $trim } from "@operators/trim.operator";
-import { $none } from "@operators/none.operator";
-import { $type } from "@operators/type.operator";
-import { $isArray } from "@operators/is-array.operator";
-import { $isString } from "@operators/is-string.operator";
-import { $isBoolean } from "@operators/is-boolean.operator";
-import { $isDate } from "@operators/is-date.operator";
-import { $mod } from "@operators/mod.operator";
-import { $pow } from "@operators/pow.operator";
-import { $sqrt } from "@operators/sqrt.operator";
-import { $trunc } from "@operators/trunc.operator";
-import { $ltrim } from "@operators/ltrim.operator";
-import { $rtrim } from "@operators/rtrim.operator";
-import { $indexOf } from "@operators/index-of.operator";
-import { $replaceOne } from "@operators/replace-one.operator";
-import { $replaceAll } from "@operators/replace-all.operator";
+
+// String operators
+import { $toString } from "@operators/string/to-string.operator";
+import { $toUpper } from "@operators/string/to-upper.operator";
+import { $toLower } from "@operators/string/to-lower.operator";
+import { $substr } from "@operators/string/substr.operator";
+import { $concat } from "@operators/string/concat.operator";
+import { $slice } from "@operators/string/slice.operator";
+import { $split } from "@operators/string/split.operator";
+import { $size } from "@operators/string/size.operator";
+import { $replace } from "@operators/string/replace.operator";
+import { $regexReplace } from "@operators/string/regex-replace.operator";
+import { $trim } from "@operators/string/trim.operator";
+import { $ltrim } from "@operators/string/ltrim.operator";
+import { $rtrim } from "@operators/string/rtrim.operator";
+import { $indexOf } from "@operators/string/index-of.operator";
+import { $replaceOne } from "@operators/string/replace-one.operator";
+import { $replaceAll } from "@operators/string/replace-all.operator";
+
+// Math operators
+import { $multiply } from "@operators/math/multiply.operator";
+import { $subtract } from "@operators/math/subtract.operator";
+import { $divide } from "@operators/math/divide.operator";
+import { $add } from "@operators/math/add.operator";
+import { $abs } from "@operators/math/abs.operator";
+import { $ceil } from "@operators/math/ceil.operator";
+import { $floor } from "@operators/math/floor.operator";
+import { $max } from "@operators/math/max.operator";
+import { $min } from "@operators/math/min.operator";
+import { $toFixed } from "@operators/math/to-fixed.operator";
+import { $round } from "@operators/math/round.operator";
+import { $mod } from "@operators/math/mod.operator";
+import { $pow } from "@operators/math/pow.operator";
+import { $sqrt } from "@operators/math/sqrt.operator";
+import { $trunc } from "@operators/math/trunc.operator";
+
+// Conditional operators
+import { $ifNull } from "@operators/conditional/if-null.operator";
+import { $switch } from "@operators/conditional/switch.operator";
+import { $cond } from "@operators/conditional/cond.operator";
+import { $coalesce } from "@operators/conditional/coalesce.operator";
+import { $every } from "@operators/conditional/every.operator";
+import { $some } from "@operators/conditional/some.operator";
+
+// Comparison operators
+import { $eq } from "@operators/comparison/eq.operator";
+import { $gt } from "@operators/comparison/gt.operator";
+import { $gte } from "@operators/comparison/gte.operator";
+import { $lt } from "@operators/comparison/lt.operator";
+import { $lte } from "@operators/comparison/lte.operator";
+import { $regex } from "@operators/comparison/regex.operator";
+import { $ne } from "@operators/comparison/ne.operator";
+import { $in } from "@operators/comparison/in.operator";
+import { $nin } from "@operators/comparison/nin.operator";
+
+// Logical operators
+import { $and } from "@operators/logical/and.operator";
+import { $or } from "@operators/logical/or.operator";
+import { $not } from "@operators/logical/not.operator";
+import { $none } from "@operators/logical/none.operator";
+
+// Type operators
+import { $toNumber } from "@operators/type/to-number.operator";
+import { $exists } from "@operators/type/exists.operator";
+import { $isNull } from "@operators/type/is-null.operator";
+import { $isNumber } from "@operators/type/is-number.operator";
+import { $isNaN } from "@operators/type/is-nan.operator";
+import { $type } from "@operators/type/type.operator";
+import { $isArray } from "@operators/type/is-array.operator";
+import { $isString } from "@operators/type/is-string.operator";
+import { $isBoolean } from "@operators/type/is-boolean.operator";
+import { $isDate } from "@operators/type/is-date.operator";
+
+// Date operators
+import { $dateDiff } from "@operators/date/date-diff.operator";
+import { $toDate } from "@operators/date/to-date.operator";
+import { $dayOfWeek } from "@operators/date/day-of-week.operator";
+import { $dayOfMonth } from "@operators/date/day-of-month.operator";
+import { $dayOfYear } from "@operators/date/day-of-year.operator";
+import { $dateShift } from "@operators/date/date-shift.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -77,7 +96,7 @@ import { $replaceAll } from "@operators/replace-all.operator";
  * - Utility: $exists, $isNull
  * - Type Conversion: $toNumber, $toString
  * - Type Checking: $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN
- * - Date: $dateDiff
+ * - Date: $dateDiff, $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $dateShift
  * - Utility: $toFixed
  *
  * @example
@@ -151,4 +170,9 @@ export const operators: Map<OperatorKey, OperatorValue> = new Map<
   .set("$rtrim", $rtrim)
   .set("$indexOf", $indexOf)
   .set("$replaceOne", $replaceOne)
-  .set("$replaceAll", $replaceAll);
+  .set("$replaceAll", $replaceAll)
+  .set("$toDate", $toDate)
+  .set("$dayOfWeek", $dayOfWeek)
+  .set("$dayOfMonth", $dayOfMonth)
+  .set("$dayOfYear", $dayOfYear)
+  .set("$dateShift", $dateShift);
