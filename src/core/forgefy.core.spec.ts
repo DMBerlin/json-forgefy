@@ -1,4 +1,4 @@
-import { Forgefy } from "@/index";
+import Forgefy from "@/index";
 import { originFixture } from "@fixtures/origin.fixtures";
 import { blueprintFixture } from "@fixtures/blueprint.fixture";
 import { expectedFixture } from "@fixtures/expected.fixture";

@@ -1,4 +1,4 @@
-import { Forgefy } from "@/index";
+import Forgefy from "@/index";
 
 describe("Type Operators E2E", () => {
   describe("$type operator", () => {

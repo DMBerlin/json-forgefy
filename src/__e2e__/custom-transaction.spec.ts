@@ -1,4 +1,4 @@
-import { Forgefy } from "..";
+import Forgefy from "..";
 
 describe("E2E PIX DEBIT Transaction", () => {
   it("should transform transaction payload correctly with corrected blueprint", () => {
