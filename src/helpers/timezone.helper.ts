@@ -5,6 +5,13 @@
  * Implements caching for Intl.DateTimeFormat instances to improve performance.
  */
 
+import {
+  MS_PER_HOUR,
+  MS_PER_MINUTE,
+  MS_PER_SECOND,
+  MS_PER_DAY,
+} from "./date-time.heper";
+
 // Cache for Intl.DateTimeFormat instances by timezone
 const formatterCache = new Map<string, Intl.DateTimeFormat>();
 
@@ -138,11 +145,12 @@ export function createDateInTimezone(
   const secondDiff = components.second;
 
   // Adjust the UTC date to get midnight in the target timezone
+  // Using constants for reliability and consistency
   const adjustedDate = new Date(
     utcDate.getTime() -
-      hourDiff * 60 * 60 * 1000 -
-      minuteDiff * 60 * 1000 -
-      secondDiff * 1000,
+      hourDiff * MS_PER_HOUR -
+      minuteDiff * MS_PER_MINUTE -
+      secondDiff * MS_PER_SECOND,
   );
 
   // Verify the result is correct
@@ -154,7 +162,7 @@ export function createDateInTimezone(
     verifyComponents.month !== month ||
     verifyComponents.day !== day
   ) {
-    // Calculate the day difference
+    // Calculate the day difference using reliable constants
     const targetDate = new Date(year, month - 1, day);
     const actualDate = new Date(
       verifyComponents.year,
@@ -162,10 +170,10 @@ export function createDateInTimezone(
       verifyComponents.day,
     );
     const daysDiff = Math.round(
-      (targetDate.getTime() - actualDate.getTime()) / (24 * 60 * 60 * 1000),
+      (targetDate.getTime() - actualDate.getTime()) / MS_PER_DAY,
     );
 
-    return new Date(adjustedDate.getTime() + daysDiff * 24 * 60 * 60 * 1000);
+    return new Date(adjustedDate.getTime() + daysDiff * MS_PER_DAY);
   }
 
   return adjustedDate;

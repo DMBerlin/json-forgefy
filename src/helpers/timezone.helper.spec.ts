@@ -5,6 +5,7 @@ import {
   getTimezoneOffset,
   clearFormatterCache,
 } from "./timezone.helper";
+import { MS_PER_HOUR } from "./date-time.heper";
 
 describe("timezone.helper", () => {
   afterEach(() => {
@@ -213,7 +214,7 @@ describe("timezone.helper", () => {
 
       // Sao Paulo is UTC-3, so offset should be negative
       expect(offset).toBeLessThan(0);
-      expect(offset).toBe(-3 * 60 * 60 * 1000); // -3 hours in milliseconds
+      expect(offset).toBe(-3 * MS_PER_HOUR); // -3 hours in milliseconds
     });
 
     it("should return positive offset for timezones ahead of UTC", () => {
@@ -222,19 +223,19 @@ describe("timezone.helper", () => {
 
       // Tokyo is UTC+9, so offset should be positive
       expect(offset).toBeGreaterThan(0);
-      expect(offset).toBe(9 * 60 * 60 * 1000); // +9 hours in milliseconds
+      expect(offset).toBe(9 * MS_PER_HOUR); // +9 hours in milliseconds
     });
 
     it("should handle DST transitions correctly", () => {
       // Test date during DST in New York (EDT, UTC-4)
       const summerDate = new Date("2025-06-15T12:00:00Z");
       const summerOffset = getTimezoneOffset(summerDate, "America/New_York");
-      expect(summerOffset).toBe(-4 * 60 * 60 * 1000);
+      expect(summerOffset).toBe(-4 * MS_PER_HOUR);
 
       // Test date during standard time in New York (EST, UTC-5)
       const winterDate = new Date("2025-01-15T12:00:00Z");
       const winterOffset = getTimezoneOffset(winterDate, "America/New_York");
-      expect(winterOffset).toBe(-5 * 60 * 60 * 1000);
+      expect(winterOffset).toBe(-5 * MS_PER_HOUR);
     });
 
     it("should calculate offset consistently for different dates", () => {

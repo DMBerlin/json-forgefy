@@ -1,4 +1,26 @@
 import { getDateInTimezone, createDateInTimezone } from "./timezone.helper";
+import {
+  DateValidationError,
+  InvalidDateFormatError,
+  TimestampRangeError,
+} from "@lib-types/error.types";
+
+/**
+ * Constants for date/time calculations
+ * Using constants ensures consistency and reduces errors
+ */
+export const MS_PER_SECOND = 1000;
+export const MS_PER_MINUTE = 60 * MS_PER_SECOND;
+export const MS_PER_HOUR = 60 * MS_PER_MINUTE;
+export const MS_PER_DAY = 24 * MS_PER_HOUR;
+
+/**
+ * Maximum value for JavaScript Date representation
+ * This is the max safe timestamp value: ±100,000,000 days from epoch
+ * Represents dates from approximately 271,821 BCE to 275,760 CE
+ * Equivalent to: 86,400,000 ms/day × 100,000,000 days
+ */
+export const MAX_DATE_VALUE = 8.64e15;
 
 /**
  * Validates if a string can be successfully parsed into a valid Date object.
@@ -18,7 +40,30 @@ import { getDateInTimezone, createDateInTimezone } from "./timezone.helper";
  */
 export function isValidDateString(dateString: string): boolean {
   const date: Date = new Date(dateString);
-  return !isNaN(date.getTime());
+  return Number.isFinite(date.getTime());
+}
+
+/**
+ * Checks if the input is a direct date value (primitive date input)
+ * This is a helper to avoid repeating type checks across date operators
+ *
+ * @param input - Value to check
+ * @returns true if input is string, number, or Date instance
+ *
+ * @example
+ * ```typescript
+ * isDirectDateInput("2025-01-01"); // true
+ * isDirectDateInput(1704110400); // true
+ * isDirectDateInput(new Date()); // true
+ * isDirectDateInput({ date: "2025-01-01" }); // false
+ * ```
+ */
+export function isDirectDateInput(input: any): input is string | number | Date {
+  return (
+    typeof input === "string" ||
+    typeof input === "number" ||
+    input instanceof Date
+  );
 }
 
 /**
@@ -39,8 +84,9 @@ export function isValidDateString(dateString: string): boolean {
  */
 export function parseDate(input: string | number | Date): Date {
   if (input instanceof Date) {
-    if (isNaN(input.getTime())) {
-      throw new Error("Invalid Date object");
+    // Use Number.isNaN for more reliable NaN checking
+    if (!Number.isFinite(input.getTime())) {
+      throw new DateValidationError("Invalid Date object", input);
     }
     return input;
   }
@@ -50,35 +96,53 @@ export function parseDate(input: string | number | Date): Date {
     const isoRegex =
       /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?(Z|[+-]\d{2}:\d{2})?)?$/;
     if (!isoRegex.test(input)) {
-      throw new Error(`Invalid ISO-8601 date string: ${input}`);
+      throw new InvalidDateFormatError(
+        `Invalid ISO-8601 date string: ${input}. Expected format: YYYY-MM-DD or YYYY-MM-DDTHH:mm:ss.sssZ`,
+        input,
+      );
     }
 
     const date = new Date(input);
-    if (isNaN(date.getTime())) {
-      throw new Error(`Invalid date string: ${input}`);
+    // Use Number.isFinite for more reliable validation
+    if (!Number.isFinite(date.getTime())) {
+      throw new DateValidationError(`Invalid date string: ${input}`, input);
     }
     return date;
   }
 
   if (typeof input === "number") {
+    // Validate input is a finite number
+    if (!Number.isFinite(input)) {
+      throw new DateValidationError(
+        `Invalid timestamp: must be a finite number, got ${input}`,
+        input,
+      );
+    }
+
     // Detect if Unix timestamp (seconds) or JS timestamp (milliseconds)
     // Unix timestamps are typically < 10000000000 (before year 2286)
-    const timestamp = input < 10000000000 ? input * 1000 : input;
+    const timestamp = input < 10000000000 ? input * MS_PER_SECOND : input;
 
-    // Validate limits of representation first
-    if (timestamp < -8640000000000000 || timestamp > 8640000000000000) {
-      throw new Error(`Timestamp out of representable range: ${input}`);
+    // Validate limits of representation (JavaScript Date limits)
+    if (Math.abs(timestamp) > MAX_DATE_VALUE) {
+      throw new TimestampRangeError(
+        `Timestamp out of representable range: ${input}. Valid range: ±${MAX_DATE_VALUE}`,
+        input,
+      );
     }
 
     const date = new Date(timestamp);
-    if (isNaN(date.getTime())) {
-      throw new Error(`Invalid timestamp: ${input}`);
+    if (!Number.isFinite(date.getTime())) {
+      throw new DateValidationError(`Invalid timestamp: ${input}`, input);
     }
 
     return date;
   }
 
-  throw new Error(`Unsupported date input type: ${typeof input}`);
+  throw new InvalidDateFormatError(
+    `Unsupported date input type: ${typeof input}. Expected string, number, or Date`,
+    input,
+  );
 }
 
 /**
@@ -185,7 +249,7 @@ export function getDayOfYear(date: Date, timezone: string): number {
   const dateInTz = getDateInTimezone(date, timezone);
   const startOfYear = createDateInTimezone(dateInTz.year, 1, 1, timezone);
   const diff = date.getTime() - startOfYear.getTime();
-  return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+  return Math.floor(diff / MS_PER_DAY) + 1;
 }
 
 /**
@@ -207,7 +271,7 @@ export function getDayOfYear(date: Date, timezone: string): number {
  */
 export function diffInDays(startDate: Date, endDate: Date): number {
   const diffTime: number = Math.abs(endDate.getTime() - startDate.getTime());
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return Math.ceil(diffTime / MS_PER_DAY);
 }
 
 /**
@@ -230,7 +294,8 @@ export function diffInDays(startDate: Date, endDate: Date): number {
  */
 export function diffInMonths(startDate: Date, endDate: Date): number {
   const diffTime: number = endDate.getTime() - startDate.getTime();
-  return Math.floor(diffTime / (1000 * 3600 * 24 * 30));
+  // Approximate: 30 days per month
+  return Math.floor(diffTime / (MS_PER_DAY * 30));
 }
 
 /**
@@ -253,5 +318,6 @@ export function diffInMonths(startDate: Date, endDate: Date): number {
  */
 export function diffInYears(startDate: Date, endDate: Date): number {
   const diffTime: number = endDate.getTime() - startDate.getTime();
-  return Math.floor(diffTime / (1000 * 3600 * 24 * 365));
+  // Approximate: 365 days per year
+  return Math.floor(diffTime / (MS_PER_DAY * 365));
 }

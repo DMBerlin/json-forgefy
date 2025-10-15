@@ -1,7 +1,8 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { ToDateOperatorInput } from "@lib-types/operator-input.types";
-import { parseDate } from "@helpers/date-time.heper";
+import { parseDate, isDirectDateInput } from "@helpers/date-time.heper";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * $toDate operator - Converts and validates dates
@@ -41,17 +42,21 @@ export const $toDate: ExecutableExpression<ToDateOperatorInput, Date> = () => {
       }
 
       // Handle direct value (when input is string | number | Date)
-      if (
-        typeof input === "string" ||
-        typeof input === "number" ||
-        input instanceof Date
-      ) {
+      if (isDirectDateInput(input)) {
         return parseDate(input);
       }
 
       // If we reach here, input is not a valid format
-      throw new Error("Invalid input format");
+      throw new OperatorInputError(
+        `Invalid input format. Expected date string/number/Date or object with 'value' property`,
+        "$toDate",
+        input,
+      );
     } catch (error) {
+      // Preserve OperatorInputError for better error handling
+      if (error instanceof OperatorInputError) {
+        throw error;
+      }
       throw new Error(
         `$toDate: Invalid date value - ${error instanceof Error ? error.message : "Unknown error"}`,
       );

@@ -41,7 +41,7 @@ yarn add json-forgefy
 Transform API responses, calculate values, and reshape data in seconds:
 
 ```typescript
-import { Forgefy } from 'json-forgefy';
+import Forgefy from 'json-forgefy';
 
 // Raw API response
 const apiResponse = {

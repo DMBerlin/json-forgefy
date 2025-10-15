@@ -3,16 +3,74 @@ import {
   diffInMonths,
   diffInYears,
   isValidDateString,
+  isDirectDateInput,
   parseDate,
   formatDateISO,
   isValidCalendarDate,
   isLeapYear,
   getDayOfYear,
+  MS_PER_SECOND,
+  MS_PER_MINUTE,
+  MS_PER_HOUR,
+  MS_PER_DAY,
+  MAX_DATE_VALUE,
 } from "@helpers/date-time.heper";
+import {
+  DateValidationError,
+  InvalidDateFormatError,
+  TimestampRangeError,
+} from "@lib-types/error.types";
 
 describe("DateTimeHelper", () => {
   let startDate: Date;
   let endDate: Date;
+
+  describe("Time constants", () => {
+    it("should define MS_PER_SECOND correctly", () => {
+      expect(MS_PER_SECOND).toBe(1000);
+    });
+
+    it("should define MS_PER_MINUTE correctly", () => {
+      expect(MS_PER_MINUTE).toBe(60 * 1000);
+      expect(MS_PER_MINUTE).toBe(60000);
+    });
+
+    it("should define MS_PER_HOUR correctly", () => {
+      expect(MS_PER_HOUR).toBe(60 * 60 * 1000);
+      expect(MS_PER_HOUR).toBe(3600000);
+    });
+
+    it("should define MS_PER_DAY correctly", () => {
+      expect(MS_PER_DAY).toBe(24 * 60 * 60 * 1000);
+      expect(MS_PER_DAY).toBe(86400000);
+    });
+
+    it("should use constants for reliable date arithmetic", () => {
+      const date = new Date("2025-01-01T00:00:00Z");
+      const nextDay = new Date(date.getTime() + MS_PER_DAY);
+      expect(nextDay.toISOString()).toBe("2025-01-02T00:00:00.000Z");
+    });
+
+    it("should define MAX_DATE_VALUE correctly", () => {
+      expect(MAX_DATE_VALUE).toBe(8.64e15);
+      expect(MAX_DATE_VALUE).toBe(8640000000000000);
+    });
+
+    it("should validate dates within MAX_DATE_VALUE range", () => {
+      // Create dates at the boundaries
+      const maxDate = new Date(MAX_DATE_VALUE);
+      const minDate = new Date(-MAX_DATE_VALUE);
+
+      expect(Number.isFinite(maxDate.getTime())).toBe(true);
+      expect(Number.isFinite(minDate.getTime())).toBe(true);
+    });
+
+    it("should represent meaningful date range", () => {
+      // MAX_DATE_VALUE should represent approximately ±100 million days from epoch
+      const daysRepresented = MAX_DATE_VALUE / MS_PER_DAY;
+      expect(daysRepresented).toBe(100000000); // 100 million days
+    });
+  });
 
   describe("isValidDateString", () => {
     it("should return true for valid date strings", () => {
@@ -26,6 +84,39 @@ describe("DateTimeHelper", () => {
       expect(isValidDateString("invalid-date")).toBe(false);
       expect(isValidDateString("")).toBe(false);
       expect(isValidDateString("not a date")).toBe(false);
+    });
+  });
+
+  describe("isDirectDateInput", () => {
+    it("should return true for string inputs", () => {
+      expect(isDirectDateInput("2024-01-01")).toBe(true);
+      expect(isDirectDateInput("2024-01-01T10:30:00Z")).toBe(true);
+      expect(isDirectDateInput("")).toBe(true); // String type check, not validation
+    });
+
+    it("should return true for number inputs", () => {
+      expect(isDirectDateInput(1704110400)).toBe(true); // Unix timestamp
+      expect(isDirectDateInput(1704110400000)).toBe(true); // JS timestamp
+      expect(isDirectDateInput(0)).toBe(true);
+    });
+
+    it("should return true for Date object inputs", () => {
+      expect(isDirectDateInput(new Date())).toBe(true);
+      expect(isDirectDateInput(new Date("2024-01-01"))).toBe(true);
+    });
+
+    it("should return false for object inputs (not Date)", () => {
+      expect(isDirectDateInput({ date: "2024-01-01" })).toBe(false);
+      expect(isDirectDateInput({ value: 123 })).toBe(false);
+      expect(isDirectDateInput({})).toBe(false);
+    });
+
+    it("should return false for other types", () => {
+      expect(isDirectDateInput(null)).toBe(false);
+      expect(isDirectDateInput(undefined)).toBe(false);
+      expect(isDirectDateInput([])).toBe(false);
+      expect(isDirectDateInput(true)).toBe(false);
+      expect(isDirectDateInput(false)).toBe(false);
     });
   });
 
@@ -127,13 +218,16 @@ describe("DateTimeHelper", () => {
 
     it("should throw error for invalid Date object", () => {
       const invalidDate = new Date("invalid");
+      expect(() => parseDate(invalidDate)).toThrow(DateValidationError);
       expect(() => parseDate(invalidDate)).toThrow("Invalid Date object");
     });
 
     it("should throw error for invalid ISO-8601 string", () => {
+      expect(() => parseDate("invalid-date")).toThrow(InvalidDateFormatError);
       expect(() => parseDate("invalid-date")).toThrow(
         "Invalid ISO-8601 date string",
       );
+      expect(() => parseDate("01/01/2025")).toThrow(InvalidDateFormatError);
       expect(() => parseDate("01/01/2025")).toThrow(
         "Invalid ISO-8601 date string",
       );
@@ -141,26 +235,43 @@ describe("DateTimeHelper", () => {
 
     it("should throw error for ISO-8601 format with invalid date values", () => {
       // This passes the regex but creates an invalid date (month 13 doesn't exist)
+      expect(() => parseDate("2025-13-01")).toThrow(DateValidationError);
       expect(() => parseDate("2025-13-01")).toThrow("Invalid date string");
       // Note: JavaScript Date auto-corrects some invalid dates like 2025-02-30 to 2025-03-02
       // so we test with a clearly invalid month instead
     });
 
     it("should throw error for timestamp out of range", () => {
+      expect(() => parseDate(9999999999999999)).toThrow(TimestampRangeError);
       expect(() => parseDate(9999999999999999)).toThrow(
         "Timestamp out of representable range",
       );
+      expect(() => parseDate(-9999999999999999)).toThrow(TimestampRangeError);
       expect(() => parseDate(-9999999999999999)).toThrow(
         "Timestamp out of representable range",
       );
     });
 
-    it("should throw error for invalid timestamp that creates NaN date", () => {
-      // NaN is within the range check but creates an invalid date
-      expect(() => parseDate(NaN)).toThrow("Invalid timestamp");
+    it("should throw error for NaN timestamp (modern validation)", () => {
+      expect(() => parseDate(NaN)).toThrow(DateValidationError);
+      expect(() => parseDate(NaN)).toThrow(
+        "Invalid timestamp: must be a finite number",
+      );
+    });
+
+    it("should throw error for Infinity timestamp (modern validation)", () => {
+      expect(() => parseDate(Infinity)).toThrow(DateValidationError);
+      expect(() => parseDate(Infinity)).toThrow(
+        "Invalid timestamp: must be a finite number",
+      );
+      expect(() => parseDate(-Infinity)).toThrow(DateValidationError);
+      expect(() => parseDate(-Infinity)).toThrow(
+        "Invalid timestamp: must be a finite number",
+      );
     });
 
     it("should throw error for unsupported input type", () => {
+      expect(() => parseDate(true as any)).toThrow(InvalidDateFormatError);
       expect(() => parseDate(true as any)).toThrow(
         "Unsupported date input type",
       );
