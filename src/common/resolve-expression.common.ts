@@ -1,4 +1,4 @@
-import { operatorRegistry } from "@core/operators.registry";
+import { operatorRegistry } from "@/singletons/operators.singleton";
 import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
 import { ExpressionValues } from "@lib-types/expression.types";
 import { ExecutionContext } from "@interfaces/execution-context.interface";

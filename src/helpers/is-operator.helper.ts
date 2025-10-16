@@ -1,4 +1,4 @@
-import { operatorRegistry } from "@/forgefy.operators";
+import { operatorRegistry } from "@operators/forgefy.operators";
 import { OperatorKey } from "@lib-types/operator.types";
 
 /**

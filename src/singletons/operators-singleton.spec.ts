@@ -1,4 +1,4 @@
-import { operatorRegistry } from "./operators.registry";
+import { operatorRegistry } from "./operators.singleton";
 
 describe("Operator Registry Singleton", () => {
   it("should return the same instance", () => {
@@ -17,7 +17,7 @@ describe("Operator Registry Singleton", () => {
   it("should return all registered operator keys", () => {
     // Import forgefy.operators to trigger population
     // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
-    require("@/forgefy.operators");
+    require("@operators/forgefy.operators");
 
     const keys = Array.from(operatorRegistry.keys());
     expect(keys.length).toBeGreaterThan(0);
@@ -28,7 +28,7 @@ describe("Operator Registry Singleton", () => {
 
   it("should have all 70 operators registered", () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
-    require("@/forgefy.operators");
+    require("@operators/forgefy.operators");
 
     const keys = Array.from(operatorRegistry.keys());
     expect(keys.length).toBeGreaterThanOrEqual(70); // At least 70, may have test operators

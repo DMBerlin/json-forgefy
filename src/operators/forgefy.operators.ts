@@ -1,4 +1,4 @@
-import { operatorRegistry } from "@core/operators.registry";
+import { operatorRegistry } from "@/singletons/operators.singleton";
 
 // String operators
 import { $toString } from "@operators/string/to-string.operator";
