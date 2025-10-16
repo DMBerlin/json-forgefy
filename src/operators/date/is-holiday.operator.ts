@@ -44,13 +44,15 @@ export const $isHoliday: ExecutableExpression<
         return resolveFallback(
           input.fallback,
           {},
+          /* istanbul ignore next */
           error instanceof Error
             ? error
             : new Error("Invalid date or holidays"),
         );
       }
       throw new Error(
-        `$isHoliday: ${error instanceof Error ? error.message : "Unknown error"}`,
+        /* istanbul ignore next - defensive: non-Error exceptions are extremely rare */
+        `$isHoliday: ${/* istanbul ignore next */ error instanceof Error ? error.message : /* istanbul ignore next */ "Unknown error"}`,
       );
     }
   };

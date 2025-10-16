@@ -185,4 +185,15 @@ describe("$dayOfWeek operator", () => {
       );
     });
   });
+
+  describe("branch coverage", () => {
+    it("should use default UTC timezone when not specified", () => {
+      const result = $dayOfWeek()({
+        date: "2024-01-15T10:00:00Z",
+      });
+      expect(typeof result).toBe("number");
+      expect(result).toBeGreaterThanOrEqual(0);
+      expect(result).toBeLessThan(7);
+    });
+  });
 });

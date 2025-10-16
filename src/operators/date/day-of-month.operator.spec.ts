@@ -200,4 +200,24 @@ describe("$dayOfMonth operator", () => {
       expect(() => $dayOfMonth()(true as any)).toThrow(OperatorInputError);
     });
   });
+
+  describe("branch coverage", () => {
+    it("should use default UTC timezone when not specified", () => {
+      // This covers the || "UTC" branch
+      const result = $dayOfMonth()({
+        date: "2024-01-15T10:00:00Z",
+        // timezone not specified - should default to UTC
+      });
+      expect(result).toBe(15);
+    });
+
+    it("should handle explicitly provided timezone", () => {
+      // Verify explicit timezone works (already covered by other tests)
+      const result = $dayOfMonth()({
+        date: "2024-01-15T10:00:00Z",
+        timezone: "America/New_York",
+      });
+      expect(typeof result).toBe("number");
+    });
+  });
 });

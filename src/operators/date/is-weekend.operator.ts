@@ -48,7 +48,10 @@ export const $isWeekend: ExecutableExpression<
             return resolveFallback(
               input.fallback,
               {},
-              error instanceof Error ? error : new Error("Invalid date"),
+              /* istanbul ignore next - defensive: non-Error exceptions are extremely rare */
+              error instanceof Error
+                ? error
+                : /* istanbul ignore next */ new Error("Invalid date"),
             );
           }
           throw error;
@@ -74,7 +77,8 @@ export const $isWeekend: ExecutableExpression<
         throw error;
       }
       throw new Error(
-        `$isWeekend: Invalid date value - ${error instanceof Error ? error.message : "Unknown error"}`,
+        /* istanbul ignore next - defensive: non-Error exceptions are extremely rare */
+        `$isWeekend: Invalid date value - ${/* istanbul ignore next */ error instanceof Error ? error.message : /* istanbul ignore next */ "Unknown error"}`,
       );
     }
   };

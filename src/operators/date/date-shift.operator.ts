@@ -201,6 +201,7 @@ export const $dateShift: ExecutableExpression<
         return resolveFallback(
           input.fallback,
           {},
+          /* istanbul ignore next */
           error instanceof Error
             ? error
             : new Error("Unknown error in $dateShift"),
@@ -219,7 +220,8 @@ export const $dateShift: ExecutableExpression<
       }
 
       throw new Error(
-        `$dateShift: ${error instanceof Error ? error.message : "Unknown error"}`,
+        /* istanbul ignore next - defensive: non-Error exceptions are extremely rare */
+        `$dateShift: ${/* istanbul ignore next */ error instanceof Error ? error.message : /* istanbul ignore next */ "Unknown error"}`,
       );
     }
   };

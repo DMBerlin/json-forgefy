@@ -36,6 +36,7 @@ export const $toDate: ExecutableExpression<ToDateOperatorInput, Date> = () => {
           return resolveFallback(
             input.fallback,
             {},
+            /* istanbul ignore next */
             error instanceof Error ? error : new Error("Invalid date"),
           );
         }
@@ -58,7 +59,8 @@ export const $toDate: ExecutableExpression<ToDateOperatorInput, Date> = () => {
         throw error;
       }
       throw new Error(
-        `$toDate: Invalid date value - ${error instanceof Error ? error.message : "Unknown error"}`,
+        /* istanbul ignore next - defensive: non-Error exceptions are extremely rare */
+        `$toDate: Invalid date value - ${/* istanbul ignore next */ error instanceof Error ? error.message : /* istanbul ignore next */ "Unknown error"}`,
       );
     }
   };

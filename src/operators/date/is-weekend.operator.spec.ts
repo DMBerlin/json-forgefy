@@ -218,4 +218,26 @@ describe("$isWeekend", () => {
       );
     });
   });
+
+  describe("direct date input support", () => {
+    it("should handle direct string date input", () => {
+      const result = operator("2024-01-06T12:00:00Z"); // Saturday
+      expect(result).toBe(true);
+    });
+
+    it("should handle direct Date object input", () => {
+      const result = operator(new Date("2024-01-07T12:00:00Z")); // Sunday
+      expect(result).toBe(true);
+    });
+
+    it("should handle direct timestamp input", () => {
+      const result = operator(1704556800000); // 2024-01-06 Saturday
+      expect(result).toBe(true);
+    });
+
+    it("should return false for weekday with direct input", () => {
+      const result = operator("2024-01-08T12:00:00Z"); // Monday
+      expect(result).toBe(false);
+    });
+  });
 });

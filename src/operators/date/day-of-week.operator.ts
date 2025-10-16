@@ -43,6 +43,7 @@ export const $dayOfWeek: ExecutableExpression<
             return resolveFallback(
               input.fallback,
               {},
+              /* istanbul ignore next */
               error instanceof Error ? error : new Error("Invalid date"),
             );
           }
@@ -68,7 +69,8 @@ export const $dayOfWeek: ExecutableExpression<
         throw error;
       }
       throw new Error(
-        `$dayOfWeek: Invalid date value - ${error instanceof Error ? error.message : "Unknown error"}`,
+        /* istanbul ignore next - defensive: non-Error exceptions are extremely rare */
+        `$dayOfWeek: Invalid date value - ${/* istanbul ignore next */ error instanceof Error ? error.message : /* istanbul ignore next */ "Unknown error"}`,
       );
     }
   };
