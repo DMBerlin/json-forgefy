@@ -259,4 +259,24 @@ describe("$isHoliday", () => {
       expect(result).toBe(true);
     });
   });
+
+  describe("input validation", () => {
+    it("should throw error for missing date and holidays", () => {
+      expect(() => operator({} as any)).toThrow(
+        "$isHoliday requires an object with date and holidays",
+      );
+    });
+
+    it("should throw error for missing date property", () => {
+      expect(() => operator({ holidays: ["2025-01-01"] } as any)).toThrow(
+        "$isHoliday requires an object with date and holidays",
+      );
+    });
+
+    it("should throw error for null input", () => {
+      expect(() => operator(null as any)).toThrow(
+        "$isHoliday requires an object with date and holidays",
+      );
+    });
+  });
 });

@@ -14,7 +14,7 @@ import {
   MS_PER_HOUR,
   MS_PER_DAY,
   MAX_DATE_VALUE,
-} from "@helpers/date-time.heper";
+} from "@helpers/date-time.helper";
 import {
   DateValidationError,
   InvalidDateFormatError,
@@ -268,6 +268,19 @@ describe("DateTimeHelper", () => {
       expect(() => parseDate(-Infinity)).toThrow(
         "Invalid timestamp: must be a finite number",
       );
+    });
+
+    it("should handle large timestamps near boundaries", () => {
+      // Test timestamps that are clearly in milliseconds (not seconds)
+      // 100 billion milliseconds = ~3 years from epoch
+      const largeMs = 100000000000; // Clearly milliseconds
+      const futureDate = parseDate(largeMs);
+      expect(futureDate).toBeInstanceOf(Date);
+      expect(Number.isFinite(futureDate.getTime())).toBe(true);
+
+      const pastDate = parseDate(-largeMs);
+      expect(pastDate).toBeInstanceOf(Date);
+      expect(Number.isFinite(pastDate.getTime())).toBe(true);
     });
 
     it("should throw error for unsupported input type", () => {

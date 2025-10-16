@@ -1,4 +1,5 @@
 import { $isWeekend } from "./is-weekend.operator";
+import { OperatorInputError } from "@lib-types/error.types";
 
 describe("$isWeekend", () => {
   const operator = $isWeekend();
@@ -199,6 +200,22 @@ describe("$isWeekend", () => {
         const result = operator({ date });
         expect(result).toBe(expected);
       });
+    });
+  });
+
+  describe("input validation", () => {
+    it("should throw OperatorInputError for invalid input format (array)", () => {
+      expect(() => operator([] as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for null", () => {
+      expect(() => operator(null as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for plain object without date property", () => {
+      expect(() => operator({ invalid: "prop" } as any)).toThrow(
+        OperatorInputError,
+      );
     });
   });
 });

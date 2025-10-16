@@ -1,4 +1,4 @@
-import { parseDate } from "@helpers/date-time.heper";
+import { parseDate } from "@helpers/date-time.helper";
 import { getDateInTimezone } from "@helpers/timezone.helper";
 import {
   InvalidHolidayError,

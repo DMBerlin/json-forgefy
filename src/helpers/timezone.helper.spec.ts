@@ -5,7 +5,7 @@ import {
   getTimezoneOffset,
   clearFormatterCache,
 } from "./timezone.helper";
-import { MS_PER_HOUR } from "./date-time.heper";
+import { MS_PER_HOUR } from "./date-time.helper";
 
 describe("timezone.helper", () => {
   afterEach(() => {

@@ -1,5 +1,6 @@
 import { $toDate } from "./to-date.operator";
-import { MS_PER_DAY, MAX_DATE_VALUE } from "@helpers/date-time.heper";
+import { MS_PER_DAY, MAX_DATE_VALUE } from "@helpers/date-time.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 describe("$toDate operator", () => {
   describe("ISO-8601 string inputs", () => {
@@ -151,6 +152,22 @@ describe("$toDate operator", () => {
     it("should handle beginning of year date", () => {
       const result = $toDate()("2024-01-01T00:00:00Z");
       expect(result).toBeInstanceOf(Date);
+    });
+  });
+
+  describe("input validation", () => {
+    it("should throw OperatorInputError for invalid input format (array)", () => {
+      expect(() => $toDate()([] as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for null", () => {
+      expect(() => $toDate()(null as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for plain object without value property", () => {
+      expect(() => $toDate()({ invalid: "prop" } as any)).toThrow(
+        OperatorInputError,
+      );
     });
   });
 });

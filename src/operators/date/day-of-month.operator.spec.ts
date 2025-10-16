@@ -1,4 +1,5 @@
 import { $dayOfMonth } from "./day-of-month.operator";
+import { OperatorInputError } from "@lib-types/error.types";
 
 describe("$dayOfMonth operator", () => {
   describe("basic functionality", () => {
@@ -176,6 +177,27 @@ describe("$dayOfMonth operator", () => {
     it("should handle beginning of year", () => {
       const result = $dayOfMonth()("2024-01-01T00:00:00Z");
       expect(result).toBe(1);
+    });
+  });
+
+  describe("input validation", () => {
+    it("should throw OperatorInputError for invalid input format (array)", () => {
+      expect(() => $dayOfMonth()([] as any)).toThrow(OperatorInputError);
+      expect(() => $dayOfMonth()([] as any)).toThrow("Invalid input format");
+    });
+
+    it("should throw OperatorInputError for invalid input format (null)", () => {
+      expect(() => $dayOfMonth()(null as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for invalid input format (plain object)", () => {
+      expect(() => $dayOfMonth()({ invalid: "prop" } as any)).toThrow(
+        OperatorInputError,
+      );
+    });
+
+    it("should throw OperatorInputError for boolean input", () => {
+      expect(() => $dayOfMonth()(true as any)).toThrow(OperatorInputError);
     });
   });
 });

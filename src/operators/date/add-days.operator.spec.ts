@@ -210,6 +210,26 @@ describe("$addDays", () => {
     });
   });
 
+  describe("input validation", () => {
+    it("should throw error for missing date and days properties", () => {
+      expect(() => operator({} as any)).toThrow(
+        "$addDays requires an object with date and days",
+      );
+    });
+
+    it("should throw error for missing days property", () => {
+      expect(() => operator({ date: "2025-01-01T12:00:00Z" } as any)).toThrow(
+        "$addDays requires an object with date and days",
+      );
+    });
+
+    it("should throw error for missing date property", () => {
+      expect(() => operator({ days: 5 } as any)).toThrow(
+        "$addDays requires an object with date and days",
+      );
+    });
+  });
+
   describe("fallback handling", () => {
     it("should use fallback value on invalid date", () => {
       const result = operator({
@@ -274,6 +294,31 @@ describe("$addDays", () => {
           days: "not-a-number" as any,
         }),
       ).toThrow("days must be a finite number");
+    });
+
+    it("should handle non-Error thrown with fallback (line 64)", () => {
+      // Trigger a non-Error throw to test the ternary on line 64
+      const problematicInput = {
+        get date() {
+          throw "string error"; // Throw non-Error
+        },
+        days: 1,
+        fallback: "2025-01-01T00:00:00.000Z",
+      };
+      const result = operator(problematicInput as any);
+      expect(result).toBe("2025-01-01T00:00:00.000Z");
+    });
+
+    it("should handle non-Error thrown without fallback (lines 67-68)", () => {
+      // Trigger a non-Error throw to test the ternary on line 68
+      const problematicInput = {
+        get date() {
+          throw "string error"; // Throw non-Error
+        },
+        days: 1,
+      };
+      expect(() => operator(problematicInput as any)).toThrow("$addDays:");
+      expect(() => operator(problematicInput as any)).toThrow("Unknown error");
     });
   });
 

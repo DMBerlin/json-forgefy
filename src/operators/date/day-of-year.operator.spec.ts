@@ -1,4 +1,5 @@
 import { $dayOfYear } from "./day-of-year.operator";
+import { OperatorInputError } from "@lib-types/error.types";
 
 describe("$dayOfYear operator", () => {
   describe("basic functionality", () => {
@@ -223,6 +224,22 @@ describe("$dayOfYear operator", () => {
     it("should handle date with time at end of day", () => {
       const result = $dayOfYear()("2024-01-15T23:59:59Z");
       expect(result).toBe(15);
+    });
+  });
+
+  describe("input validation", () => {
+    it("should throw OperatorInputError for invalid input format (array)", () => {
+      expect(() => $dayOfYear()([] as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for null", () => {
+      expect(() => $dayOfYear()(null as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for plain object without date property", () => {
+      expect(() => $dayOfYear()({ invalid: "prop" } as any)).toThrow(
+        OperatorInputError,
+      );
     });
   });
 });

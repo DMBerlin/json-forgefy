@@ -7,7 +7,7 @@ import {
   InvalidHolidayError,
   InvalidWeekendError,
 } from "@lib-types/error.types";
-import { MS_PER_DAY } from "@helpers/date-time.heper";
+import { MS_PER_DAY } from "@helpers/date-time.helper";
 
 describe("$dateShift", () => {
   describe("basic functionality", () => {

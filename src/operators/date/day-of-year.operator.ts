@@ -5,7 +5,7 @@ import {
   getDayOfYear,
   isDirectDateInput,
   MS_PER_DAY,
-} from "@helpers/date-time.heper";
+} from "@helpers/date-time.helper";
 import { resolveFallback } from "@helpers/fallback.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 

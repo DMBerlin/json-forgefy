@@ -1,6 +1,6 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { DayOfWeekOperatorInput } from "@lib-types/operator-input.types";
-import { parseDate, isDirectDateInput } from "@helpers/date-time.heper";
+import { parseDate, isDirectDateInput } from "@helpers/date-time.helper";
 import { getDateInTimezone } from "@helpers/timezone.helper";
 import { resolveFallback } from "@helpers/fallback.helper";
 import { OperatorInputError } from "@lib-types/error.types";

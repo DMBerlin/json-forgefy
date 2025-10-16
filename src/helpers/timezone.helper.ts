@@ -10,7 +10,7 @@ import {
   MS_PER_MINUTE,
   MS_PER_SECOND,
   MS_PER_DAY,
-} from "./date-time.heper";
+} from "./date-time.helper";
 
 // Cache for Intl.DateTimeFormat instances by timezone
 const formatterCache = new Map<string, Intl.DateTimeFormat>();

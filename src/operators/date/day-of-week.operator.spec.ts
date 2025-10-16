@@ -1,4 +1,5 @@
 import { $dayOfWeek } from "./day-of-week.operator";
+import { OperatorInputError } from "@lib-types/error.types";
 
 describe("$dayOfWeek operator", () => {
   describe("basic functionality", () => {
@@ -166,6 +167,22 @@ describe("$dayOfWeek operator", () => {
     it("should handle date near epoch", () => {
       const result = $dayOfWeek()("1970-01-01T00:00:00Z"); // Thursday
       expect(result).toBe(4);
+    });
+  });
+
+  describe("input validation", () => {
+    it("should throw OperatorInputError for invalid input format (array)", () => {
+      expect(() => $dayOfWeek()([] as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for null", () => {
+      expect(() => $dayOfWeek()(null as any)).toThrow(OperatorInputError);
+    });
+
+    it("should throw OperatorInputError for plain object without date property", () => {
+      expect(() => $dayOfWeek()({ invalid: "prop" } as any)).toThrow(
+        OperatorInputError,
+      );
     });
   });
 });
