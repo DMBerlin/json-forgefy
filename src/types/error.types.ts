@@ -145,3 +145,51 @@ export class UnknownOperatorError extends ForgefyError {
     );
   }
 }
+
+/**
+ * Error thrown when array operator receives non-array input
+ */
+export class ArrayOperatorInputError extends ForgefyError {
+  constructor(
+    public readonly operatorName: string,
+    public readonly receivedType: string,
+    public readonly receivedValue: unknown,
+  ) {
+    super(
+      `${operatorName} 'input' must be an array, received ${receivedType}`,
+      ArrayOperatorInputError,
+    );
+  }
+}
+
+/**
+ * Error thrown when array operator is missing required parameters
+ */
+export class MissingOperatorParameterError extends ForgefyError {
+  constructor(
+    public readonly operatorName: string,
+    public readonly missingParameter: string,
+    public readonly requiredParameters: string[],
+  ) {
+    super(
+      `${operatorName} requires '${missingParameter}' to be defined. Required: ${requiredParameters.join(", ")}`,
+      MissingOperatorParameterError,
+    );
+  }
+}
+
+/**
+ * Error thrown when operator receives malformed parameters
+ */
+export class MalformedOperatorParametersError extends ForgefyError {
+  constructor(
+    public readonly operatorName: string,
+    public readonly expectedFormat: string,
+    public readonly receivedValue: unknown,
+  ) {
+    super(
+      `${operatorName} requires ${expectedFormat}, received ${typeof receivedValue}`,
+      MalformedOperatorParametersError,
+    );
+  }
+}

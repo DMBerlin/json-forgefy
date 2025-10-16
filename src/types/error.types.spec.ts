@@ -4,6 +4,9 @@ import {
   OperatorInputError,
   MaxIterationsError,
   UnknownOperatorError,
+  ArrayOperatorInputError,
+  MissingOperatorParameterError,
+  MalformedOperatorParametersError,
 } from "./error.types";
 
 describe("Error Types", () => {
@@ -122,6 +125,90 @@ describe("Error Types", () => {
       const error = new UnknownOperatorError("$custom", ["$add"]);
       expect(error.stack).toBeDefined();
       expect(error.stack).toContain("UnknownOperatorError");
+    });
+  });
+
+  describe("ArrayOperatorInputError", () => {
+    it("should create error with operator name, type, and value", () => {
+      const error = new ArrayOperatorInputError(
+        "$map",
+        "string",
+        "not an array",
+      );
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error.name).toBe("ArrayOperatorInputError");
+      expect(error.message).toBe(
+        "$map 'input' must be an array, received string",
+      );
+      expect(error.operatorName).toBe("$map");
+      expect(error.receivedType).toBe("string");
+      expect(error.receivedValue).toBe("not an array");
+    });
+
+    it("should maintain prototype chain", () => {
+      const error = new ArrayOperatorInputError("$filter", "object", {});
+      expect(error instanceof ArrayOperatorInputError).toBe(true);
+      expect(error instanceof Error).toBe(true);
+    });
+  });
+
+  describe("MissingOperatorParameterError", () => {
+    it("should create error with parameter details", () => {
+      const error = new MissingOperatorParameterError("$map", "expression", [
+        "input",
+        "expression",
+      ]);
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error.name).toBe("MissingOperatorParameterError");
+      expect(error.message).toBe(
+        "$map requires 'expression' to be defined. Required: input, expression",
+      );
+      expect(error.operatorName).toBe("$map");
+      expect(error.missingParameter).toBe("expression");
+      expect(error.requiredParameters).toEqual(["input", "expression"]);
+    });
+
+    it("should maintain prototype chain", () => {
+      const error = new MissingOperatorParameterError(
+        "$reduce",
+        "initialValue",
+        ["input", "initialValue", "expression"],
+      );
+      expect(error instanceof MissingOperatorParameterError).toBe(true);
+      expect(error instanceof Error).toBe(true);
+    });
+  });
+
+  describe("MalformedOperatorParametersError", () => {
+    it("should create error with format details", () => {
+      const error = new MalformedOperatorParametersError(
+        "$map",
+        "an object with 'input' and 'expression'",
+        null,
+      );
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error.name).toBe("MalformedOperatorParametersError");
+      expect(error.message).toBe(
+        "$map requires an object with 'input' and 'expression', received object",
+      );
+      expect(error.operatorName).toBe("$map");
+      expect(error.expectedFormat).toBe(
+        "an object with 'input' and 'expression'",
+      );
+      expect(error.receivedValue).toBe(null);
+    });
+
+    it("should maintain prototype chain", () => {
+      const error = new MalformedOperatorParametersError(
+        "$filter",
+        "object",
+        "string",
+      );
+      expect(error instanceof MalformedOperatorParametersError).toBe(true);
+      expect(error instanceof Error).toBe(true);
     });
   });
 });
