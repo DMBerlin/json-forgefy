@@ -1,3 +1,4 @@
+import { ExecutionContext } from "@interfaces/execution-context.interface";
 import {
   AbsOperatorInput,
   AddOperatorInput,
@@ -81,9 +82,7 @@ import {
   YearOperatorInput,
 } from "./operator-input.types";
 
-export type OperatorValue = (
-  source?: Record<string, any>,
-) => (...args: any[]) => any;
+export type OperatorValue = (ctx?: ExecutionContext) => (...args: any[]) => any;
 
 export type OperatorKey =
   | "$abs"

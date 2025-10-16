@@ -1,4 +1,5 @@
 import { Expression, ExpressionValues } from "./expression.types";
+import { FallbackValue } from "./fallback.types";
 import { JsonValidTypes } from "./json.types";
 import { ObjectPathValue } from "./object-path-value.types";
 
@@ -307,21 +308,21 @@ export type IsLeapYearOperatorInput =
 // Array operator types
 export type MapOperatorInput = {
   input: unknown[];
-  expression: Expression;
-  fallback?: unknown;
+  expression: ExpressionValues;
+  fallback?: FallbackValue;
 };
 
 export type FilterOperatorInput = {
   input: unknown[];
-  condition: Expression;
-  fallback?: unknown;
+  condition: ExpressionValues;
+  fallback?: FallbackValue;
 };
 
 export type ReduceOperatorInput = {
   input: unknown[];
   initialValue: unknown;
-  expression: Expression;
-  fallback?: unknown;
+  expression: ExpressionValues;
+  fallback?: FallbackValue;
 };
 
 export type ArrayAtOperatorInput = {
