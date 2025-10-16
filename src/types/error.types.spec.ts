@@ -3,6 +3,7 @@ import {
   TimezoneValidationError,
   OperatorInputError,
   MaxIterationsError,
+  UnknownOperatorError,
 } from "./error.types";
 
 describe("Error Types", () => {
@@ -84,6 +85,43 @@ describe("Error Types", () => {
       const error = new MaxIterationsError("Test error", 100);
       expect(error.stack).toBeDefined();
       expect(error.stack).toContain("MaxIterationsError");
+    });
+  });
+
+  describe("UnknownOperatorError", () => {
+    it("should create error with operator key only", () => {
+      const error = new UnknownOperatorError("$unknownOp");
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error).toBeInstanceOf(UnknownOperatorError);
+      expect(error.name).toBe("UnknownOperatorError");
+      expect(error.message).toBe("Unknown operator: $unknownOp");
+      expect(error.operatorKey).toBe("$unknownOp");
+      expect(error.availableOperators).toBeUndefined();
+    });
+
+    it("should create error with available operators list", () => {
+      const available = ["$add", "$multiply", "$subtract"];
+      const error = new UnknownOperatorError("$divide", available);
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error.name).toBe("UnknownOperatorError");
+      expect(error.message).toContain("Unknown operator: $divide");
+      expect(error.message).toContain("Available operators: 3 registered");
+      expect(error.operatorKey).toBe("$divide");
+      expect(error.availableOperators).toEqual(available);
+    });
+
+    it("should maintain prototype chain", () => {
+      const error = new UnknownOperatorError("$test");
+      expect(error instanceof UnknownOperatorError).toBe(true);
+      expect(error instanceof Error).toBe(true);
+    });
+
+    it("should have proper stack trace", () => {
+      const error = new UnknownOperatorError("$custom", ["$add"]);
+      expect(error.stack).toBeDefined();
+      expect(error.stack).toContain("UnknownOperatorError");
     });
   });
 });

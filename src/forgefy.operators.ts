@@ -1,4 +1,4 @@
-import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
+import { operatorRegistry } from "@core/operators.registry";
 
 // String operators
 import { $toString } from "@operators/string/to-string.operator";
@@ -79,6 +79,12 @@ import { $dayOfWeek } from "@operators/date/day-of-week.operator";
 import { $dayOfMonth } from "@operators/date/day-of-month.operator";
 import { $dayOfYear } from "@operators/date/day-of-year.operator";
 import { $dateShift } from "@operators/date/date-shift.operator";
+import { $isWeekend } from "@operators/date/is-weekend.operator";
+import { $isHoliday } from "@operators/date/is-holiday.operator";
+import { $addDays } from "@operators/date/add-days.operator";
+
+// Array operators
+import { $map } from "@operators/array/map.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -96,7 +102,8 @@ import { $dateShift } from "@operators/date/date-shift.operator";
  * - Utility: $exists, $isNull
  * - Type Conversion: $toNumber, $toString
  * - Type Checking: $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN
- * - Date: $dateDiff, $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $dateShift
+ * - Date: $dateDiff, $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $dateShift, $isWeekend, $isHoliday, $addDays
+ * - Array: $map
  * - Utility: $toFixed
  *
  * @example
@@ -106,73 +113,79 @@ import { $dateShift } from "@operators/date/date-shift.operator";
  * const result = operator({ context: sourceData })([1, 2, 3]); // Returns 6
  * ```
  */
-export const operators: Map<OperatorKey, OperatorValue> = new Map<
-  OperatorKey,
-  OperatorValue
->()
-  .set("$abs", $abs)
-  .set("$add", $add)
-  .set("$and", $and)
-  .set("$ceil", $ceil)
-  .set("$coalesce", $coalesce)
-  .set("$cond", $cond)
-  .set("$concat", $concat)
-  .set("$dateDiff", $dateDiff)
-  .set("$divide", $divide)
-  .set("$eq", $eq)
-  .set("$every", $every)
-  .set("$exists", $exists)
-  .set("$floor", $floor)
-  .set("$gt", $gt)
-  .set("$gte", $gte)
-  .set("$ifNull", $ifNull)
-  .set("$in", $in)
-  .set("$isNaN", $isNaN)
-  .set("$isNull", $isNull)
-  .set("$isNumber", $isNumber)
-  .set("$lt", $lt)
-  .set("$lte", $lte)
-  .set("$max", $max)
-  .set("$min", $min)
-  .set("$multiply", $multiply)
-  .set("$ne", $ne)
-  .set("$nin", $nin)
-  .set("$none", $none)
-  .set("$not", $not)
-  .set("$or", $or)
-  .set("$regex", $regex)
-  .set("$regexReplace", $regexReplace)
-  .set("$replace", $replace)
-  .set("$round", $round)
-  .set("$size", $size)
-  .set("$slice", $slice)
-  .set("$some", $some)
-  .set("$split", $split)
-  .set("$substr", $substr)
-  .set("$subtract", $subtract)
-  .set("$switch", $switch)
-  .set("$toFixed", $toFixed)
-  .set("$toLower", $toLower)
-  .set("$toNumber", $toNumber)
-  .set("$toString", $toString)
-  .set("$toUpper", $toUpper)
-  .set("$trim", $trim)
-  .set("$type", $type)
-  .set("$isArray", $isArray)
-  .set("$isString", $isString)
-  .set("$isBoolean", $isBoolean)
-  .set("$isDate", $isDate)
-  .set("$mod", $mod)
-  .set("$pow", $pow)
-  .set("$sqrt", $sqrt)
-  .set("$trunc", $trunc)
-  .set("$ltrim", $ltrim)
-  .set("$rtrim", $rtrim)
-  .set("$indexOf", $indexOf)
-  .set("$replaceOne", $replaceOne)
-  .set("$replaceAll", $replaceAll)
-  .set("$toDate", $toDate)
-  .set("$dayOfWeek", $dayOfWeek)
-  .set("$dayOfMonth", $dayOfMonth)
-  .set("$dayOfYear", $dayOfYear)
-  .set("$dateShift", $dateShift);
+
+// Populate the singleton operator registry
+operatorRegistry
+  .register("$abs", $abs)
+  .register("$add", $add)
+  .register("$and", $and)
+  .register("$ceil", $ceil)
+  .register("$coalesce", $coalesce)
+  .register("$cond", $cond)
+  .register("$concat", $concat)
+  .register("$dateDiff", $dateDiff)
+  .register("$divide", $divide)
+  .register("$eq", $eq)
+  .register("$every", $every)
+  .register("$exists", $exists)
+  .register("$floor", $floor)
+  .register("$gt", $gt)
+  .register("$gte", $gte)
+  .register("$ifNull", $ifNull)
+  .register("$in", $in)
+  .register("$isNaN", $isNaN)
+  .register("$isNull", $isNull)
+  .register("$isNumber", $isNumber)
+  .register("$lt", $lt)
+  .register("$lte", $lte)
+  .register("$max", $max)
+  .register("$min", $min)
+  .register("$multiply", $multiply)
+  .register("$ne", $ne)
+  .register("$nin", $nin)
+  .register("$none", $none)
+  .register("$not", $not)
+  .register("$or", $or)
+  .register("$regex", $regex)
+  .register("$regexReplace", $regexReplace)
+  .register("$replace", $replace)
+  .register("$round", $round)
+  .register("$size", $size)
+  .register("$slice", $slice)
+  .register("$some", $some)
+  .register("$split", $split)
+  .register("$substr", $substr)
+  .register("$subtract", $subtract)
+  .register("$switch", $switch)
+  .register("$toFixed", $toFixed)
+  .register("$toLower", $toLower)
+  .register("$toNumber", $toNumber)
+  .register("$toString", $toString)
+  .register("$toUpper", $toUpper)
+  .register("$trim", $trim)
+  .register("$type", $type)
+  .register("$isArray", $isArray)
+  .register("$isString", $isString)
+  .register("$isBoolean", $isBoolean)
+  .register("$isDate", $isDate)
+  .register("$mod", $mod)
+  .register("$pow", $pow)
+  .register("$sqrt", $sqrt)
+  .register("$trunc", $trunc)
+  .register("$ltrim", $ltrim)
+  .register("$rtrim", $rtrim)
+  .register("$indexOf", $indexOf)
+  .register("$replaceOne", $replaceOne)
+  .register("$replaceAll", $replaceAll)
+  .register("$toDate", $toDate)
+  .register("$dayOfWeek", $dayOfWeek)
+  .register("$dayOfMonth", $dayOfMonth)
+  .register("$dayOfYear", $dayOfYear)
+  .register("$dateShift", $dateShift)
+  .register("$isWeekend", $isWeekend)
+  .register("$isHoliday", $isHoliday)
+  .register("$addDays", $addDays)
+  .register("$map", $map);
+
+// Export singleton for access from other modules
+export { operatorRegistry };

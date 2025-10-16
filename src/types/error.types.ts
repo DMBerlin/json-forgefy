@@ -126,3 +126,22 @@ export class InvalidStrategyError extends ForgefyError {
     super(message, InvalidStrategyError);
   }
 }
+
+/**
+ * Error thrown when an unknown operator is referenced in an expression
+ */
+export class UnknownOperatorError extends ForgefyError {
+  constructor(
+    public readonly operatorKey: string,
+    public readonly availableOperators?: string[],
+  ) {
+    super(
+      `Unknown operator: ${operatorKey}${
+        availableOperators
+          ? `. Available operators: ${availableOperators.length} registered`
+          : ""
+      }`,
+      UnknownOperatorError,
+    );
+  }
+}

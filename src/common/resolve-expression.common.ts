@@ -1,7 +1,8 @@
-import { operators } from "@/forgefy.operators";
+import { operatorRegistry } from "@core/operators.registry";
 import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
 import { ExpressionValues } from "@lib-types/expression.types";
 import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { UnknownOperatorError } from "@lib-types/error.types";
 import { resolveArgs } from "./resolve-args.common";
 
 /**
@@ -43,7 +44,7 @@ import { resolveArgs } from "./resolve-args.common";
 export function resolveExpression<T>(
   source: Record<string, any>,
   expression: ExpressionValues,
-  executionContext?: ExecutionContext,
+  executionContext: ExecutionContext = { context: source },
 ): T {
   try {
     // Handle non-object values (defensive programming)
@@ -71,9 +72,10 @@ export function resolveExpression<T>(
     const key = keys[0] as OperatorKey;
 
     // Validate operator exists
-    const operator: OperatorValue = operators.get(key);
+    // Use singleton's get() method to access registry at runtime (when fully populated)
+    const operator: OperatorValue = operatorRegistry.get(key);
     if (!operator) {
-      throw new Error(`Unknown operator: ${key}`);
+      throw new UnknownOperatorError(key, Array.from(operatorRegistry.keys()));
     }
 
     // Recursively resolve arguments using the dedicated resolveArgs function
@@ -87,7 +89,8 @@ export function resolveExpression<T>(
     );
 
     // Execute the operator with resolved arguments
-    return operator({ context: source })(resolvedArgs);
+    // Pass the execution context to preserve $current, $index, $accumulated for nested operators
+    return operator(executionContext)(resolvedArgs);
   } catch {
     // Return null on errors for backward compatibility
     // This allows operators to handle errors gracefully

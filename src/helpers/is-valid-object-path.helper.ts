@@ -1,4 +1,4 @@
-import { operators } from "@/forgefy.operators";
+import { operatorRegistry } from "@/forgefy.operators";
 import { OperatorKey } from "@lib-types/operator.types";
 
 /**
@@ -26,6 +26,6 @@ export function isValidObjectPath(value: string): boolean {
     typeof value === "string" &&
     value.startsWith("$") &&
     value.length > 1 && // Must have at least one character after "$"
-    !operators.has(value as OperatorKey)
+    !operatorRegistry.has(value as OperatorKey)
   );
 }
