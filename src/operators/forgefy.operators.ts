@@ -86,6 +86,7 @@ import { $addDays } from "@operators/date/add-days.operator";
 // Array operators
 import { $map } from "@operators/array/map.operator";
 import { $filter } from "@operators/array/filter.operator";
+import { $reduce } from "@operators/array/reduce.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -104,7 +105,7 @@ import { $filter } from "@operators/array/filter.operator";
  * - Type Conversion: $toNumber, $toString
  * - Type Checking: $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN
  * - Date: $dateDiff, $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $dateShift, $isWeekend, $isHoliday, $addDays
- * - Array Transformation: $map, $filter
+ * - Array Transformation: $map, $filter, $reduce
  * - Utility: $toFixed
  *
  * @example
@@ -187,7 +188,8 @@ operatorRegistry
   .register("$isHoliday", $isHoliday)
   .register("$addDays", $addDays)
   .register("$map", $map)
-  .register("$filter", $filter);
+  .register("$filter", $filter)
+  .register("$reduce", $reduce);
 
 // Export singleton for access from other modules
 export { operatorRegistry };
