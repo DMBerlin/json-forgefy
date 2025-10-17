@@ -305,6 +305,23 @@ const blueprint = {
 
 ## 📚 Complete Operator Reference
 
+**77 operators across 11 categories:**
+
+| Category | Operators | Count |
+|----------|-----------|-------|
+| 🔢 **Mathematical** | $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min, $toFixed, $round, $mod, $pow, $sqrt, $trunc | 15 |
+| 📝 **String** | $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace, $regexReplace, $trim, $ltrim, $rtrim, $indexOf, $replaceOne, $replaceAll | 16 |
+| ⚖️ **Comparison** | $eq, $ne, $gt, $gte, $lt, $lte, $in, $nin, $regex | 9 |
+| 🔀 **Logical** | $and, $or, $not, $none | 4 |
+| 🎯 **Conditional** | $cond, $switch, $ifNull, $coalesce, $every, $some | 6 |
+| 🔄 **Type Conversion** | $toNumber, $toString | 2 |
+| 🔍 **Type Checking** | $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN, $exists | 9 |
+| 📅 **Date** | $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $isWeekend, $isHoliday, $addDays, $dateShift, $dateDiff | 9 |
+| 📋 **Array Transform** | $map, $filter, $reduce | 3 |
+| 📊 **Array Utilities** | $arrayFirst, $arrayLast, $arrayAt, $sum, $avg | 5 |
+
+---
+
 ### 🔢 Mathematical Operations
 Perfect for calculations, aggregations, and numeric transformations:
 
@@ -321,6 +338,45 @@ Perfect for calculations, aggregations, and numeric transformations:
 | `$min` | Minimum value | `{ $min: [1, 5, 3] }` | `1` |
 | `$toFixed` | Format decimals | `{ $toFixed: { value: 3.14159, precision: 2 } }` | `3.14` |
 | `$round` | Round to precision | `{ $round: { value: 3.14159, precision: 2 } }` | `3.14` |
+| `$mod` | Modulo (remainder) | `{ $mod: { dividend: 10, divisor: 3 } }` | `1` |
+| `$pow` | Power/exponentiation | `{ $pow: { base: 2, exponent: 3 } }` | `8` |
+| `$sqrt` | Square root | `{ $sqrt: { value: 16 } }` | `4` |
+| `$trunc` | Truncate to integer | `{ $trunc: 4.9 }` | `4` |
+
+<details>
+<summary>🔢 <b>Math Examples</b> (click to expand)</summary>
+
+```typescript
+// Basic arithmetic
+const math = {
+  sum: { $add: [10, 20, 30] },                    // 60
+  difference: { $subtract: [100, 25] },            // 75
+  product: { $multiply: [5, 6] },                  // 30
+  quotient: { $divide: [100, 4] },                 // 25
+  absolute: { $abs: -42 },                         // 42
+  roundUp: { $ceil: 4.2 },                         // 5
+  roundDown: { $floor: 4.8 },                      // 4
+  maximum: { $max: [10, 25, 15] },                 // 25
+  minimum: { $min: [10, 25, 15] }                  // 10
+};
+
+// Advanced math
+const advanced = {
+  remainder: { $mod: { dividend: 17, divisor: 5 } },      // 2
+  power: { $pow: { base: 2, exponent: 10 } },             // 1024
+  squareRoot: { $sqrt: { value: 144 } },                  // 12
+  truncated: { $trunc: 3.9 },                             // 3
+  formatted: { $toFixed: { value: 3.14159, precision: 2 } }, // "3.14"
+  rounded: { $round: { value: 3.14159, precision: 2 } }   // 3.14
+};
+
+// With fallback for errors
+const safe = {
+  safeSqrt: { $sqrt: { value: -16, fallback: 0 } }        // 0 (negative number)
+};
+```
+
+</details>
 
 ### 📝 String Operations
 Transform and manipulate text data:
@@ -338,6 +394,61 @@ Transform and manipulate text data:
 | `$replace` | Replace multiple values | `{ $replace: { input: "123.456.789-10", searchValues: [".", "-"], replacement: "" } }` | `"12345678910"` |
 | `$regexReplace` | Regex replacement | `{ $regexReplace: { input: "hello      world", pattern: "\\s+", replacement: " " } }` | `"hello world"` |
 | `$trim` | Trim whitespace/chars | `{ $trim: { input: "  hello  ", chars: [" "] } }` | `"hello"` |
+| `$ltrim` | Trim left | `{ $ltrim: { input: "  hello", chars: [" "] } }` | `"hello"` |
+| `$rtrim` | Trim right | `{ $rtrim: { input: "hello  ", chars: [" "] } }` | `"hello"` |
+| `$indexOf` | Find substring index | `{ $indexOf: { input: "hello", substring: "ll" } }` | `2` |
+| `$replaceOne` | Replace first match | `{ $replaceOne: { input: "hello", search: "l", replacement: "L" } }` | `"heLlo"` |
+| `$replaceAll` | Replace all matches | `{ $replaceAll: { input: "hello", search: "l", replacement: "L" } }` | `"heLLo"` |
+
+<details>
+<summary>📝 <b>String Examples</b> (click to expand)</summary>
+
+```typescript
+// Basic string operations
+const strings = {
+  upper: { $toUpper: "hello world" },                     // "HELLO WORLD"
+  lower: { $toLower: "HELLO WORLD" },                     // "hello world"
+  joined: { $concat: ["Hello", " ", "World", "!"] },      // "Hello World!"
+  substring: { $substr: { value: "Hello World", start: 6, length: 5 } }, // "World"
+  sliced: { $slice: { input: "Hello", start: 1, end: 4 } }, // "ell"
+  parts: { $split: { input: "a,b,c", delimiter: "," } },  // ["a", "b", "c"]
+  length: { $size: "Hello" }                              // 5
+};
+
+// Advanced string manipulation
+const advanced = {
+  cleaned: { $trim: { input: "  hello  ", chars: [" "] } },              // "hello"
+  leftTrim: { $ltrim: { input: "  hello", chars: [" "] } },             // "hello"
+  rightTrim: { $rtrim: { input: "hello  ", chars: [" "] } },            // "hello"
+  position: { $indexOf: { input: "hello world", substring: "world" } }, // 6
+  replaceFirst: { $replaceOne: { input: "hello", search: "l", replacement: "L" } }, // "heLlo"
+  replaceAll: { $replaceAll: { input: "hello", search: "l", replacement: "L" } }    // "heLLo"
+};
+
+// Pattern replacement
+const patterns = {
+  // Remove all non-digits
+  digitsOnly: { 
+    $regexReplace: { input: "ABC-123-XYZ", pattern: "\\D", replacement: "" } 
+  },  // "123"
+  
+  // Normalize whitespace
+  normalized: { 
+    $regexReplace: { input: "hello    world", pattern: "\\s+", replacement: " " } 
+  },  // "hello world"
+  
+  // Clean phone number
+  cleanPhone: { 
+    $replace: { 
+      input: "(555) 123-4567", 
+      searchValues: ["(", ")", " ", "-"], 
+      replacement: "" 
+    } 
+  }  // "5551234567"
+};
+```
+
+</details>
 
 ### ⚖️ Comparison & Logic
 Make decisions and validate data:
@@ -362,17 +473,118 @@ Make decisions and validate data:
 | `$isNaN` | Is NaN | `{ $isNaN: NaN }` | `true` |
 | `$regex` | Pattern matching | `{ $regex: { value: "$email", pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" } }` | `true/false` |
 
+<details>
+<summary>⚖️ <b>Comparison & Logic Examples</b> (click to expand)</summary>
+
+```typescript
+// Comparisons
+const checks = {
+  isEqual: { $eq: [5, 5] },                        // true
+  notEqual: { $ne: [5, 3] },                       // true
+  greaterThan: { $gt: [10, 5] },                   // true
+  greaterOrEqual: { $gte: [5, 5] },                // true
+  lessThan: { $lt: [3, 5] },                       // true
+  lessOrEqual: { $lte: [5, 5] }                    // true
+};
+
+// Logical operators
+const logic = {
+  allTrue: { $and: [true, true, true] },           // true
+  anyTrue: { $or: [false, true, false] },          // true
+  inverted: { $not: false },                       // true
+  noneTrue: { $none: [false, false, false] }       // true
+};
+
+// Membership
+const membership = {
+  inList: { $in: ["apple", ["apple", "banana"]] }, // true
+  notInList: { $nin: ["grape", ["apple", "banana"]] } // true
+};
+
+// Validation
+const validation = {
+  hasField: { $exists: "$user.email" },            // true/false
+  isNull: { $isNull: "$optionalField" },           // true/false
+  isValidNumber: { $isNumber: "$age" },            // true/false
+  isNotANumber: { $isNaN: "$invalidNumber" }       // true/false
+};
+
+// Pattern matching
+const patterns = {
+  isEmail: { 
+    $regex: { 
+      value: "$email", 
+      pattern: "^[^@]+@[^@]+\\.[^@]+$" 
+    } 
+  }  // true/false
+};
+```
+
+</details>
+
 ### 🔀 Conditional Logic
 Handle complex decision-making:
 
 | Operator | Description | Example |
 |----------|-------------|---------|
-| `$cond` | If-then-else | `{ $cond: { if: "$age > 18", then: "Adult", else: "Minor" } }` |
-| `$switch` | Multi-branch | `{ $switch: { branches: [{ case: "$type === 'A'", then: "Type A" }], default: "Other" } }` |
+| `$cond` | If-then-else | `{ $cond: { if: { $gt: ["$age", 18] }, then: "Adult", else: "Minor" } }` |
+| `$switch` | Multi-branch | `{ $switch: { branches: [{ case: { $eq: ["$type", "A"] }, then: "Type A" }], default: "Other" } }` |
 | `$ifNull` | Null coalescing | `{ $ifNull: ["$optional", "default"] }` |
 | `$coalesce` | First non-null value | `{ $coalesce: ["$displayName", "$firstName", "Anonymous"] }` |
 | `$every` | All conditions true | `{ $every: { conditions: [...], then: "valid", else: "invalid" } }` |
 | `$some` | Any condition true | `{ $some: { conditions: [...], then: "found", else: "none" } }` |
+
+<details>
+<summary>🔀 <b>Conditional Examples</b> (click to expand)</summary>
+
+```typescript
+// If-then-else with $cond
+const status = {
+  age: 25,
+  category: {
+    $cond: {
+      if: { $gte: ["$age", 18] },
+      then: "Adult",
+      else: "Minor"
+    }
+  }  // "Adult"
+};
+
+// Multi-branch with $switch
+const tier = {
+  score: 850,
+  level: {
+    $switch: {
+      branches: [
+        { case: { $gte: ["$score", 900] }, then: "Platinum" },
+        { case: { $gte: ["$score", 800] }, then: "Gold" },
+        { case: { $gte: ["$score", 700] }, then: "Silver" }
+      ],
+      default: "Bronze"
+    }
+  }  // "Gold"
+};
+
+// Null handling
+const safe = {
+  optionalName: null,
+  displayName: { $coalesce: ["$optionalName", "$firstName", "Guest"] }, // Uses first non-null
+  safeName: { $ifNull: ["$optionalName", "Unknown"] }                   // "Unknown"
+};
+
+// Multiple conditions
+const validation = {
+  checks: [
+    { $gte: ["$age", 18] },
+    { $eq: ["$status", "active"] },
+    "$verified"
+  ],
+  allValid: { $every: { conditions: "$checks", then: true, else: false } },
+  anyValid: { $some: { conditions: "$checks", then: true, else: false } }
+};
+```
+
+</details>
 
 ### 🔄 Type Conversion
 Convert between data types safely:
@@ -382,12 +594,236 @@ Convert between data types safely:
 | `$toNumber` | Convert to number | `{ $toNumber: "123" }` | `123` |
 | `$toString` | Convert to string | `{ $toString: 123 }` | `"123"` |
 
+<details>
+<summary>🔄 <b>Type Conversion Examples</b> (click to expand)</summary>
+
+```typescript
+// Number conversion
+const numbers = {
+  fromString: { $toNumber: "123.45" },             // 123.45
+  fromBoolean: { $toNumber: true },                // 1
+  invalid: { $toNumber: "abc" }                    // NaN
+};
+
+// String conversion
+const strings = {
+  fromNumber: { $toString: 123 },                  // "123"
+  fromBoolean: { $toString: true },                // "true"
+  fromNull: { $toString: null }                    // "null"
+};
+```
+
+</details>
+
 ### 📅 Date Operations
-Work with dates and time:
+Work with dates, extract components, and handle business days:
+
+| Operator | Description | Example | Result |
+|----------|-------------|---------|---------|
+| `$toDate` | Convert to date | `{ $toDate: { date: "2025-01-15" } }` | `Date object` |
+| `$dayOfWeek` | Day of week (0-6) | `{ $dayOfWeek: { date: "$date" } }` | `0-6` |
+| `$dayOfMonth` | Day of month (1-31) | `{ $dayOfMonth: { date: "$date" } }` | `1-31` |
+| `$dayOfYear` | Day of year (1-366) | `{ $dayOfYear: { date: "$date" } }` | `1-366` |
+| `$isWeekend` | Check if weekend | `{ $isWeekend: { date: "$date" } }` | `true/false` |
+| `$isHoliday` | Check if holiday | `{ $isHoliday: { date: "$date", holidays: ["2025-01-01"] } }` | `true/false` |
+| `$addDays` | Add/subtract days | `{ $addDays: { date: "$date", days: 7 } }` | `"2025-01-22"` |
+| `$dateShift` | Shift to business day | `{ $dateShift: { date: "$date", strategy: "rollForward", holidays: "$holidays" } }` | `"2025-01-20"` |
+| `$dateDiff` | Calculate difference | `{ $dateDiff: { startDate: "$start", endDate: "$end", unit: "days" } }` | `10` |
+
+<details>
+<summary>📅 <b>Date Operators Examples</b> (click to expand)</summary>
+
+```typescript
+// Extract date components
+const dateInfo = {
+  date: "2025-03-15T10:00:00Z",
+  dayOfWeek: { $dayOfWeek: { date: "$date" } },        // 6 (Saturday)
+  dayOfMonth: { $dayOfMonth: { date: "$date" } },      // 15
+  dayOfYear: { $dayOfYear: { date: "$date" } },        // 74
+  isWeekend: { $isWeekend: { date: "$date" } }         // true
+};
+
+// Business day handling
+const businessDay = {
+  scheduledDate: "2025-03-01",  // Saturday
+  holidays: ["2025-03-03"],     // Monday is holiday
+  executionDate: {
+    $dateShift: {
+      date: "$scheduledDate",
+      strategy: "rollForward",    // Options: rollForward, rollBackward, keep
+      holidays: "$holidays",
+      weekends: [6, 0]           // Saturday, Sunday
+    }
+  }
+  // Result: "2025-03-04" (Tuesday - skips weekend and holiday)
+};
+
+// Date arithmetic
+const futureDate = {
+  today: "2025-01-01",
+  nextWeek: { $addDays: { date: "$today", days: 7 } },      // "2025-01-08"
+  lastMonth: { $addDays: { date: "$today", days: -30 } }    // "2024-12-02"
+};
+```
+
+</details>
+
+
+### 📋 Array Transformation
+Transform, filter, and aggregate arrays:
 
 | Operator | Description | Example |
 |----------|-------------|---------|
-| `$dateDiff` | Calculate difference | `{ $dateDiff: { startDate: "$start", endDate: "$end", unit: "days" } }` |
+| `$map` | Transform each element | `{ $map: { input: "$items", expression: { $multiply: ["$current", 2] } } }` |
+| `$filter` | Filter elements | `{ $filter: { input: "$items", condition: { $gt: ["$current", 10] } } }` |
+| `$reduce` | Aggregate to single value | `{ $reduce: { input: "$items", initialValue: 0, expression: { $add: ["$accumulated", "$current"] } } }` |
+
+<details>
+<summary>📋 <b>Array Operators Examples</b> (click to expand)</summary>
+
+```typescript
+// Transform array elements with $map
+const doubled = {
+  numbers: [1, 2, 3, 4, 5],
+  doubled: {
+    $map: {
+      input: "$numbers",
+      expression: { $multiply: ["$current", 2] }
+    }
+  }
+  // Result: [2, 4, 6, 8, 10]
+};
+
+// Filter array with conditions
+const adults = {
+  users: [
+    { name: "Alice", age: 25 },
+    { name: "Bob", age: 17 },
+    { name: "Charlie", age: 30 }
+  ],
+  adults: {
+    $filter: {
+      input: "$users",
+      condition: { $gte: ["$current.age", 18] }
+    }
+  }
+  // Result: [{ name: "Alice", age: 25 }, { name: "Charlie", age: 30 }]
+};
+
+// Aggregate with $reduce
+const sum = {
+  values: [1, 2, 3, 4, 5],
+  total: {
+    $reduce: {
+      input: "$values",
+      initialValue: 0,
+      expression: { $add: ["$accumulated", "$current"] }
+    }
+  }
+  // Result: 15
+};
+
+// Context variables in array operators
+// $current - current element
+// $index - current index (0-based)
+// $accumulated - accumulated value (in $reduce)
+```
+
+</details>
+
+### 📊 Array Utilities
+Access and aggregate array elements:
+
+| Operator | Description | Example | Result |
+|----------|-------------|---------|---------|
+| `$arrayFirst` | First element | `{ $arrayFirst: { input: [1, 2, 3] } }` | `1` |
+| `$arrayLast` | Last element | `{ $arrayLast: { input: [1, 2, 3] } }` | `3` |
+| `$arrayAt` | Element at index | `{ $arrayAt: { input: [1, 2, 3], index: 1 } }` | `2` |
+| `$sum` | Sum numbers | `{ $sum: { values: [1, 2, 3] } }` | `6` |
+| `$avg` | Average | `{ $avg: { values: [1, 2, 3] } }` | `2` |
+
+<details>
+<summary>📊 <b>Array Utility Examples</b> (click to expand)</summary>
+
+```typescript
+// Access specific elements
+const scores = {
+  all: [85, 92, 78, 95, 88],
+  first: { $arrayFirst: { input: "$all" } },          // 85
+  last: { $arrayLast: { input: "$all" } },            // 88
+  third: { $arrayAt: { input: "$all", index: 2 } },   // 78
+  secondLast: { $arrayAt: { input: "$all", index: -2 } }  // 95 (negative indexing)
+};
+
+// Aggregate numbers
+const stats = {
+  values: [10, 20, 30, 40, 50],
+  total: { $sum: { values: "$values" } },             // 150
+  average: { $avg: { values: "$values" } },           // 30
+  count: { $size: "$values" }                         // 5
+};
+
+// With fallback for safety
+const safe = {
+  maybeArray: null,
+  first: { 
+    $arrayFirst: { 
+      input: "$maybeArray", 
+      fallback: "default" 
+    } 
+  }  // "default"
+};
+```
+
+</details>
+
+### 🔍 Type Checking
+Validate data types:
+
+| Operator | Description | Example | Result |
+|----------|-------------|---------|---------|
+| `$type` | Get type name | `{ $type: "$value" }` | `"string"` |
+| `$isArray` | Check if array | `{ $isArray: "$value" }` | `true/false` |
+| `$isString` | Check if string | `{ $isString: "$value" }` | `true/false` |
+| `$isBoolean` | Check if boolean | `{ $isBoolean: "$value" }` | `true/false` |
+| `$isDate` | Check if valid date | `{ $isDate: "$value" }` | `true/false` |
+
+<details>
+<summary>🔍 <b>Type Checking Examples</b> (click to expand)</summary>
+
+```typescript
+// Type identification
+const types = {
+  stringType: { $type: "hello" },                  // "string"
+  numberType: { $type: 123 },                      // "number"
+  arrayType: { $type: [1, 2, 3] },                 // "array"
+  objectType: { $type: { a: 1 } },                 // "object"
+  nullType: { $type: null },                       // "null"
+  undefinedType: { $type: undefined }              // "undefined"
+};
+
+// Type validation
+const checks = {
+  checkArray: { $isArray: [1, 2, 3] },             // true
+  checkString: { $isString: "hello" },             // true
+  checkBoolean: { $isBoolean: true },              // true
+  checkDate: { $isDate: "2025-01-01" }             // true
+};
+
+// Use in conditionals
+const conditional = {
+  value: [1, 2, 3],
+  result: {
+    $cond: {
+      if: { $isArray: "$value" },
+      then: { $size: "$value" },
+      else: 0
+    }
+  }  // 3
+};
+```
+
+</details>
 
 
 
@@ -562,6 +998,88 @@ const textProcessing = {
   }  // Check if phone has exactly 10 digits
 };
 ```
+
+## 🛡️ Fallback System
+
+Many operators support fallback values for graceful error handling:
+
+<details>
+<summary>🛡️ <b>Fallback Examples</b> (click to expand)</summary>
+
+```typescript
+// Array operators with fallback
+const safe = {
+  maybeArray: null,
+  
+  // Returns fallback if input is not an array
+  first: { 
+    $arrayFirst: { 
+      input: "$maybeArray", 
+      fallback: "no data" 
+    } 
+  },  // "no data"
+  
+  // Math operators with fallback
+  safeSqrt: { 
+    $sqrt: { 
+      value: "$negativeNumber", 
+      fallback: 0 
+    } 
+  },  // 0 (if negative)
+  
+  // Sum with fallback for non-numeric values
+  total: { 
+    $sum: { 
+      values: ["$invalidData"], 
+      fallback: 0 
+    } 
+  }  // 0
+};
+
+// Fallback can be:
+// - Static value: fallback: 0
+// - Path reference: fallback: "$defaultValue"
+// - Expression: fallback: { $add: [1, 2] }
+```
+
+</details>
+
+## 📌 Important Notes
+
+### Array Operator Limitations
+
+Due to JavaScript module circular dependencies, array operators (`$map`, `$filter`, `$reduce`) cannot be nested within object properties:
+
+```typescript
+// ❌ This doesn't work (nested $map in object property)
+{
+  $map: {
+    input: [{ items: [1, 2, 3] }],
+    expression: {
+      doubled: {  // ← Nested in object property
+        $map: { input: "$current.items", expression: { $multiply: ["$current", 2] } }
+      }
+    }
+  }
+}
+// Returns: [{ doubled: null }]
+
+// ✅ Use $map at expression root instead
+{
+  $map: {
+    input: [{ items: [1, 2, 3] }],
+    expression: {
+      $map: {  // ← At root level
+        input: "$current.items",
+        expression: { $multiply: ["$current", 2] }
+      }
+    }
+  }
+}
+// Returns: [[2, 4, 6]]
+```
+
+All other operators nest perfectly to unlimited depth.
 
 ## 🛠️ Development
 
