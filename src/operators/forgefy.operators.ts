@@ -87,6 +87,11 @@ import { $addDays } from "@operators/date/add-days.operator";
 import { $map } from "@operators/array/map.operator";
 import { $filter } from "@operators/array/filter.operator";
 import { $reduce } from "@operators/array/reduce.operator";
+import { $arrayFirst } from "@operators/array/array-first.operator";
+import { $arrayLast } from "@operators/array/array-last.operator";
+import { $arrayAt } from "@operators/array/array-at.operator";
+import { $avg } from "@operators/array/avg.operator";
+import { $sum } from "@operators/array/sum.operator";
 
 /**
  * Central registry of all available operators in the json-forgefy library.
@@ -106,6 +111,7 @@ import { $reduce } from "@operators/array/reduce.operator";
  * - Type Checking: $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN
  * - Date: $dateDiff, $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $dateShift, $isWeekend, $isHoliday, $addDays
  * - Array Transformation: $map, $filter, $reduce
+ * - Array Utility: $arrayFirst, $arrayLast, $arrayAt, $avg, $sum
  * - Utility: $toFixed
  *
  * @example
@@ -189,7 +195,12 @@ operatorRegistry
   .register("$addDays", $addDays)
   .register("$map", $map)
   .register("$filter", $filter)
-  .register("$reduce", $reduce);
+  .register("$reduce", $reduce)
+  .register("$arrayFirst", $arrayFirst)
+  .register("$arrayLast", $arrayLast)
+  .register("$arrayAt", $arrayAt)
+  .register("$avg", $avg)
+  .register("$sum", $sum);
 
 // Export singleton for access from other modules
 export { operatorRegistry };
