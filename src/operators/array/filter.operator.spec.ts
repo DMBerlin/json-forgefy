@@ -2,7 +2,6 @@ import { $filter } from "./filter.operator";
 import {
   ArrayOperatorInputError,
   MissingOperatorParameterError,
-  MalformedOperatorParametersError,
 } from "@lib-types/error.types";
 
 describe("$filter operator", () => {
@@ -401,7 +400,7 @@ describe("$filter operator", () => {
     it("should throw error when params is malformed (not an object)", () => {
       expect(() => {
         $filter()(null as any);
-      }).toThrow(MalformedOperatorParametersError);
+      }).toThrow(MissingOperatorParameterError);
     });
 
     it("should throw error when params is malformed (missing input)", () => {
@@ -409,7 +408,7 @@ describe("$filter operator", () => {
         $filter()({
           condition: { $gt: ["$current", 10] },
         } as any);
-      }).toThrow(MalformedOperatorParametersError);
+      }).toThrow(MissingOperatorParameterError);
     });
   });
 

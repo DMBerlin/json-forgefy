@@ -15,6 +15,7 @@ describe("array-validation.helper", () => {
     describe("valid params", () => {
       it("should return params when all required fields are present", () => {
         const params = { input: [1, 2, 3], expression: "$current" };
+        // @ts-expect-error - test case
         const result = validateArrayOperatorParams(params, "$map", [
           "input",
           "expression",
@@ -37,6 +38,7 @@ describe("array-validation.helper", () => {
 
       it("should return params with single required field", () => {
         const params = { values: [1, 2, 3] };
+        // @ts-expect-error - test case
         const result = validateArrayOperatorParams(params, "$sum", ["values"]);
         expect(result).toBe(params);
       });
@@ -54,6 +56,19 @@ describe("array-validation.helper", () => {
 
       it("should return params when missing multiple fields but has fallback", () => {
         const params = { fallback: "default" } as any;
+        const result = validateArrayOperatorParams(params, "$map", [
+          "input",
+          "expression",
+        ]);
+        expect(result).toBe(params);
+      });
+
+      it("should return params when field is undefined but has fallback", () => {
+        const params = {
+          input: [1, 2, 3],
+          expression: undefined,
+          fallback: [],
+        } as any;
         const result = validateArrayOperatorParams(params, "$map", [
           "input",
           "expression",
@@ -106,6 +121,16 @@ describe("array-validation.helper", () => {
             "input",
             "expression",
           ]);
+        }).toThrow(MissingOperatorParameterError);
+      });
+
+      it("should throw error when field is undefined without fallback", () => {
+        expect(() => {
+          validateArrayOperatorParams(
+            { input: [1, 2, 3], expression: undefined } as any,
+            "$map",
+            ["input", "expression"],
+          );
         }).toThrow(MissingOperatorParameterError);
       });
     });

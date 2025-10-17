@@ -2,7 +2,6 @@ import { $reduce } from "./reduce.operator";
 import {
   ArrayOperatorInputError,
   MissingOperatorParameterError,
-  MalformedOperatorParametersError,
 } from "@lib-types/error.types";
 
 describe("$reduce operator", () => {
@@ -419,7 +418,7 @@ describe("$reduce operator", () => {
     it("should throw error when params is malformed (not an object)", () => {
       expect(() => {
         $reduce()(null as any);
-      }).toThrow(MalformedOperatorParametersError);
+      }).toThrow(MissingOperatorParameterError);
     });
 
     it("should throw error when params is malformed (missing input)", () => {
@@ -428,7 +427,7 @@ describe("$reduce operator", () => {
           initialValue: 0,
           expression: { $add: ["$accumulated", "$current"] },
         } as any);
-      }).toThrow(MalformedOperatorParametersError);
+      }).toThrow(MissingOperatorParameterError);
     });
 
     it("should allow initialValue to be 0", () => {

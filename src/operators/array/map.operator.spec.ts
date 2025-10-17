@@ -2,7 +2,6 @@ import { $map } from "./map.operator";
 import {
   ArrayOperatorInputError,
   MissingOperatorParameterError,
-  MalformedOperatorParametersError,
 } from "@lib-types/error.types";
 
 describe("$map operator", () => {
@@ -422,13 +421,13 @@ describe("$map operator", () => {
       ).toThrow(ArrayOperatorInputError);
     });
 
-    it("should throw ArrayOperatorInputError when input is undefined (no fallback)", () => {
+    it("should throw when input is undefined (no fallback)", () => {
       expect(() =>
         $map()({
           input: undefined as any,
           expression: "$current",
         }),
-      ).toThrow(ArrayOperatorInputError);
+      ).toThrow(MissingOperatorParameterError);
     });
 
     it("should throw ArrayOperatorInputError when input is a number (no fallback)", () => {
@@ -449,32 +448,21 @@ describe("$map operator", () => {
       ).toThrow(ArrayOperatorInputError);
     });
 
-    it("should throw MalformedOperatorParametersError when params is missing", () => {
-      expect(() => $map()(null as any)).toThrow(
-        MalformedOperatorParametersError,
-      );
+    it("should throw when params is missing", () => {
+      expect(() => $map()(null as any)).toThrow(MissingOperatorParameterError);
     });
 
-    it("should throw MalformedOperatorParametersError when params is not an object", () => {
+    it("should throw when params is not an object", () => {
       expect(() => $map()("string" as any)).toThrow(
-        MalformedOperatorParametersError,
+        MissingOperatorParameterError,
       );
     });
 
-    it("should throw MalformedOperatorParametersError when input property is missing", () => {
+    it("should throw when input property is missing", () => {
       expect(() =>
         $map()({
           expression: "$current",
         } as any),
-      ).toThrow(MalformedOperatorParametersError);
-    });
-
-    it("should throw MissingOperatorParameterError when expression is undefined", () => {
-      expect(() =>
-        $map()({
-          input: [1, 2, 3],
-          expression: undefined as any,
-        }),
       ).toThrow(MissingOperatorParameterError);
     });
   });

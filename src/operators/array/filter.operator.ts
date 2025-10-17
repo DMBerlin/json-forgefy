@@ -6,10 +6,9 @@ import { resolveFallback } from "@helpers/fallback.helper";
 import { augmentSourceWithContext } from "@common/resolve-execution-context.common";
 import { resolveExpression } from "@common/resolve-expression.common";
 import {
-  ArrayOperatorInputError,
-  MissingOperatorParameterError,
-  MalformedOperatorParametersError,
-} from "@lib-types/error.types";
+  validateArrayOperatorParams,
+  validateArrayInput,
+} from "@helpers/array-validation.helper";
 
 /**
  * The $filter operator filters elements in an array based on a condition.
@@ -136,37 +135,24 @@ export const $filter: ExecutableExpression<FilterOperatorInput, unknown[]> = (
 
   return function (params: FilterOperatorInput): unknown[] {
     try {
-      // Validate params structure
-      if (!params || typeof params !== "object" || !("input" in params)) {
-        throw new MalformedOperatorParametersError(
-          "$filter",
-          "an object with 'input' and 'condition'",
-          params,
-        );
-      }
+      // Validate params structure and required fields
+      const validatedParams = validateArrayOperatorParams(params, "$filter", [
+        "input",
+        "condition",
+      ]);
 
-      const { input, condition } = params;
+      const { input, condition } = validatedParams;
 
       // Validate input is an array
-      if (!Array.isArray(input)) {
-        throw new ArrayOperatorInputError("$filter", typeof input, input);
-      }
-
-      // Validate condition is provided
-      if (condition === undefined) {
-        throw new MissingOperatorParameterError("$filter", "condition", [
-          "input",
-          "condition",
-        ]);
-      }
+      const validArray = validateArrayInput(input, "$filter");
 
       // Handle empty array
-      if (input.length === 0) {
+      if (!Array.isArray(validArray) || validArray.length === 0) {
         return [];
       }
 
       // Filter the array with execution context
-      return input.filter((element, index) => {
+      return validArray.filter((element, index) => {
         // Create execution context for this element
         const elementContext: ExecutionContext = {
           context: payload,

@@ -6,10 +6,9 @@ import { resolveFallback } from "@helpers/fallback.helper";
 import { augmentSourceWithContext } from "@common/resolve-execution-context.common";
 import { resolveExpression } from "@common/resolve-expression.common";
 import {
-  ArrayOperatorInputError,
-  MissingOperatorParameterError,
-  MalformedOperatorParametersError,
-} from "@lib-types/error.types";
+  validateArrayOperatorParams,
+  validateArrayInput,
+} from "@helpers/array-validation.helper";
 
 /**
  * The $map operator transforms each element in an array using an expression.
@@ -122,37 +121,24 @@ export const $map: ExecutableExpression<MapOperatorInput, unknown[]> = (
 
   return function (params: MapOperatorInput): unknown[] {
     try {
-      // Validate params structure
-      if (!params || typeof params !== "object" || !("input" in params)) {
-        throw new MalformedOperatorParametersError(
-          "$map",
-          "an object with 'input' and 'expression'",
-          params,
-        );
-      }
+      // Validate params structure and required fields
+      const validatedParams = validateArrayOperatorParams(params, "$map", [
+        "input",
+        "expression",
+      ]);
 
-      const { input, expression } = params;
+      const { input, expression } = validatedParams;
 
       // Validate input is an array
-      if (!Array.isArray(input)) {
-        throw new ArrayOperatorInputError("$map", typeof input, input);
-      }
-
-      // Validate expression is provided
-      if (expression === undefined) {
-        throw new MissingOperatorParameterError("$map", "expression", [
-          "input",
-          "expression",
-        ]);
-      }
+      const validArray = validateArrayInput(input, "$map");
 
       // Handle empty array
-      if (input.length === 0) {
+      if (!Array.isArray(validArray) || validArray.length === 0) {
         return [];
       }
 
       // Map over the array with execution context
-      return input.map((element, index) => {
+      return validArray.map((element, index) => {
         // Create execution context for this element
         const elementContext: ExecutionContext = {
           context: payload,

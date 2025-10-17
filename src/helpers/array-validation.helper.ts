@@ -37,10 +37,10 @@ export function validateArrayOperatorParams<T extends { fallback?: unknown }>(
     );
   }
 
-  // Check if all required fields are present
+  // Check if all required fields are present and defined
   for (const field of requiredFields) {
-    if (!(field in params)) {
-      // Check for fallback when required field is missing
+    if (!(field in params) || (params as any)[field] === undefined) {
+      // Check for fallback when required field is missing or undefined
       if (params.fallback !== undefined) {
         return params;
       }

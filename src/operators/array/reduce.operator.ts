@@ -6,10 +6,9 @@ import { resolveFallback } from "@helpers/fallback.helper";
 import { augmentSourceWithContext } from "@common/resolve-execution-context.common";
 import { resolveExpression } from "@common/resolve-expression.common";
 import {
-  ArrayOperatorInputError,
-  MissingOperatorParameterError,
-  MalformedOperatorParametersError,
-} from "@lib-types/error.types";
+  validateArrayOperatorParams,
+  validateArrayInput,
+} from "@helpers/array-validation.helper";
 
 /**
  * The $reduce operator reduces an array to a single value by iteratively applying
@@ -205,47 +204,25 @@ export const $reduce: ExecutableExpression<ReduceOperatorInput, unknown> = (
 
   return function (params: ReduceOperatorInput): unknown {
     try {
-      // Validate params structure
-      if (!params || typeof params !== "object" || !("input" in params)) {
-        throw new MalformedOperatorParametersError(
-          "$reduce",
-          "an object with 'input', 'initialValue', and 'expression'",
-          params,
-        );
-      }
+      // Validate params structure and required fields
+      const validatedParams = validateArrayOperatorParams(params, "$reduce", [
+        "input",
+        "initialValue",
+        "expression",
+      ]);
 
-      const { input, initialValue, expression } = params;
+      const { input, initialValue, expression } = validatedParams;
 
       // Validate input is an array
-      if (!Array.isArray(input)) {
-        throw new ArrayOperatorInputError("$reduce", typeof input, input);
-      }
-
-      // Validate initialValue is provided
-      if (initialValue === undefined) {
-        throw new MissingOperatorParameterError("$reduce", "initialValue", [
-          "input",
-          "initialValue",
-          "expression",
-        ]);
-      }
-
-      // Validate expression is provided
-      if (expression === undefined) {
-        throw new MissingOperatorParameterError("$reduce", "expression", [
-          "input",
-          "initialValue",
-          "expression",
-        ]);
-      }
+      const validArray = validateArrayInput(input, "$reduce");
 
       // Handle empty array - return initialValue
-      if (input.length === 0) {
+      if (!Array.isArray(validArray) || validArray.length === 0) {
         return initialValue;
       }
 
       // Reduce the array with execution context
-      return input.reduce((accumulated, element, index) => {
+      return validArray.reduce((accumulated, element, index) => {
         // Create execution context for this iteration
         const elementContext: ExecutionContext = {
           context: payload,
