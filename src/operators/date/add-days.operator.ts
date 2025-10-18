@@ -4,7 +4,7 @@ import {
   formatDateISO,
   MS_PER_DAY,
 } from "@helpers/date-time.helper";
-import { resolveFallback } from "@helpers/fallback.helper";
+import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import { AddDaysOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -57,7 +57,7 @@ export const $addDays: ExecutableExpression<
       // Return as ISO-8601 string
       return formatDateISO(newDate);
     } catch (error) {
-      if (input && typeof input === "object" && input.fallback !== undefined) {
+      if (hasFallback(input)) {
         return resolveFallback(
           input.fallback,
           {},

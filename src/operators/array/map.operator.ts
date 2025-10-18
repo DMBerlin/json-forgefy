@@ -2,7 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { MapOperatorInput } from "@lib-types/operator-input.types";
 import { resolveArgs } from "@common/resolve-args.common";
-import { resolveFallback } from "@helpers/fallback.helper";
+import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import { augmentSourceWithContext } from "@common/resolve-execution-context.common";
 import { resolveExpression } from "@common/resolve-expression.common";
 import {
@@ -158,11 +158,7 @@ export const $map: ExecutableExpression<MapOperatorInput, unknown[]> = (
       });
     } catch (error) {
       // Handle fallback if available
-      if (
-        params &&
-        typeof params === "object" &&
-        params.fallback !== undefined
-      ) {
+      if (hasFallback(params)) {
         return resolveFallback(
           params.fallback,
           payload,

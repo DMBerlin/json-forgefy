@@ -5,7 +5,7 @@ import {
   MS_PER_DAY,
 } from "@helpers/date-time.helper";
 import { isValidTimezone } from "@helpers/timezone.helper";
-import { resolveFallback } from "@helpers/fallback.helper";
+import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import {
   TimezoneValidationError,
   MaxIterationsError,
@@ -197,7 +197,7 @@ export const $dateShift: ExecutableExpression<
       // Return the adjusted date
       return formatDateISO(currentDate);
     } catch (error) {
-      if (input && typeof input === "object" && input.fallback !== undefined) {
+      if (hasFallback(input)) {
         return resolveFallback(
           input.fallback,
           {},

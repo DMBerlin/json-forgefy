@@ -1,6 +1,6 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { parseDate } from "@helpers/date-time.helper";
-import { resolveFallback } from "@helpers/fallback.helper";
+import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import { isHoliday, validateHolidays } from "@helpers/business-day.helper";
 import { IsHolidayOperatorInput } from "@lib-types/operator-input.types";
 
@@ -40,7 +40,7 @@ export const $isHoliday: ExecutableExpression<
       // Use shared business day helper
       return isHoliday(date, input.holidays, timezone);
     } catch (error) {
-      if (input && typeof input === "object" && input.fallback !== undefined) {
+      if (hasFallback(input)) {
         return resolveFallback(
           input.fallback,
           {},

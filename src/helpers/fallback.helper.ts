@@ -4,6 +4,27 @@ import { isOperator } from "@helpers/is-operator.helper";
 import { FallbackValue } from "@lib-types/fallback.types";
 
 /**
+ * Checks if params has a defined fallback property.
+ * This helper eliminates repetitive validation across operators.
+ *
+ * @param params - The params object to check
+ * @returns true if params is an object with a defined fallback property
+ *
+ * @example
+ * ```typescript
+ * hasFallback({ input: [1, 2], fallback: [] }); // Returns true
+ * hasFallback({ input: [1, 2] }); // Returns false
+ * hasFallback(null); // Returns false
+ * hasFallback(undefined); // Returns false
+ * ```
+ */
+export function hasFallback(
+  params: any,
+): params is { fallback: FallbackValue } {
+  return params && typeof params === "object" && params.fallback !== undefined;
+}
+
+/**
  * Resolves a fallback value using the same mechanism as expression resolution.
  * The fallback can be:
  * - A static value: "2025-01-02T00:00:00Z", 123, true, null, etc.
