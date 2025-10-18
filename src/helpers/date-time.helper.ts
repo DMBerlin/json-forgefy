@@ -23,6 +23,14 @@ export const MS_PER_DAY = 24 * MS_PER_HOUR;
 export const MAX_DATE_VALUE = 8.64e15;
 
 /**
+ * Threshold to distinguish Unix timestamps (seconds) from JS timestamps (milliseconds)
+ * Unix timestamps below this value are in seconds, above are in milliseconds
+ * 10000000000 = September 9, 2001 in Unix seconds
+ * Any timestamp larger than this is assumed to be in milliseconds
+ */
+export const UNIX_TIMESTAMP_THRESHOLD = 10000000000;
+
+/**
  * Validates if a string can be successfully parsed into a valid Date object.
  * This function is used by date-related operators to ensure input strings are valid dates.
  *
@@ -120,8 +128,9 @@ export function parseDate(input: string | number | Date): Date {
     }
 
     // Detect if Unix timestamp (seconds) or JS timestamp (milliseconds)
-    // Unix timestamps are typically < 10000000000 (before year 2286)
-    const timestamp = input < 10000000000 ? input * MS_PER_SECOND : input;
+    // Unix timestamps below threshold are in seconds, above are in milliseconds
+    const timestamp =
+      input < UNIX_TIMESTAMP_THRESHOLD ? input * MS_PER_SECOND : input;
 
     // Validate limits of representation (JavaScript Date limits)
     if (Math.abs(timestamp) > MAX_DATE_VALUE) {
@@ -185,18 +194,18 @@ export function isValidCalendarDate(
 
   // Days per month
   const daysInMonth = [
-    31,
-    isLeapYear(year) ? 29 : 28,
-    31,
-    30,
-    31,
-    30,
-    31,
-    31,
-    30,
-    31,
-    30,
-    31,
+    31, // January
+    isLeapYear(year) ? 29 : 28, // February
+    31, // March
+    30, // April
+    31, // May
+    30, // June
+    31, // July
+    31, // August
+    30, // September
+    31, // October
+    30, // November
+    31, // December
   ];
 
   return day <= daysInMonth[month - 1];
