@@ -6,6 +6,7 @@ import {
 } from "@helpers/date-time.helper";
 import { isValidTimezone } from "@helpers/timezone.helper";
 import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
+import { isObjectWithProperty } from "@helpers/is-object.helper";
 import {
   TimezoneValidationError,
   MaxIterationsError,
@@ -121,7 +122,7 @@ export const $dateShift: ExecutableExpression<
 > = () => {
   return (input: DateShiftOperatorInput): string => {
     try {
-      if (!input || typeof input !== "object" || !("date" in input)) {
+      if (!isObjectWithProperty(input, "date")) {
         throw new Error("$dateShift requires an object with date property");
       }
 

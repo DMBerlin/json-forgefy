@@ -1,6 +1,7 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { parseDate } from "@helpers/date-time.helper";
 import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
+import { isObjectWithProperty } from "@helpers/is-object.helper";
 import { isHoliday, validateHolidays } from "@helpers/business-day.helper";
 import { IsHolidayOperatorInput } from "@lib-types/operator-input.types";
 
@@ -28,7 +29,7 @@ export const $isHoliday: ExecutableExpression<
 > = () => {
   return (input: IsHolidayOperatorInput): boolean => {
     try {
-      if (!input || typeof input !== "object" || !("date" in input)) {
+      if (!isObjectWithProperty(input, "date")) {
         throw new Error("$isHoliday requires an object with date and holidays");
       }
 
