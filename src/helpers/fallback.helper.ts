@@ -62,6 +62,7 @@ export function resolveFallback<T = any>(
   }
 
   // Check if it's an operator expression
+  // Type guard needed for TypeScript - isOperator handles the validation
   if (
     typeof fallback === "object" &&
     fallback !== null &&
