@@ -1,6 +1,7 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { parseDate, isDirectDateInput } from "@helpers/date-time.helper";
 import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
+import { isObjectWithProperty } from "@helpers/is-object.helper";
 import { isWeekend, validateWeekends } from "@helpers/business-day.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 import { IsWeekendOperatorInput } from "@lib-types/operator-input.types";
@@ -33,7 +34,7 @@ export const $isWeekend: ExecutableExpression<
   return (input: IsWeekendOperatorInput | string | number | Date): boolean => {
     try {
       // Handle object with timezone, weekends, and/or fallback
-      if (typeof input === "object" && input !== null && "date" in input) {
+      if (isObjectWithProperty(input, "date")) {
         try {
           const date = parseDate(input.date);
           const timezone = input.timezone || "UTC";

@@ -3,6 +3,7 @@ import { DayOfWeekOperatorInput } from "@lib-types/operator-input.types";
 import { parseDate, isDirectDateInput } from "@helpers/date-time.helper";
 import { getDateInTimezone } from "@helpers/timezone.helper";
 import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
+import { isObjectWithProperty } from "@helpers/is-object.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 
 /**
@@ -30,7 +31,7 @@ export const $dayOfWeek: ExecutableExpression<
   return (input: DayOfWeekOperatorInput): number => {
     try {
       // Handle object with timezone and/or fallback
-      if (typeof input === "object" && input !== null && "date" in input) {
+      if (isObjectWithProperty(input, "date")) {
         try {
           const date = parseDate(input.date);
           const timezone = input.timezone || "UTC";

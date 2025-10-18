@@ -7,6 +7,7 @@ import {
   MS_PER_DAY,
 } from "@helpers/date-time.helper";
 import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
+import { isObjectWithProperty } from "@helpers/is-object.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 
 /**
@@ -34,7 +35,7 @@ export const $dayOfYear: ExecutableExpression<
   return (input: DayOfYearOperatorInput): number => {
     try {
       // Handle object with timezone and/or fallback
-      if (typeof input === "object" && input !== null && "date" in input) {
+      if (isObjectWithProperty(input, "date")) {
         try {
           const date = parseDate(input.date);
           const timezone = input.timezone || "UTC";

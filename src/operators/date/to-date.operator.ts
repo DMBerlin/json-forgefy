@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ToDateOperatorInput } from "@lib-types/operator-input.types";
 import { parseDate, isDirectDateInput } from "@helpers/date-time.helper";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { isObjectWithProperty } from "@helpers/is-object.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 
 /**
@@ -29,7 +30,7 @@ export const $toDate: ExecutableExpression<ToDateOperatorInput, Date> = () => {
   return (input: ToDateOperatorInput): Date => {
     try {
       // Handle object with fallback
-      if (typeof input === "object" && input !== null && "value" in input) {
+      if (isObjectWithProperty(input, "value")) {
         try {
           return parseDate(input.value);
         } catch (error) {
