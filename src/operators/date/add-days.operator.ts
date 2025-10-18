@@ -6,6 +6,7 @@ import {
 } from "@helpers/date-time.helper";
 import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import { isObjectWithProperties } from "@helpers/is-object.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 import { AddDaysOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -33,13 +34,19 @@ export const $addDays: ExecutableExpression<
   return (input: AddDaysOperatorInput): string => {
     try {
       if (!isObjectWithProperties(input, ["date", "days"])) {
-        throw new Error("$addDays requires an object with date and days");
+        throw new OperatorInputError(
+          "Requires an object with date and days properties",
+          "$addDays",
+          input,
+        );
       }
 
       // Validate days is a number (use Number.isFinite for modern validation)
       if (typeof input.days !== "number" || !Number.isFinite(input.days)) {
-        throw new Error(
+        throw new OperatorInputError(
           `days must be a finite number, got: ${typeof input.days}`,
+          "$addDays",
+          input,
         );
       }
 
@@ -60,9 +67,8 @@ export const $addDays: ExecutableExpression<
           error instanceof Error ? error : new Error("Invalid date or days"),
         );
       }
-      throw new Error(
-        `$addDays: ${error instanceof Error ? error.message : "Unknown error"}`,
-      );
+      // Preserve domain-specific error types (OperatorInputError, DateValidationError, etc.)
+      throw error;
     }
   };
 };

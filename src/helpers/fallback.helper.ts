@@ -21,7 +21,9 @@ import { FallbackValue } from "@lib-types/fallback.types";
 export function hasFallback(
   params: any,
 ): params is { fallback: FallbackValue } {
-  return params && typeof params === "object" && params.fallback !== undefined;
+  return Boolean(
+    params && typeof params === "object" && params.fallback !== undefined,
+  );
 }
 
 /**

@@ -1,4 +1,41 @@
-import { resolveFallback } from "./fallback.helper";
+import { resolveFallback, hasFallback } from "./fallback.helper";
+
+describe("hasFallback", () => {
+  it("should return true if params has a defined fallback property", () => {
+    expect(hasFallback({ input: [1, 2], fallback: [] })).toBe(true);
+    expect(hasFallback({ date: "2024-01-01", fallback: null })).toBe(true);
+    expect(hasFallback({ value: 123, fallback: 0 })).toBe(true);
+    expect(hasFallback({ fallback: "default" })).toBe(true);
+  });
+
+  it("should return false if params does not have fallback property", () => {
+    expect(hasFallback({ input: [1, 2] })).toBe(false);
+    expect(hasFallback({ date: "2024-01-01" })).toBe(false);
+    expect(hasFallback({})).toBe(false);
+  });
+
+  it("should return false if fallback is undefined", () => {
+    expect(hasFallback({ input: [1, 2], fallback: undefined })).toBe(false);
+  });
+
+  it("should return false if params is not an object", () => {
+    expect(hasFallback(null)).toBe(false);
+    expect(hasFallback(undefined)).toBe(false);
+    expect(hasFallback("string")).toBe(false);
+    expect(hasFallback(123)).toBe(false);
+    expect(hasFallback(true)).toBe(false);
+    expect(hasFallback([])).toBe(false);
+  });
+
+  it("should work with various fallback value types", () => {
+    expect(hasFallback({ fallback: 0 })).toBe(true);
+    expect(hasFallback({ fallback: "" })).toBe(true);
+    expect(hasFallback({ fallback: false })).toBe(true);
+    expect(hasFallback({ fallback: null })).toBe(true);
+    expect(hasFallback({ fallback: [] })).toBe(true);
+    expect(hasFallback({ fallback: {} })).toBe(true);
+  });
+});
 
 describe("resolveFallback", () => {
   const mockError = new Error("Test error");

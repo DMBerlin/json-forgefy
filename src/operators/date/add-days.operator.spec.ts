@@ -213,19 +213,19 @@ describe("$addDays", () => {
   describe("input validation", () => {
     it("should throw error for missing date and days properties", () => {
       expect(() => operator({} as any)).toThrow(
-        "$addDays requires an object with date and days",
+        "Requires an object with date and days properties",
       );
     });
 
     it("should throw error for missing days property", () => {
       expect(() => operator({ date: "2025-01-01T12:00:00Z" } as any)).toThrow(
-        "$addDays requires an object with date and days",
+        "Requires an object with date and days properties",
       );
     });
 
     it("should throw error for missing date property", () => {
       expect(() => operator({ days: 5 } as any)).toThrow(
-        "$addDays requires an object with date and days",
+        "Requires an object with date and days properties",
       );
     });
   });
@@ -309,16 +309,16 @@ describe("$addDays", () => {
       expect(result).toBe("2025-01-01T00:00:00.000Z");
     });
 
-    it("should handle non-Error thrown without fallback (lines 67-68)", () => {
-      // Trigger a non-Error throw to test the ternary on line 68
+    it("should handle non-Error thrown without fallback", () => {
+      // Trigger a non-Error throw to test error preservation
       const problematicInput = {
         get date() {
           throw "string error"; // Throw non-Error
         },
         days: 1,
       };
-      expect(() => operator(problematicInput as any)).toThrow("$addDays:");
-      expect(() => operator(problematicInput as any)).toThrow("Unknown error");
+      // Error is re-thrown as-is (preserves domain-specific error types)
+      expect(() => operator(problematicInput as any)).toThrow("string error");
     });
   });
 
