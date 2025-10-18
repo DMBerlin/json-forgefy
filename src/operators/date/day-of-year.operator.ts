@@ -6,7 +6,7 @@ import {
   isDirectDateInput,
   MS_PER_DAY,
 } from "@helpers/date-time.helper";
-import { resolveFallback } from "@helpers/fallback.helper";
+import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 
 /**
@@ -42,7 +42,7 @@ export const $dayOfYear: ExecutableExpression<
           // Calculate day of year in the specified timezone
           return getDayOfYear(date, timezone);
         } catch (error) {
-          if (input.fallback !== undefined) {
+          if (hasFallback(input)) {
             return resolveFallback(
               input.fallback,
               {},

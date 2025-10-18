@@ -1,6 +1,6 @@
 import { ExecutableExpression } from "@interfaces/executable-expression.interface";
 import { parseDate, isDirectDateInput } from "@helpers/date-time.helper";
-import { resolveFallback } from "@helpers/fallback.helper";
+import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import { isWeekend, validateWeekends } from "@helpers/business-day.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 import { IsWeekendOperatorInput } from "@lib-types/operator-input.types";
@@ -44,7 +44,7 @@ export const $isWeekend: ExecutableExpression<
           // Use shared business day helper
           return isWeekend(date, weekends, timezone);
         } catch (error) {
-          if (input.fallback !== undefined) {
+          if (hasFallback(input)) {
             return resolveFallback(
               input.fallback,
               {},

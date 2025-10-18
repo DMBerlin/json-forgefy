@@ -2,7 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { DayOfMonthOperatorInput } from "@lib-types/operator-input.types";
 import { parseDate, isDirectDateInput } from "@helpers/date-time.helper";
 import { getDateInTimezone } from "@helpers/timezone.helper";
-import { resolveFallback } from "@helpers/fallback.helper";
+import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
 import { OperatorInputError } from "@lib-types/error.types";
 
 /**
@@ -39,7 +39,7 @@ export const $dayOfMonth: ExecutableExpression<
           const dateInTz = getDateInTimezone(date, timezone);
           return dateInTz.day;
         } catch (error) {
-          if (input.fallback !== undefined) {
+          if (hasFallback(input)) {
             return resolveFallback(
               input.fallback,
               {},
