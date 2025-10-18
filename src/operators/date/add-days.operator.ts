@@ -5,6 +5,7 @@ import {
   MS_PER_DAY,
 } from "@helpers/date-time.helper";
 import { resolveFallback, hasFallback } from "@helpers/fallback.helper";
+import { isObjectWithProperties } from "@helpers/is-object.helper";
 import { AddDaysOperatorInput } from "@lib-types/operator-input.types";
 
 /**
@@ -31,12 +32,7 @@ export const $addDays: ExecutableExpression<
 > = () => {
   return (input: AddDaysOperatorInput): string => {
     try {
-      if (
-        !input ||
-        typeof input !== "object" ||
-        !("date" in input) ||
-        !("days" in input)
-      ) {
+      if (!isObjectWithProperties(input, ["date", "days"])) {
         throw new Error("$addDays requires an object with date and days");
       }
 
