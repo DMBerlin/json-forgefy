@@ -67,8 +67,5 @@ export function isObjectWithProperties<T extends string>(
   value: any,
   properties: readonly T[],
 ): value is Record<T, any> {
-  if (typeof value !== "object" || value === null) {
-    return false;
-  }
-  return properties.every((property) => property in value);
+  return properties.every((property) => isObjectWithProperty(value, property));
 }
