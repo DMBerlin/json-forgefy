@@ -25,10 +25,10 @@ export const MAX_DATE_VALUE = 8.64e15;
 /**
  * Threshold to distinguish Unix timestamps (seconds) from JS timestamps (milliseconds)
  * Unix timestamps below this value are in seconds, above are in milliseconds
- * 10000000000 = September 9, 2001 in Unix seconds
+ * 1e10 (10 billion) = September 9, 2001 in Unix seconds
  * Any timestamp larger than this is assumed to be in milliseconds
  */
-export const UNIX_TIMESTAMP_THRESHOLD = 10000000000;
+export const UNIX_TIMESTAMP_THRESHOLD = 1e10;
 
 /**
  * Validates if a string can be successfully parsed into a valid Date object.
