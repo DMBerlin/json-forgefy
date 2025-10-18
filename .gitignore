@@ -46,4 +46,6 @@ build/Release/
 # tsbuildinfos
 *.tsbuildinfo
 
+# Custom ignores
 .kiro/
+/src/docs/generated/
