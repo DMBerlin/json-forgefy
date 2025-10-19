@@ -14,13 +14,25 @@ import {
   InvalidHolidayError,
   InvalidWeekendError,
 } from "@lib-types/error.types";
-import { DateShiftOperatorInput } from "@lib-types/operator-input.types";
+import {
+  DateShiftOperatorInput,
+  DateShiftStrategy,
+} from "@lib-types/operator-input.types";
 import {
   isBusinessDay,
   normalizeHolidays,
   validateHolidays,
   validateWeekends,
 } from "@helpers/business-day.helper";
+
+// Re-export for convenience
+export { DateShiftStrategy } from "@lib-types/operator-input.types";
+
+/**
+ * Array of all valid date shift strategies
+ * Used for validation
+ */
+const VALID_STRATEGIES = Object.values(DateShiftStrategy);
 
 /**
  * $dateShift operator - Adjusts dates to business days by rolling forward/backward
@@ -129,7 +141,7 @@ export const $dateShift: ExecutableExpression<
       // Parse and validate input parameters
       const date = parseDate(input.date);
       const timezone = input.timezone || "UTC";
-      const strategy = input.strategy || "rollForward";
+      const strategy = input.strategy || DateShiftStrategy.ROLL_FORWARD;
       const holidays = input.holidays || [];
       const weekends = input.weekends || [0, 6]; // Default: Sunday and Saturday
       const maxIterations = input.maxIterations || 365;
@@ -143,12 +155,11 @@ export const $dateShift: ExecutableExpression<
       }
 
       // Validate strategy
-      const validStrategies = ["rollForward", "rollBackward", "keep"];
-      if (!validStrategies.includes(strategy)) {
+      if (!VALID_STRATEGIES.includes(strategy as DateShiftStrategy)) {
         throw new InvalidStrategyError(
           `Invalid strategy: ${strategy}`,
           strategy,
-          validStrategies,
+          VALID_STRATEGIES as string[],
         );
       }
 
@@ -157,7 +168,7 @@ export const $dateShift: ExecutableExpression<
       validateWeekends(weekends);
 
       // Strategy "keep" - return immediately
-      if (strategy === "keep") {
+      if (strategy === DateShiftStrategy.KEEP) {
         return formatDateISO(date);
       }
 
@@ -176,10 +187,10 @@ export const $dateShift: ExecutableExpression<
         }) &&
         iterations < maxIterations
       ) {
-        if (strategy === "rollForward") {
+        if (strategy === DateShiftStrategy.ROLL_FORWARD) {
           // Add 1 day using reliable constant
           currentDate = new Date(currentDate.getTime() + MS_PER_DAY);
-        } else if (strategy === "rollBackward") {
+        } else if (strategy === DateShiftStrategy.ROLL_BACKWARD) {
           // Subtract 1 day using reliable constant
           currentDate = new Date(currentDate.getTime() - MS_PER_DAY);
         }

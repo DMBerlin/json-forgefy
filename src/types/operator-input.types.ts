@@ -240,9 +240,26 @@ export type DayOfYearOperatorInput =
       fallback?: unknown;
     };
 
+/**
+ * Valid strategies for $dateShift operator
+ * Using const object pattern for zero runtime overhead and tree-shaking
+ * Following gts naming convention: UPPER_SNAKE_CASE for const object members
+ */
+export const DateShiftStrategy = {
+  ROLL_FORWARD: "rollForward",
+  ROLL_BACKWARD: "rollBackward",
+  KEEP: "keep",
+} as const;
+
+/**
+ * Type derived from DateShiftStrategy const object
+ */
+export type DateShiftStrategy =
+  (typeof DateShiftStrategy)[keyof typeof DateShiftStrategy];
+
 export type DateShiftOperatorInput = {
   date: string | number | Date;
-  strategy?: "rollForward" | "rollBackward" | "keep";
+  strategy?: DateShiftStrategy;
   holidays?: string[];
   weekends?: number[];
   timezone?: string;
