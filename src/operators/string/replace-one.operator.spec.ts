@@ -199,7 +199,7 @@ describe("$replaceOne operator", () => {
           search: "test",
           replacement: "abc",
         }),
-      ).toThrow("$replaceOne expects a string input, received number");
+      ).toThrow("Expects a string input, received number");
     });
 
     it("should throw error for non-string search without fallback", () => {
@@ -209,7 +209,7 @@ describe("$replaceOne operator", () => {
           search: 123 as any,
           replacement: "abc",
         }),
-      ).toThrow("$replaceOne expects a string search, received number");
+      ).toThrow("Expects a string search, received number");
     });
 
     it("should throw error for non-string replacement without fallback", () => {
@@ -219,7 +219,7 @@ describe("$replaceOne operator", () => {
           search: "test",
           replacement: 123 as any,
         }),
-      ).toThrow("$replaceOne expects a string replacement, received number");
+      ).toThrow("Expects a string replacement, received number");
     });
 
     it("should use fallback for non-string input", () => {
@@ -250,7 +250,7 @@ describe("$replaceOne operator", () => {
           replacement: "abc",
           fallback: undefined,
         }),
-      ).toThrow("$replaceOne expects a string input, received number");
+      ).toThrow("Expects a string input, received number");
     });
 
     it("should handle non-Error thrown values", () => {

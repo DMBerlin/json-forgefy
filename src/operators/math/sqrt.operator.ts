@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { SqrtOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $sqrt operator calculates the square root of a number.
@@ -30,13 +31,19 @@ export const $sqrt: ExecutableExpression<SqrtOperatorInput, number> = (
 
       // Validate input
       if (typeof value !== "number") {
-        throw new Error(`$sqrt requires a numeric value, got ${typeof value}`);
+        throw new OperatorInputError(
+          `Requires a numeric value, got ${typeof value}`,
+          "$sqrt",
+          input,
+        );
       }
 
       // Check for negative numbers
       if (value < 0) {
-        throw new Error(
-          `$sqrt cannot calculate square root of negative number: ${value}`,
+        throw new OperatorInputError(
+          `Cannot calculate square root of negative number: ${value}`,
+          "$sqrt",
+          input,
         );
       }
 

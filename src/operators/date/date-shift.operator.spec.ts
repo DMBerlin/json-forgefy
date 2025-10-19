@@ -295,7 +295,7 @@ describe("$dateShift", () => {
   describe("input validation", () => {
     it("should throw error for missing date property", () => {
       expect(() => $dateShift()({} as any)).toThrow(
-        "$dateShift requires an object with date property",
+        "Requires an object with date property",
       );
     });
 

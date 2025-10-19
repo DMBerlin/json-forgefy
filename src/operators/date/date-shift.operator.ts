@@ -13,6 +13,7 @@ import {
   InvalidStrategyError,
   InvalidHolidayError,
   InvalidWeekendError,
+  OperatorInputError,
 } from "@lib-types/error.types";
 import {
   DateShiftOperatorInput,
@@ -132,7 +133,11 @@ export const $dateShift: ExecutableExpression<
   return (input: DateShiftOperatorInput): string => {
     try {
       if (!isObjectWithProperty(input, "date")) {
-        throw new Error("$dateShift requires an object with date property");
+        throw new OperatorInputError(
+          "Requires an object with date property",
+          "$dateShift",
+          input,
+        );
       }
 
       // Parse and validate input parameters

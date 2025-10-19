@@ -198,13 +198,13 @@ describe("$indexOf operator", () => {
     it("should throw error for non-string input without fallback", () => {
       expect(() =>
         $indexOf(payload)({ input: 123 as any, substring: "test" }),
-      ).toThrow("$indexOf expects a string input, received number");
+      ).toThrow("Expects a string input, received number");
     });
 
     it("should throw error for non-string substring without fallback", () => {
       expect(() =>
         $indexOf(payload)({ input: "test", substring: 123 as any }),
-      ).toThrow("$indexOf expects a string substring, received number");
+      ).toThrow("Expects a string substring, received number");
     });
 
     it("should use fallback for non-string input", () => {
@@ -232,7 +232,7 @@ describe("$indexOf operator", () => {
           substring: "test",
           fallback: undefined,
         }),
-      ).toThrow("$indexOf expects a string input, received number");
+      ).toThrow("Expects a string input, received number");
     });
 
     it("should handle non-Error thrown values", () => {

@@ -33,7 +33,7 @@ describe("$mod operator", () => {
   describe("error handling", () => {
     it("should throw error for division by zero without fallback", () => {
       expect(() => $mod(payload)({ dividend: 10, divisor: 0 })).toThrow(
-        "$mod: division by zero",
+        "Division by zero",
       );
     });
 
@@ -49,7 +49,7 @@ describe("$mod operator", () => {
     it("should throw error for non-numeric dividend without fallback", () => {
       expect(() =>
         $mod(payload)({ dividend: "10" as any, divisor: 3 }),
-      ).toThrow("$mod requires numeric dividend and divisor");
+      ).toThrow("Requires numeric dividend and divisor");
     });
 
     it("should use fallback for non-numeric inputs", () => {

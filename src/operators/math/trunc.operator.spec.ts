@@ -46,7 +46,7 @@ describe("$trunc operator", () => {
   describe("error handling", () => {
     it("should throw error for non-numeric value without fallback", () => {
       expect(() => $trunc(payload)({ value: "4.9" as any })).toThrow(
-        "$trunc requires a numeric value",
+        "Requires a numeric value",
       );
     });
 

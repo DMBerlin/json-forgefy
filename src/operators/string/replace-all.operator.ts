@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ReplaceAllOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $replaceAll operator replaces all occurrences of a search string with a replacement string.
@@ -47,20 +48,26 @@ export const $replaceAll: ExecutableExpression<
       const { input, search, replacement } = params;
 
       if (typeof input !== "string") {
-        throw new Error(
-          `$replaceAll expects a string input, received ${typeof input}`,
+        throw new OperatorInputError(
+          `Expects a string input, received ${typeof input}`,
+          "$replaceAll",
+          params,
         );
       }
 
       if (typeof search !== "string") {
-        throw new Error(
-          `$replaceAll expects a string search, received ${typeof search}`,
+        throw new OperatorInputError(
+          `Expects a string search, received ${typeof search}`,
+          "$replaceAll",
+          params,
         );
       }
 
       if (typeof replacement !== "string") {
-        throw new Error(
-          `$replaceAll expects a string replacement, received ${typeof replacement}`,
+        throw new OperatorInputError(
+          `Expects a string replacement, received ${typeof replacement}`,
+          "$replaceAll",
+          params,
         );
       }
 

@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ModOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $mod operator calculates the remainder of dividing the dividend by the divisor.
@@ -30,13 +31,15 @@ export const $mod: ExecutableExpression<ModOperatorInput, number> = (
 
       // Validate inputs
       if (typeof dividend !== "number" || typeof divisor !== "number") {
-        throw new Error(
-          `$mod requires numeric dividend and divisor, got dividend: ${typeof dividend}, divisor: ${typeof divisor}`,
+        throw new OperatorInputError(
+          `Requires numeric dividend and divisor, got dividend: ${typeof dividend}, divisor: ${typeof divisor}`,
+          "$mod",
+          input,
         );
       }
 
       if (divisor === 0) {
-        throw new Error("$mod: division by zero");
+        throw new OperatorInputError("Division by zero", "$mod", input);
       }
 
       return dividend % divisor;

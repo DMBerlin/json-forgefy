@@ -43,7 +43,7 @@ describe("$pow operator", () => {
   describe("error handling", () => {
     it("should throw error for negative base with fractional exponent without fallback", () => {
       expect(() => $pow(payload)({ base: -1, exponent: 0.5 })).toThrow(
-        "$pow resulted in NaN",
+        "Resulted in NaN",
       );
     });
 
@@ -58,7 +58,7 @@ describe("$pow operator", () => {
 
     it("should throw error for non-numeric base without fallback", () => {
       expect(() => $pow(payload)({ base: "2" as any, exponent: 3 })).toThrow(
-        "$pow requires numeric base and exponent",
+        "Requires numeric base and exponent",
       );
     });
 

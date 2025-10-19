@@ -33,7 +33,7 @@ describe("$sqrt operator", () => {
   describe("error handling", () => {
     it("should throw error for negative number without fallback", () => {
       expect(() => $sqrt(payload)({ value: -1 })).toThrow(
-        "$sqrt cannot calculate square root of negative number",
+        "Cannot calculate square root of negative number",
       );
     });
 
@@ -44,7 +44,7 @@ describe("$sqrt operator", () => {
 
     it("should throw error for non-numeric value without fallback", () => {
       expect(() => $sqrt(payload)({ value: "16" as any })).toThrow(
-        "$sqrt requires a numeric value",
+        "Requires a numeric value",
       );
     });
 

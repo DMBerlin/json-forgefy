@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { LtrimOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $ltrim operator removes whitespace (or specified characters) from the start of a string.
@@ -38,8 +39,10 @@ export const $ltrim: ExecutableExpression<LtrimOperatorInput, string> = (
       const { input, chars = [" ", "\t", "\n", "\r"] } = params;
 
       if (typeof input !== "string") {
-        throw new Error(
-          `$ltrim expects a string input, received ${typeof input}`,
+        throw new OperatorInputError(
+          `Expects a string input, received ${typeof input}`,
+          "$ltrim",
+          params,
         );
       }
 

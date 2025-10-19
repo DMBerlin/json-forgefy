@@ -115,7 +115,7 @@ describe("$ltrim operator", () => {
   describe("error handling", () => {
     it("should throw error for non-string input without fallback", () => {
       expect(() => $ltrim(payload)({ input: 123 as any })).toThrow(
-        "$ltrim expects a string input, received number",
+        "Expects a string input, received number",
       );
     });
 
@@ -149,7 +149,7 @@ describe("$ltrim operator", () => {
           input: 123 as any,
           fallback: undefined,
         }),
-      ).toThrow("$ltrim expects a string input, received number");
+      ).toThrow("Expects a string input, received number");
     });
 
     it("should handle non-Error thrown values", () => {

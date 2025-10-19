@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { IndexOfOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $indexOf operator returns the index of the first occurrence of a substring within a string.
@@ -36,14 +37,18 @@ export const $indexOf: ExecutableExpression<IndexOfOperatorInput, number> = (
       const { input, substring, start = 0 } = params;
 
       if (typeof input !== "string") {
-        throw new Error(
-          `$indexOf expects a string input, received ${typeof input}`,
+        throw new OperatorInputError(
+          `Expects a string input, received ${typeof input}`,
+          "$indexOf",
+          params,
         );
       }
 
       if (typeof substring !== "string") {
-        throw new Error(
-          `$indexOf expects a string substring, received ${typeof substring}`,
+        throw new OperatorInputError(
+          `Expects a string substring, received ${typeof substring}`,
+          "$indexOf",
+          params,
         );
       }
 

@@ -6,6 +6,7 @@ import {
   diffInYears,
   isValidDateString,
 } from "@helpers/date-time.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $dateDiff operator calculates the difference between two dates in the specified unit.
@@ -61,7 +62,11 @@ export const $dateDiff: ExecutableExpression<
       case "years":
         return diffInYears(startDate, endDate);
       default:
-        throw new Error(`Invalid unit: ${input.unit}`);
+        throw new OperatorInputError(
+          `Invalid unit: ${input.unit}. Valid units: "days", "months", "years"`,
+          "$dateDiff",
+          input,
+        );
     }
   };
 };

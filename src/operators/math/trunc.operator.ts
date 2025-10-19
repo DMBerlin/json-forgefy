@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { TruncOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $trunc operator truncates a number to an integer by removing the decimal part.
@@ -30,7 +31,11 @@ export const $trunc: ExecutableExpression<TruncOperatorInput, number> = (
 
       // Validate input
       if (typeof value !== "number") {
-        throw new Error(`$trunc requires a numeric value, got ${typeof value}`);
+        throw new OperatorInputError(
+          `Requires a numeric value, got ${typeof value}`,
+          "$trunc",
+          input,
+        );
       }
 
       return Math.trunc(value);

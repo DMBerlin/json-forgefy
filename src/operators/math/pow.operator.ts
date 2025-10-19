@@ -2,6 +2,7 @@ import { ExecutableExpression } from "@interfaces/executable-expression.interfac
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { PowOperatorInput } from "@lib-types/operator-input.types";
 import { resolveFallback } from "@helpers/fallback.helper";
+import { OperatorInputError } from "@lib-types/error.types";
 
 /**
  * The $pow operator raises a base number to the power of an exponent.
@@ -31,8 +32,10 @@ export const $pow: ExecutableExpression<PowOperatorInput, number> = (
 
       // Validate inputs
       if (typeof base !== "number" || typeof exponent !== "number") {
-        throw new Error(
-          `$pow requires numeric base and exponent, got base: ${typeof base}, exponent: ${typeof exponent}`,
+        throw new OperatorInputError(
+          `Requires numeric base and exponent, got base: ${typeof base}, exponent: ${typeof exponent}`,
+          "$pow",
+          input,
         );
       }
 
@@ -40,8 +43,10 @@ export const $pow: ExecutableExpression<PowOperatorInput, number> = (
 
       // Check for NaN result (e.g., negative base with fractional exponent)
       if (isNaN(result)) {
-        throw new Error(
-          `$pow resulted in NaN (base: ${base}, exponent: ${exponent})`,
+        throw new OperatorInputError(
+          `Resulted in NaN (base: ${base}, exponent: ${exponent})`,
+          "$pow",
+          input,
         );
       }
 
