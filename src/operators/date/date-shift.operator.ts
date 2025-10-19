@@ -25,9 +25,6 @@ import {
   validateWeekends,
 } from "@helpers/business-day.helper";
 
-// Re-export for convenience
-export { DateShiftStrategy } from "@lib-types/operator-input.types";
-
 /**
  * Array of all valid date shift strategies
  * Used for validation
