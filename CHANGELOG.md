@@ -124,6 +124,14 @@ This major release introduces powerful array transformation operators and compre
 * API reference extracted from JSDoc comments
 * Organized by 8 categories with params, returns, and examples
 
+#### **Documentation**
+* **`GUIDE.md`** - Comprehensive MongoDB-style API reference
+  - All 77 operators documented with detailed examples
+  - Machine-parsable structure for playground integration
+  - Organized by categories with parameter specs and return types
+  - Realistic use cases and best practices
+  - Can be used to programmatically populate playground API reference
+
 ### 📊 Statistics
 
 * **+26 new operators** (from 51 in v3.2.0 to 77 in v4.0.0)

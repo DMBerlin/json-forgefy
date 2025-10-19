@@ -305,6 +305,8 @@ const blueprint = {
 
 ## 📚 Complete Operator Reference
 
+> 📖 **For detailed API documentation with comprehensive examples, see [GUIDE.md](GUIDE.md)**
+
 **77 operators across 10 categories:**
 
 | Category | Operators | Count |
