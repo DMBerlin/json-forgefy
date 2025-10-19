@@ -64,7 +64,10 @@ This major release introduces powerful array transformation operators and compre
 * **$replaceAll**: Replace all occurrences
 
 #### **Type Checking**
-* **$type**: Get type name ("string", "number", "array", etc.)
+* **$type**: Get type name with comprehensive JavaScript type support
+  - Detects all 11 JavaScript types (string, number, boolean, bigint, symbol, null, undefined, array, object, date, function)
+  - Clarifies JSON-compatible types vs runtime-only types
+  - Added 8 new tests for complete type coverage
 * **$isArray**: Validate array type
 * **$isString**: Validate string type
 * **$isBoolean**: Validate boolean type
@@ -78,6 +81,33 @@ This major release introduces powerful array transformation operators and compre
 * Comprehensive 91-test suite for validation helpers
 * All array operators now use centralized validation
 
+#### **DRY Principles & Helper Functions**
+* **`hasFallback()`** - Type-safe helper for fallback validation
+  - Updated 10 operators with single-line validation
+  - Added 6 comprehensive test cases
+* **`isObjectWithProperty()`** - Type guard for single property validation
+  - Updated 6 operators to eliminate verbose validation
+  - Added 5 test suites with 13 test cases
+* **`isObjectWithProperties()`** - Multi-property validation
+  - Reuses `isObjectWithProperty()` for DRY implementation
+  - Added 7 test suites with 17 test cases
+
+#### **Constants & Type Safety**
+* **`UNIX_TIMESTAMP_THRESHOLD`** - Scientific notation (1e10) for timestamp parsing
+* **`DateShiftStrategy`** - Const object pattern over enums
+  - Zero runtime overhead, tree-shakeable
+  - Follows gts naming convention (UPPER_SNAKE_CASE)
+  - Exported from public API
+  - Values: ROLL_FORWARD, ROLL_BACKWARD, KEEP
+
+#### **Domain-Specific Error Handling**
+* Replace generic errors with `OperatorInputError` in 12 operators
+  - Math: $mod, $pow, $sqrt, $trunc
+  - String: $indexOf, $ltrim, $rtrim, $replaceOne, $replaceAll
+  - Date: $dateShift, $isHoliday, $dateDiff
+* Structured error data with operator name and input as properties
+* Cleaner error messages without duplication
+
 #### **Fallback System**
 * Universal fallback support across math, array, and date operators
 * Fallback can be static values, path references, or expressions
@@ -89,13 +119,22 @@ This major release introduces powerful array transformation operators and compre
 * Business day helpers (reused across date operators)
 * Custom error types for better debugging
 
+#### **Playground**
+* Interactive browser playground with 77 operators documented
+* API reference extracted from JSDoc comments
+* Organized by 8 categories with params, returns, and examples
+
 ### 📊 Statistics
 
-* **+8 array operators** with 408 tests
-* **+9 date operators** with extensive test coverage
-* **+9 enhanced operators** (math, string, type checking)
-* **Total: 77 operators** (from 51 in v3.2.0)
-* **1708 tests passing** (6 skipped for documented limitations)
+* **+26 new operators** (from 51 in v3.2.0 to 77 in v4.0.0)
+  - +8 array operators with 408 tests
+  - +9 date operators with extensive coverage
+  - +9 enhanced operators (math, string, type checking)
+* **1745 tests passing** (6 skipped for documented limitations)
+* **+556 new tests** in v4.0.0 (from 1189 in v3.2.0)
+* **17 operators refactored** for better code quality
+* **3 new helper functions** (hasFallback, isObjectWithProperty, isObjectWithProperties)
+* **44 new helper tests** for validation functions
 * **100% code coverage** maintained across all metrics
 * **Zero dependencies** - pure JavaScript/TypeScript
 

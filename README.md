@@ -305,18 +305,18 @@ const blueprint = {
 
 ## 📚 Complete Operator Reference
 
-**77 operators across 11 categories:**
+**77 operators across 10 categories:**
 
 | Category | Operators | Count |
 |----------|-----------|-------|
 | 🔢 **Mathematical** | $add, $subtract, $multiply, $divide, $abs, $ceil, $floor, $max, $min, $toFixed, $round, $mod, $pow, $sqrt, $trunc | 15 |
-| 📝 **String** | $toString, $toUpper, $toLower, $concat, $substr, $slice, $split, $size, $replace, $regexReplace, $trim, $ltrim, $rtrim, $indexOf, $replaceOne, $replaceAll | 16 |
+| 📝 **String** | $concat, $toUpper, $toLower, $substr, $slice, $split, $size, $replace, $regexReplace, $trim, $ltrim, $rtrim, $indexOf, $replaceOne, $replaceAll | 15 |
 | ⚖️ **Comparison** | $eq, $ne, $gt, $gte, $lt, $lte, $in, $nin, $regex | 9 |
 | 🔀 **Logical** | $and, $or, $not, $none | 4 |
 | 🎯 **Conditional** | $cond, $switch, $ifNull, $coalesce, $every, $some | 6 |
-| 🔄 **Type Conversion** | $toNumber, $toString | 2 |
+| 🔄 **Type Conversion** | $toNumber, $toString, $toDate | 3 |
 | 🔍 **Type Checking** | $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN, $exists | 9 |
-| 📅 **Date** | $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $isWeekend, $isHoliday, $addDays, $dateShift, $dateDiff | 9 |
+| 📅 **Date** | $dayOfWeek, $dayOfMonth, $dayOfYear, $isWeekend, $isHoliday, $addDays, $dateShift, $dateDiff | 8 |
 | 📋 **Array Transform** | $map, $filter, $reduce | 3 |
 | 📊 **Array Utilities** | $arrayFirst, $arrayLast, $arrayAt, $sum, $avg | 5 |
 
