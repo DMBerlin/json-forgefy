@@ -48,4 +48,4 @@ build/Release/
 
 # Custom ignores
 .kiro/
-/src/docs/generated/
+.docs/
