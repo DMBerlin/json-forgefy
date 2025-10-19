@@ -140,6 +140,52 @@ describe("$type operator", () => {
     });
   });
 
+  describe("bigint type", () => {
+    it("should return 'bigint' for BigInt value", () => {
+      const result = $type()(BigInt(123));
+      expect(result).toBe("bigint");
+    });
+
+    it("should return 'bigint' for BigInt literal", () => {
+      const result = $type()(9007199254740991n);
+      expect(result).toBe("bigint");
+    });
+
+    it("should return 'bigint' for negative BigInt", () => {
+      const result = $type()(BigInt(-456));
+      expect(result).toBe("bigint");
+    });
+  });
+
+  describe("symbol type", () => {
+    it("should return 'symbol' for Symbol", () => {
+      const result = $type()(Symbol("test"));
+      expect(result).toBe("symbol");
+    });
+
+    it("should return 'symbol' for Symbol.for", () => {
+      const result = $type()(Symbol.for("global"));
+      expect(result).toBe("symbol");
+    });
+  });
+
+  describe("function type", () => {
+    it("should return 'function' for arrow function", () => {
+      const result = $type()(() => {});
+      expect(result).toBe("function");
+    });
+
+    it("should return 'function' for regular function", () => {
+      const result = $type()(function () {});
+      expect(result).toBe("function");
+    });
+
+    it("should return 'function' for async function", () => {
+      const result = $type()(async () => {});
+      expect(result).toBe("function");
+    });
+  });
+
   describe("edge cases", () => {
     it("should distinguish between array and object", () => {
       expect($type()([])).toBe("array");
@@ -156,14 +202,21 @@ describe("$type operator", () => {
       expect($type()(undefined)).toBe("undefined");
     });
 
-    it("should handle function type", () => {
-      const result = $type()(() => {});
-      expect(result).toBe("function");
+    it("should handle all JavaScript primitive types", () => {
+      expect($type()("string")).toBe("string");
+      expect($type()(123)).toBe("number");
+      expect($type()(true)).toBe("boolean");
+      expect($type()(BigInt(123))).toBe("bigint");
+      expect($type()(Symbol("test"))).toBe("symbol");
+      expect($type()(null)).toBe("null");
+      expect($type()(undefined)).toBe("undefined");
     });
 
-    it("should handle symbol type", () => {
-      const result = $type()(Symbol("test"));
-      expect(result).toBe("symbol");
+    it("should handle reference types", () => {
+      expect($type()({})).toBe("object");
+      expect($type()([])).toBe("array");
+      expect($type()(new Date())).toBe("date");
+      expect($type()(() => {})).toBe("function");
     });
   });
 });
