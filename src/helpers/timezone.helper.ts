@@ -39,6 +39,17 @@ function getFormatter(timezone: string): Intl.DateTimeFormat {
 }
 
 /**
+ * Normalizes hour value from 24-hour format
+ * Some environments return "24" for midnight instead of "0"
+ * @param hour - Hour value from formatter (0-24)
+ * @returns Normalized hour (0-23)
+ * @internal
+ */
+export function normalizeHour(hour: number): number {
+  return hour === 24 ? 0 : hour;
+}
+
+/**
  * Validates if a timezone is valid using Intl.DateTimeFormat
  * @param timezone - IANA timezone identifier to validate
  * @returns true if timezone is valid, false otherwise
@@ -101,15 +112,11 @@ export function getDateInTimezone(
     Sat: 6,
   };
 
-  // Normalize hour value: 24-hour format can return "24" for midnight, normalize to 0
-  const hour = parseInt(values.hour, 10);
-  const normalizedHour = hour === 24 ? 0 : hour;
-
   return {
     year: parseInt(values.year, 10),
     month: parseInt(values.month, 10),
     day: parseInt(values.day, 10),
-    hour: normalizedHour,
+    hour: normalizeHour(parseInt(values.hour, 10)),
     minute: parseInt(values.minute, 10),
     second: parseInt(values.second, 10),
     dayOfWeek: dayOfWeekMap[values.weekday],
