@@ -101,11 +101,15 @@ export function getDateInTimezone(
     Sat: 6,
   };
 
+  // Normalize hour value: 24-hour format can return "24" for midnight, normalize to 0
+  const hour = parseInt(values.hour, 10);
+  const normalizedHour = hour === 24 ? 0 : hour;
+
   return {
     year: parseInt(values.year, 10),
     month: parseInt(values.month, 10),
     day: parseInt(values.day, 10),
-    hour: parseInt(values.hour, 10),
+    hour: normalizedHour,
     minute: parseInt(values.minute, 10),
     second: parseInt(values.second, 10),
     dayOfWeek: dayOfWeekMap[values.weekday],
