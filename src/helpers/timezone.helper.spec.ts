@@ -4,6 +4,7 @@ import {
   createDateInTimezone,
   getTimezoneOffset,
   clearFormatterCache,
+  normalizeHour,
 } from "./timezone.helper";
 import { MS_PER_HOUR } from "./date-time.helper";
 
@@ -11,6 +12,19 @@ describe("timezone.helper", () => {
   afterEach(() => {
     // Clear cache after each test to ensure isolation
     clearFormatterCache();
+  });
+
+  describe("normalizeHour", () => {
+    it("should return 0 when hour is 24", () => {
+      expect(normalizeHour(24)).toBe(0);
+    });
+
+    it("should return the same hour for values 0-23", () => {
+      expect(normalizeHour(0)).toBe(0);
+      expect(normalizeHour(1)).toBe(1);
+      expect(normalizeHour(12)).toBe(12);
+      expect(normalizeHour(23)).toBe(23);
+    });
   });
 
   describe("isValidTimezone", () => {
@@ -110,6 +124,20 @@ describe("timezone.helper", () => {
       // Second call should use cached formatter
       const result2 = getDateInTimezone(date2, "America/Sao_Paulo");
       expect(result2.day).toBe(2);
+    });
+
+    it("should normalize hour 24 to 0 for midnight", () => {
+      // Test midnight in UTC - some environments return hour 24 instead of 0
+      // This ensures the normalization logic works correctly
+      const date = new Date("2025-03-01T00:00:00Z");
+      const result = getDateInTimezone(date, "UTC");
+
+      expect(result.year).toBe(2025);
+      expect(result.month).toBe(3);
+      expect(result.day).toBe(1);
+      expect(result.hour).toBe(0); // Should always be 0, not 24
+      expect(result.minute).toBe(0);
+      expect(result.second).toBe(0);
     });
   });
 
