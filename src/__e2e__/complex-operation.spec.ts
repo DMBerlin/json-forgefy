@@ -1,4 +1,4 @@
-import { Forgefy } from "..";
+import Forgefy from "..";
 
 describe("E2E Complex Operator Interoperability", () => {
   describe("Scenario 1: E-commerce Order Processing", () => {

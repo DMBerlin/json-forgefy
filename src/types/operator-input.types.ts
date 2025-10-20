@@ -1,4 +1,5 @@
 import { Expression, ExpressionValues } from "./expression.types";
+import { FallbackValue } from "./fallback.types";
 import { JsonValidTypes } from "./json.types";
 import { ObjectPathValue } from "./object-path-value.types";
 
@@ -137,3 +138,232 @@ export type RegexReplaceOperatorInput = {
 };
 
 export type NoneOperatorInput = ExpressionValues[];
+
+export type TypeOperatorInput = unknown;
+export type IsArrayOperatorInput = unknown;
+export type IsStringOperatorInput = unknown;
+export type IsBooleanOperatorInput = unknown;
+export type IsDateOperatorInput = unknown;
+
+export type ModOperatorInput = {
+  dividend: number;
+  divisor: number;
+  fallback?: unknown;
+};
+
+export type PowOperatorInput = {
+  base: number;
+  exponent: number;
+  fallback?: unknown;
+};
+
+export type SqrtOperatorInput = {
+  value: number;
+  fallback?: unknown;
+};
+
+export type TruncOperatorInput = {
+  value: number;
+  fallback?: unknown;
+};
+
+export type LtrimOperatorInput = {
+  input: string;
+  chars?: string[];
+  fallback?: unknown;
+};
+
+export type RtrimOperatorInput = {
+  input: string;
+  chars?: string[];
+  fallback?: unknown;
+};
+
+export type IndexOfOperatorInput = {
+  input: string;
+  substring: string;
+  start?: number;
+  fallback?: unknown;
+};
+
+export type ReplaceOneOperatorInput = {
+  input: string;
+  search: string;
+  replacement: string;
+  fallback?: unknown;
+};
+
+export type ReplaceAllOperatorInput = {
+  input: string;
+  search: string;
+  replacement: string;
+  fallback?: unknown;
+};
+
+// Date operator types
+export type ToDateOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      value: string | number | Date;
+      fallback?: unknown;
+    };
+
+export type DayOfWeekOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type DayOfMonthOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type DayOfYearOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+/**
+ * Valid strategies for $dateShift operator
+ * Using const object pattern for zero runtime overhead and tree-shaking
+ * Following gts naming convention: UPPER_SNAKE_CASE for const object members
+ */
+export const DateShiftStrategy = {
+  ROLL_FORWARD: "rollForward",
+  ROLL_BACKWARD: "rollBackward",
+  KEEP: "keep",
+} as const;
+
+/**
+ * Type derived from DateShiftStrategy const object
+ */
+export type DateShiftStrategy =
+  (typeof DateShiftStrategy)[keyof typeof DateShiftStrategy];
+
+export type DateShiftOperatorInput = {
+  date: string | number | Date;
+  strategy?: DateShiftStrategy;
+  holidays?: string[];
+  weekends?: number[];
+  timezone?: string;
+  maxIterations?: number;
+  fallback?: unknown;
+};
+
+// Additional date operator types
+export type IsWeekendOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      weekends?: number[];
+      fallback?: unknown;
+    };
+
+export type IsHolidayOperatorInput = {
+  date: string | number | Date;
+  holidays: string[];
+  timezone?: string;
+  fallback?: unknown;
+};
+
+export type AddDaysOperatorInput = {
+  date: string | number | Date;
+  days: number;
+  timezone?: string;
+  fallback?: unknown;
+};
+
+export type MonthOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type YearOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      date: string | number | Date;
+      timezone?: string;
+      fallback?: unknown;
+    };
+
+export type IsLeapYearOperatorInput =
+  | string
+  | number
+  | Date
+  | {
+      value: string | number | Date;
+      fallback?: unknown;
+    };
+
+// Array operator types
+export type MapOperatorInput = {
+  input: unknown[];
+  expression: ExpressionValues;
+  fallback?: FallbackValue;
+};
+
+export type FilterOperatorInput = {
+  input: unknown[];
+  condition: ExpressionValues;
+  fallback?: FallbackValue;
+};
+
+export type ReduceOperatorInput = {
+  input: unknown[];
+  initialValue: unknown;
+  expression: ExpressionValues;
+  fallback?: FallbackValue;
+};
+
+export type ArrayAtOperatorInput = {
+  input: unknown[];
+  index: number;
+  fallback?: unknown;
+};
+
+export type ArrayFirstOperatorInput = {
+  input: unknown[];
+  fallback?: unknown;
+};
+
+export type ArrayLastOperatorInput = {
+  input: unknown[];
+  fallback?: unknown;
+};
+
+export type AvgOperatorInput = {
+  values: number[];
+  fallback?: unknown;
+};
+
+export type SumOperatorInput = {
+  values: number[];
+  fallback?: unknown;
+};

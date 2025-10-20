@@ -1,4 +1,4 @@
-import { operators } from "@/forgefy.operators";
+import { operatorRegistry } from "@operators/forgefy.operators";
 import { OperatorKey } from "@lib-types/operator.types";
 
 /**
@@ -31,6 +31,6 @@ export function isOperator(obj: Record<string, any>): boolean {
   return (
     keys.length === 1 &&
     keys[0].startsWith("$") &&
-    operators.has(keys[0] as OperatorKey)
+    operatorRegistry.has(keys[0] as OperatorKey)
   );
 }

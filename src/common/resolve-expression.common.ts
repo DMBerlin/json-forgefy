@@ -1,18 +1,22 @@
-import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
-import { getValueByPath } from "./get-value-by-path.common";
-import { isOperator } from "@helpers/is-operator.helper";
-import { operators } from "@/forgefy.operators";
+import { operatorRegistry } from "@/singletons/operators.singleton";
 import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
 import { ExpressionValues } from "@lib-types/expression.types";
+import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { UnknownOperatorError } from "@lib-types/error.types";
+import { resolveArgs } from "./resolve-args.common";
 
 /**
- * Resolves an operator expression by executing the appropriate operator function with the given arguments.
- * This function extracts the operator key from the expression object, prepares the arguments
- * (resolving paths if necessary), and executes the operator with the source context.
+ * Resolves an operator expression by executing the appropriate operator function.
+ * This function:
+ * 1. Validates the expression has exactly one operator key
+ * 2. Retrieves the operator function from the registry
+ * 3. Resolves all arguments (paths, nested expressions, etc.) via resolveArgs
+ * 4. Executes the operator with the resolved arguments
  *
  * @template T - The expected return type of the resolved expression
  * @param source - The source object used as context for path resolution and operator execution
  * @param expression - The expression object containing an operator key and its arguments
+ * @param executionContext - Optional execution context for array operators with special variables
  * @returns The result of executing the operator, or null if an error occurs
  *
  * @example
@@ -23,28 +27,36 @@ import { ExpressionValues } from "@lib-types/expression.types";
  * const multiplyExpr = { $multiply: ["$amount", 2] };
  * const result1 = resolveExpression<number>(source, multiplyExpr); // Returns 200
  *
- * // Resolve an add operation with path resolution
+ * // Resolve an add operation with nested expression
  * const addExpr = { $add: ["$amount", { $multiply: ["$amount", "$tax"] }] };
  * const result2 = resolveExpression<number>(source, addExpr); // Returns 110
  *
  * // Resolve a string operation
  * const stringExpr = { $toString: "$amount" };
  * const result3 = resolveExpression<string>(source, stringExpr); // Returns "100"
+ *
+ * // Resolve with execution context (for array operators)
+ * const context: ExecutionContext = { $current: { name: "John" }, $index: 0 };
+ * const contextExpr = { $concat: ["User: ", "$current.name"] };
+ * const result4 = resolveExpression<string>(source, contextExpr, context); // Returns "User: John"
  * ```
  */
 export function resolveExpression<T>(
   source: Record<string, any>,
   expression: ExpressionValues,
+  executionContext: ExecutionContext = { context: source },
 ): T {
   try {
-    // Handle primitive values (shouldn't normally happen, but be defensive)
+    // Handle non-object values (defensive programming)
     if (typeof expression !== "object" || expression === null) {
       return expression as T;
     }
 
-    // Handle arrays (shouldn't normally happen, but be defensive)
+    // Handle arrays (defensive programming)
     if (Array.isArray(expression)) {
-      return expression.map((item) => resolveExpression(source, item)) as T;
+      return expression.map((item) =>
+        resolveExpression(source, item, executionContext),
+      ) as T;
     }
 
     // Get operator key
@@ -60,55 +72,28 @@ export function resolveExpression<T>(
     const key = keys[0] as OperatorKey;
 
     // Validate operator exists
-    const operator: OperatorValue = operators.get(key);
+    // Use singleton's get() method to access registry at runtime (when fully populated)
+    const operator: OperatorValue = operatorRegistry.get(key);
     if (!operator) {
-      throw new Error(`Unknown operator: ${key}`);
+      throw new UnknownOperatorError(key, Array.from(operatorRegistry.keys()));
     }
 
-    // Recursively resolve nested expressions in arguments
-    const resolveArgs = (args: any): any => {
-      // Handle null/undefined
-      if (args === null || args === undefined) {
-        return args;
-      }
+    // Recursively resolve arguments using the dedicated resolveArgs function
+    // Pass resolveExpression as the resolver to handle nested operator expressions
+    // This handles paths, nested expressions, arrays, objects, and primitives
+    const resolvedArgs = resolveArgs(
+      expression[key],
+      source,
+      executionContext,
+      resolveExpression,
+    );
 
-      // Handle arrays
-      if (Array.isArray(args)) {
-        return args.map(resolveArgs);
-      }
-
-      // Handle strings (check for paths)
-      if (typeof args === "string") {
-        if (isValidObjectPath(args)) {
-          return getValueByPath(source, args);
-        }
-        return args;
-      }
-
-      // Handle objects
-      if (typeof args === "object") {
-        // Check if it's an operator expression
-        if (isOperator(args)) {
-          return resolveExpression(source, args);
-        }
-
-        // Handle nested objects that might contain expressions
-        const resolved: any = {};
-        for (const [k, v] of Object.entries(args)) {
-          resolved[k] = resolveArgs(v);
-        }
-        return resolved;
-      }
-
-      // Return primitives as-is
-      return args;
-    };
-
-    const args = resolveArgs(expression[key]);
-    return operator({ context: source })(args);
+    // Execute the operator with resolved arguments
+    // Pass the execution context to preserve $current, $index, $accumulated for nested operators
+    return operator(executionContext)(resolvedArgs);
   } catch {
-    // For backward compatibility, return null on errors
-    // In a future version, consider throwing errors for better debugging
+    // Return null on errors for backward compatibility
+    // This allows operators to handle errors gracefully
     return null;
   }
 }

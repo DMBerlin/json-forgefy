@@ -12,7 +12,7 @@
  * - And many more operators inspired by MongoDB's aggregation pipeline
  *
  * @author Daniel Marinho
- * @version 3.0.0
+ * @version 4.0.0
  * @license ISC
  */
 
@@ -23,7 +23,7 @@ import { forgefy } from "@core/forgefy.core";
  *
  * @example
  * ```typescript
- * import { Forgefy } from 'json-forgefy';
+ * import Forgefy from 'json-forgefy';
  *
  * const payload = { user: { name: "John" }, amount: "100" };
  * const blueprint = {
@@ -40,4 +40,5 @@ const Forgefy = {
   this: forgefy,
 };
 
-export { Forgefy };
+// Default export for simple import: import Forgefy from 'json-forgefy'
+export default Forgefy;

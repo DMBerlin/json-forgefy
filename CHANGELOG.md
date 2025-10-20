@@ -1,5 +1,178 @@
 # Changelog
 
+## [4.0.0](https://github.com/DMBerlin/json-forgefy/compare/v3.2.0...v4.0.0) (2025-10-17)
+
+### 🎉 Major Release: Array Transformation & Date Operations
+
+This major release introduces powerful array transformation operators and comprehensive date handling capabilities, bringing json-forgefy to feature parity with MongoDB's aggregation pipeline for common use cases.
+
+### ⚠ BREAKING CHANGES
+
+* **operators:** Array operators (`$map`, `$filter`, `$reduce`) have a documented limitation - they cannot be nested within object properties due to JavaScript module circular dependencies. Use them at expression root level instead. See README for workarounds.
+
+### ✨ Features
+
+#### **Array Transformation Operators**
+* **$map**: Transform each element in an array with expressions
+  - Full execution context support (`$current`, `$index`)
+  - Complex nested expressions ($cond, $switch, math operators)
+  - Fallback support for error handling
+  - 43 comprehensive tests, 100% coverage
+  
+* **$filter**: Filter array elements based on conditions
+  - Support for complex conditions ($and, $or, $cond)
+  - Execution context variables (`$current`, `$index`)
+  - 41 tests covering all scenarios
+  
+* **$reduce**: Aggregate array to single value
+  - Full context support (`$accumulated`, `$current`, `$index`)
+  - Complex aggregations with $switch, $cond
+  - 48 tests including real-world use cases
+
+#### **Array Utility Operators**
+* **$arrayFirst**: Get first array element with fallback
+* **$arrayLast**: Get last array element with fallback
+* **$arrayAt**: Get element at index (supports negative indexing)
+* **$sum**: Sum numeric array values (filters non-numeric)
+* **$avg**: Calculate average of numeric values (filters non-numeric)
+  - Total: 230 tests across 5 utility operators
+
+#### **Date Operations**
+* **$toDate**: Convert and validate dates (ISO-8601, timestamps, Date objects)
+* **$dayOfWeek**: Extract day of week (0-6, Sunday-Saturday)
+* **$dayOfMonth**: Extract day of month (1-31)
+* **$dayOfYear**: Extract day of year (1-366, leap year aware)
+* **$isWeekend**: Check if date is weekend (customizable weekends)
+* **$isHoliday**: Check if date is in holiday list
+* **$addDays**: Add/subtract days from date
+* **$dateShift**: Shift date to next/previous business day
+  - Strategies: rollForward, rollBackward, keep
+  - Holiday and custom weekend support
+  - DST-aware with timezone support
+
+#### **Advanced Math**
+* **$mod**: Modulo/remainder operation
+* **$pow**: Power/exponentiation
+* **$sqrt**: Square root with fallback for negative numbers
+* **$trunc**: Truncate to integer
+
+#### **Enhanced String Operations**
+* **$ltrim**: Trim characters from start
+* **$rtrim**: Trim characters from end
+* **$indexOf**: Find substring index
+* **$replaceOne**: Replace first occurrence
+* **$replaceAll**: Replace all occurrences
+
+#### **Type Checking**
+* **$type**: Get type name with comprehensive JavaScript type support
+  - Detects all 11 JavaScript types (string, number, boolean, bigint, symbol, null, undefined, array, object, date, function)
+  - Clarifies JSON-compatible types vs runtime-only types
+  - Added 8 new tests for complete type coverage
+* **$isArray**: Validate array type
+* **$isString**: Validate string type
+* **$isBoolean**: Validate boolean type
+* **$isDate**: Validate date type
+
+### 🏗️ Architecture
+
+#### **Validation Helper System**
+* Created `array-validation.helper.ts` with 5 reusable validation functions
+* Eliminated 148 lines of duplicate validation code across operators
+* Comprehensive 91-test suite for validation helpers
+* All array operators now use centralized validation
+
+#### **DRY Principles & Helper Functions**
+* **`hasFallback()`** - Type-safe helper for fallback validation
+  - Updated 10 operators with single-line validation
+  - Added 6 comprehensive test cases
+* **`isObjectWithProperty()`** - Type guard for single property validation
+  - Updated 6 operators to eliminate verbose validation
+  - Added 5 test suites with 13 test cases
+* **`isObjectWithProperties()`** - Multi-property validation
+  - Reuses `isObjectWithProperty()` for DRY implementation
+  - Added 7 test suites with 17 test cases
+
+#### **Constants & Type Safety**
+* **`UNIX_TIMESTAMP_THRESHOLD`** - Scientific notation (1e10) for timestamp parsing
+* **`DateShiftStrategy`** - Const object pattern over enums
+  - Zero runtime overhead, tree-shakeable
+  - Follows gts naming convention (UPPER_SNAKE_CASE)
+  - Exported from public API
+  - Values: ROLL_FORWARD, ROLL_BACKWARD, KEEP
+
+#### **Domain-Specific Error Handling**
+* Replace generic errors with `OperatorInputError` in 12 operators
+  - Math: $mod, $pow, $sqrt, $trunc
+  - String: $indexOf, $ltrim, $rtrim, $replaceOne, $replaceAll
+  - Date: $dateShift, $isHoliday, $dateDiff
+* Structured error data with operator name and input as properties
+* Cleaner error messages without duplication
+
+#### **Fallback System**
+* Universal fallback support across math, array, and date operators
+* Fallback can be static values, path references, or expressions
+* Graceful error handling with descriptive error messages
+
+#### **Infrastructure**
+* Timezone helpers with Intl.DateTimeFormat caching
+* Date validation helpers (parseDate, formatDateISO, isLeapYear)
+* Business day helpers (reused across date operators)
+* Custom error types for better debugging
+
+#### **Playground**
+* Interactive browser playground with 77 operators documented
+* API reference extracted from JSDoc comments
+* Organized by 8 categories with params, returns, and examples
+
+#### **Documentation**
+* **`GUIDE.md`** - Comprehensive MongoDB-style API reference
+  - All 77 operators documented with detailed examples
+  - Machine-parsable structure for playground integration
+  - Organized by categories with parameter specs and return types
+  - Realistic use cases and best practices
+  - Can be used to programmatically populate playground API reference
+
+### 📊 Statistics
+
+* **+26 new operators** (from 51 in v3.2.0 to 77 in v4.0.0)
+  - +8 array operators with 408 tests
+  - +9 date operators with extensive coverage
+  - +9 enhanced operators (math, string, type checking)
+* **1745 tests passing** (6 skipped for documented limitations)
+* **+556 new tests** in v4.0.0 (from 1189 in v3.2.0)
+* **17 operators refactored** for better code quality
+* **3 new helper functions** (hasFallback, isObjectWithProperty, isObjectWithProperties)
+* **44 new helper tests** for validation functions
+* **100% code coverage** maintained across all metrics
+* **Zero dependencies** - pure JavaScript/TypeScript
+
+### 🧪 Testing
+
+* Added 500+ new tests across all new operators
+* Maintained 100% coverage requirement
+* All operators follow consistent testing patterns
+* Performance tested with 1000+ element arrays
+
+### 📚 Documentation
+
+* Updated README with all new operators
+* Collapsible examples using HTML details tags
+* Documented array operator limitations with workarounds
+* Added fallback system documentation
+* Enhanced operator reference tables
+
+### 🎯 Migration from v3.x
+
+No breaking changes to existing operators. All v3.x code continues to work.
+
+**New capabilities:**
+- Array transformations with `$map`, `$filter`, `$reduce`
+- Array utilities for element access and aggregation
+- Comprehensive date operations
+- Enhanced math, string, and type operators
+
+---
+
 ## [3.2.0](https://github.com/DMBerlin/json-forgefy/compare/v3.1.0...v3.2.0) (2025-10-11)
 
 ### Features

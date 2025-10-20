@@ -1,12 +1,12 @@
-import { Forgefy } from "..";
+import Forgefy from "..";
 
 describe("E2E PIX DEBIT Transaction", () => {
   it("should transform transaction payload correctly with corrected blueprint", () => {
     const actual = {
       transaction: {
         id: "bfb2821f-b8ba-4595-9e4e-484e20f576d0",
-        description: "Transferência enviada|K**** P**** D***",
-        descriptionRaw: "Transferência enviada|K**** P**** D****",
+        description: "Transferência enviada|Karla Polla Dias",
+        descriptionRaw: "Transferência enviada|Karla Polla Dias",
         currencyCode: "BRL",
         amount: -0.02,
         amountInAccountCurrency: null,
@@ -23,7 +23,7 @@ describe("E2E PIX DEBIT Transaction", () => {
             branchNumber: null,
             documentNumber: {
               type: "CPF",
-              value: "1**.1**.5**-8*",
+              value: "122.163.529-85",
             },
             name: null,
             routingNumber: null,
@@ -32,15 +32,15 @@ describe("E2E PIX DEBIT Transaction", () => {
           paymentMethod: "PIX",
           reason: null,
           receiver: {
-            accountNumber: "0100****-7",
-            branchNumber: "2****",
+            accountNumber: "01002583-7",
+            branchNumber: "2491",
             documentNumber: {
               type: "CPF",
-              value: "1**.1**.5**-8*",
+              value: "122.163.529-85",
             },
             name: null,
-            routingNumber: "0**",
-            routingNumberISPB: "9040****",
+            routingNumber: "033",
+            routingNumberISPB: "90400888",
           },
           receiverReferenceId: null,
           referenceNumber: null,
@@ -61,21 +61,26 @@ describe("E2E PIX DEBIT Transaction", () => {
       id: "$transaction.id",
       type: "DEBIT",
       operation_type: "PIX_DEBIT",
-      description: { $coalesce: ["$transaction.description", ""] },
+      description: {
+        $coalesce: ["$transaction.description", ""],
+      },
       balance: {
         $cond: {
-          if: { $isNull: "$transaction.balance" },
-          then: "",
-          else: {
+          if: {
+            $and: [
+              { $not: { $isNull: "$transaction.balance" } },
+              { $isNumber: "$transaction.balance" },
+            ],
+          },
+          then: {
             $toString: {
               $round: {
-                value: {
-                  $multiply: [{ $toNumber: "$transaction.balance" }, 100],
-                },
+                value: { $multiply: ["$transaction.balance", 100] },
                 precision: 0,
               },
             },
           },
+          else: "",
         },
       },
       amount: {
@@ -87,7 +92,7 @@ describe("E2E PIX DEBIT Transaction", () => {
                   {
                     $cond: {
                       if: { $isNumber: "$transaction.amount" },
-                      then: { $toNumber: "$transaction.amount" },
+                      then: "$transaction.amount",
                       else: 0,
                     },
                   },
@@ -105,39 +110,28 @@ describe("E2E PIX DEBIT Transaction", () => {
         document: {
           $cond: {
             if: {
-              $some: {
-                conditions: [
-                  {
-                    $isNull:
-                      "$transaction.paymentData.receiver.documentNumber.value",
-                  },
-                  {
-                    $eq: [
-                      {
-                        $toString:
-                          "$transaction.paymentData.receiver.documentNumber.value",
-                      },
-                      "",
-                    ],
-                  },
-                ],
-                then: true,
-                else: false,
-              },
+              $or: [
+                {
+                  $isNull:
+                    "$transaction.paymentData.receiver.documentNumber.value",
+                },
+                {
+                  $eq: [
+                    "$transaction.paymentData.receiver.documentNumber.value",
+                    "",
+                  ],
+                },
+              ],
             },
             then: "",
             else: {
-              $trim: {
+              $regexReplace: {
                 input: {
-                  $replace: {
-                    input: {
-                      $toString:
-                        "$transaction.paymentData.receiver.documentNumber.value",
-                    },
-                    searchValues: [".", "-"],
-                    replacement: "",
-                  },
+                  $toString:
+                    "$transaction.paymentData.receiver.documentNumber.value",
                 },
+                pattern: "\\D+",
+                replacement: "",
               },
             },
           },
@@ -166,7 +160,7 @@ describe("E2E PIX DEBIT Transaction", () => {
                     {
                       $cond: {
                         if: { $isNumber: "$transaction.amount" },
-                        then: { $toNumber: "$transaction.amount" },
+                        then: "$transaction.amount",
                         else: 0,
                       },
                     },
@@ -187,7 +181,7 @@ describe("E2E PIX DEBIT Transaction", () => {
                     {
                       $cond: {
                         if: { $isNumber: "$transaction.amount" },
-                        then: { $toNumber: "$transaction.amount" },
+                        then: "$transaction.amount",
                         else: 0,
                       },
                     },
@@ -209,11 +203,11 @@ describe("E2E PIX DEBIT Transaction", () => {
       balance: "",
       document: "",
       receiver: {
-        document: "1**1**5**8*",
-        bank_branch_number: "2****",
-        bank_account_number: "0100****-7",
+        document: "12216352985",
+        bank_branch_number: "2491",
+        bank_account_number: "01002583-7",
       },
-      description: "Transferência enviada|K**** P**** D***",
+      description: "Transferência enviada|Karla Polla Dias",
       id_end_to_end: "",
       transfer_type: "1",
       amount_details: {
