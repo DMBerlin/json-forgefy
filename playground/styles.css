@@ -189,12 +189,12 @@ header p {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.theme-switch input:checked + .theme-switch-slider {
+.theme-switch input:checked+.theme-switch-slider {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
 }
 
-.theme-switch input:checked + .theme-switch-slider:before {
+.theme-switch input:checked+.theme-switch-slider:before {
     content: "☀️";
     transform: translateX(22px);
 }
@@ -272,6 +272,8 @@ main {
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
+    min-height: 0;
+    /* Important: Allows flex children to shrink */
 }
 
 .editor-panel:hover {
@@ -310,6 +312,10 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    /* Important: Allows flex children to shrink below content size */
+    overflow: hidden;
+    /* Ensures child elements respect boundaries */
 }
 
 /* Action Icons in Header */
@@ -621,10 +627,16 @@ button {
     font-size: 13px;
     line-height: 1.6;
     overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     white-space: pre;
+    word-wrap: normal;
+    word-break: normal;
     transition: all 0.3s;
     border: none;
     margin: 0;
+    max-height: 100%;
+    height: 100%;
 }
 
 .error {
@@ -1212,14 +1224,14 @@ footer a:hover {
         width: 40px;
         height: 22px;
     }
-    
+
     .theme-switch-slider:before {
         height: 16px;
         width: 16px;
         font-size: 10px;
     }
-    
-    .theme-switch input:checked + .theme-switch-slider:before {
+
+    .theme-switch input:checked+.theme-switch-slider:before {
         transform: translateX(18px);
     }
 }
