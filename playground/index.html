@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Transform JSON data with MongoDB-style operators. Interactive playground for json-forgefy library.">
+    <meta name="keywords" content="JSON, transform, MongoDB, operators, playground, json-forgefy">
+    <meta name="author" content="Daniel Marinho">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JSON Forgefy Playground">
+    <meta property="og:description" content="Transform JSON data with powerful MongoDB-style operators">
+    <meta property="og:url" content="https://dmberlin.github.io/json-forgefy/">
+
+    <title>JSON Forgefy Playground - Transform JSON with Powerful Operators</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Menlo font optimization -->
+    <style>
+        @font-face {
+            font-family: 'Menlo';
+            font-display: swap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <label class="theme-switch" title="Toggle theme">
+                <input type="checkbox" id="theme-toggle" />
+                <span class="theme-switch-slider"></span>
+            </label>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>🔧 JSON Forgefy Playground</h1>
+                    <p>Transform JSON data with powerful MongoDB-style operators</p>
+                    <div class="links">
+                        <button id="api-reference-btn" class="api-reference-btn" title="Open API Reference (Ctrl+K)">
+                            📖 API Reference
+                        </button>
+                        <a href="https://github.com/DMBerlin/json-forgefy" target="_blank" rel="noopener noreferrer">
+                            📦 GitHub
+                        </a>
+                        <a href="https://www.npmjs.com/package/json-forgefy" target="_blank" rel="noopener noreferrer">
+                            📚 NPM Package
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Three Column Layout: A + B = C -->
+            <div class="editor-grid">
+                <!-- Input Payload -->
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <h2>📥 Input Payload</h2>
+                        <div class="header-actions">
+                            <button class="action-icon" data-action="undo" data-target="payload" title="Undo Changes">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M3 7v6h6" />
+                                    <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="beautify" data-target="payload"
+                                title="Beautify JSON">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="copy" data-target="payload" title="Copy">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="clear" data-target="payload" title="Clear">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <div class="error-inline" id="error-payload"></div>
+                        <textarea id="payload" placeholder="Enter your JSON payload here..." spellcheck="false"
+                            aria-label="JSON payload input"></textarea>
+                    </div>
+                </div>
+
+                <!-- Plus Sign -->
+                <div class="operator">+</div>
+
+                <!-- Transformation Blueprint -->
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <h2>🎯 Blueprint</h2>
+                        <div class="header-actions">
+                            <button class="action-icon" data-action="undo" data-target="projection"
+                                title="Undo Changes">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M3 7v6h6" />
+                                    <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="beautify" data-target="projection"
+                                title="Beautify JSON">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="copy" data-target="projection" title="Copy">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="clear" data-target="projection" title="Clear">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <div class="error-inline" id="error-projection"></div>
+                        <div class="autocomplete-container" id="autocomplete-projection"></div>
+                        <textarea id="projection" placeholder="Enter your transformation blueprint here..."
+                            spellcheck="false" aria-label="Projection blueprint input"></textarea>
+                    </div>
+                </div>
+
+                <!-- Equals Sign -->
+                <div class="operator">=</div>
+
+                <!-- Result -->
+                <div class="editor-panel">
+                    <div class="panel-header">
+                        <h2>📤 Result</h2>
+                        <div class="header-actions">
+                            <button class="action-icon" data-action="beautify" data-target="result"
+                                title="Beautify JSON">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="copy" data-target="result" title="Copy">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                </svg>
+                            </button>
+                            <button class="action-icon" data-action="clear" data-target="result" title="Clear">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </button>
+                            <button class="action-icon action-transform" id="transform-btn"
+                                title="Transform (Ctrl+Enter)">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="editor-container">
+                        <div class="error-inline" id="error-result"></div>
+                        <pre id="result" aria-label="Transformation result"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Cards -->
+            <div class="examples-section">
+                <h3>💡 Quick Examples - Click to Try</h3>
+                <div class="examples-grid">
+                    <div class="example-card" data-example="basic">
+                        <div class="example-title">🎯 Basic Transformation</div>
+                        <div class="example-desc">Simple field mapping and concatenation</div>
+                    </div>
+                    <div class="example-card" data-example="math">
+                        <div class="example-title">🔢 Math Operations</div>
+                        <div class="example-desc">Calculate totals, averages, and more</div>
+                    </div>
+                    <div class="example-card" data-example="conditional">
+                        <div class="example-title">🔀 Conditional Logic</div>
+                        <div class="example-desc">If-then-else and switch statements</div>
+                    </div>
+                    <div class="example-card" data-example="string">
+                        <div class="example-title">📝 String Operations</div>
+                        <div class="example-desc">Format, split, and manipulate text</div>
+                    </div>
+                    <div class="example-card" data-example="array">
+                        <div class="example-title">📊 Array Operations</div>
+                        <div class="example-desc">Filter, map, and aggregate arrays</div>
+                    </div>
+                    <div class="example-card" data-example="complex">
+                        <div class="example-title">🚀 Complex Example</div>
+                        <div class="example-desc">Real-world business scenario</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>
+                Built with ❤️ by <a href="https://github.com/DMBerlin" target="_blank" rel="noopener noreferrer">Daniel
+                    Marinho</a>
+                |
+                <a href="https://github.com/DMBerlin/json-forgefy/blob/main/LICENSE" target="_blank"
+                    rel="noopener noreferrer">ISC License</a>
+                |
+                <strong>Shortcuts:</strong>
+                <kbd>Ctrl+Enter</kbd> Transform
+                <kbd>Ctrl+K</kbd> API Reference
+            </p>
+        </footer>
+    </div>
+
+    <!-- API Reference Sidebar -->
+    <div id="api-reference-sidebar" class="api-reference-sidebar">
+        <div class="api-reference-header">
+            <h2>📖 API Reference</h2>
+            <button id="close-api-reference" class="close-btn" title="Close">✕</button>
+        </div>
+
+        <div class="api-reference-body">
+            <!-- Left Column: Operator Details -->
+            <div class="api-reference-detail" id="api-reference-detail">
+                <div class="api-detail-placeholder">
+                    <div class="api-detail-placeholder-icon">📖</div>
+                    <p>Select an operator to view details</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Operator List -->
+            <div class="api-reference-list">
+                <div class="api-reference-search">
+                    <input type="text" id="api-search" placeholder="Search operators..." />
+                </div>
+                <div class="api-reference-content" id="api-reference-content">
+                    <!-- Content will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="api-reference-overlay" class="api-reference-overlay"></div>
+
+    <script src="forgefy-browser.js"></script>
+    <script src="api-reference-data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

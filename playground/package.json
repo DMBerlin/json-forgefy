@@ -1,0 +1,21 @@
+{
+  "name": "json-forgefy-playground",
+  "version": "4.0.0",
+  "private": true,
+  "description": "Interactive playground for testing json-forgefy",
+  "scripts": {
+    "install:latest": "pnpm add json-forgefy@latest",
+    "build:api": "node build-api-reference.js",
+    "build:browser": "node build-browser.js",
+    "build": "pnpm run build:api && pnpm run build:browser",
+    "serve": "node serve.js",
+    "dev": "pnpm run build && pnpm run serve"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "json-forgefy": "^4.0.0"
+  }
+}
