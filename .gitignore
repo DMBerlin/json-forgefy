@@ -1,5 +1,6 @@
 # Dependency directories
 node_modules/
+playground/node_modules/
 
 # Output directories
 dist/
