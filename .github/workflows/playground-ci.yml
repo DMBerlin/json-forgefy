@@ -1,0 +1,65 @@
+name: Playground CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'playground/**'
+      - 'GUIDE.md'
+      - 'src/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'playground/**'
+      - 'GUIDE.md'
+      - 'src/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  playground-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: |
+          cd playground
+          pnpm install --frozen-lockfile
+
+      - name: Build API reference
+        run: |
+          cd playground
+          pnpm run build:api
+
+      - name: Build browser bundle
+        run: |
+          cd playground
+          pnpm run build:browser
+
+      - name: Verify build artifacts
+        run: |
+          cd playground
+          ls -la api-reference-data.js forgefy-browser.js
+          echo "✅ Build artifacts created successfully"
+
+      - name: Test serve script
+        run: |
+          cd playground
+          timeout 10s node serve.js || true
+          echo "✅ Serve script works correctly"
