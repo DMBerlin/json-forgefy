@@ -3,7 +3,6 @@
 > **Transform JSON data with powerful MongoDB-style operators**
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://dmberlin.github.io/json-forgefy/)
-[![Deploy Playground](https://github.com/DMBerlin/json-forgefy/actions/workflows/deploy-playground.yml/badge.svg)](https://github.com/DMBerlin/json-forgefy/actions/workflows/deploy-playground.yml)
 [![npm version](https://img.shields.io/npm/v/json-forgefy)](https://www.npmjs.com/package/json-forgefy)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
@@ -22,8 +21,6 @@
 ## 🚀 Quick Start
 
 Visit the live playground: **[https://dmberlin.github.io/json-forgefy/](https://dmberlin.github.io/json-forgefy/)**
-
-> **🔄 Auto-Deployed**: The playground is automatically deployed to GitHub Pages when changes are pushed to the main branch. No manual deployment required!
 
 ### Keyboard Shortcuts
 
@@ -197,27 +194,6 @@ The playground documentation is kept in sync with `GUIDE.md`:
 3. **Commit changes** including the updated `api-reference-data.js`
 
 **Important:** Always use `GUIDE.md` as the single source of truth for operator documentation.
-
-## 🚀 Automatic Deployment
-
-The playground is automatically deployed to GitHub Pages:
-
-### Deployment Triggers
-- **Push to main branch** - Automatically deploys
-- **Manual trigger** - Available in GitHub Actions
-
-### What Gets Deployed
-- Built playground files (`index.html`, `app.js`, `styles.css`)
-- Generated API reference (`api-reference-data.js`)
-- Generated browser bundle (`forgefy-browser.js`)
-- All static assets (favicon, etc.)
-
-### Monitoring
-- **GitHub Actions** - View deployment status
-- **Live Site** - https://dmberlin.github.io/json-forgefy/
-- **Build Logs** - Check for any build errors
-
-For detailed deployment information, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## 🎨 Theme
 
