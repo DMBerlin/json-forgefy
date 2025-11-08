@@ -36,6 +36,15 @@ npm install json-forgefy
 yarn add json-forgefy
 ```
 
+## 🎮 Try It Online
+
+Try JSON Forgefy in your browser with our interactive playground:
+
+- **🌐 Live Playground**: [https://dmberlin.github.io/json-forgefy-playground](https://dmberlin.github.io/json-forgefy-playground)
+- **📦 Source Code**: [https://github.com/DMBerlin/json-forgefy-playground](https://github.com/DMBerlin/json-forgefy-playground)
+
+The playground lets you test all 77 operators with real-time transformation, syntax highlighting, and interactive API reference.
+
 ## 🚀 Quick Start
 
 Transform API responses, calculate values, and reshape data in seconds:
