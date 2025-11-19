@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.0.1](https://github.com/DMBerlin/json-forgefy/compare/v4.0.0...v4.0.1) (2025-11-19)
+
+### 🛡 Security
+
+- Addressed advisory regarding `glob` CLI command injection via `-c/--cmd` by ensuring our dependency graph resolves to a patched `glob` version. While this project does not invoke the `glob` CLI directly, some tools in the dev toolchain can bring `glob` transitively. We updated/bounded dependencies to avoid vulnerable ranges (`glob >=10.2.0 <10.5.0` and `glob >=11.0.0 <11.1.0`). This prevents the presence of the vulnerable CLI in CI or local environments.
+
+### 🧰 Maintenance
+
+- Bumped development dependencies to versions that resolve `glob` to a fixed release (`>= 11.1.0`).
+- Updated metadata and release configuration in preparation for publishing.
+
+> Note: No public API changes. This is a patch release focused on the supply‑chain hardening of development tooling.
+
 ## [4.0.0](https://github.com/DMBerlin/json-forgefy/compare/v3.2.0...v4.0.0) (2025-10-17)
 
 ### 🎉 Major Release: Array Transformation & Date Operations
