@@ -58,6 +58,10 @@
     "tsc-alias": "^1.8.16",
     "typescript": "^5.9.2"
   },
+  "resolutions": {
+    "glob": ">=11.1.0",
+    "js-yaml": ">=4.1.1"    
+  },
   "jest": {
     "moduleFileExtensions": [
       "js",
