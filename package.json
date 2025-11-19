@@ -52,15 +52,14 @@
     "lint-staged": "^16.1.6",
     "prettier": "^3.6.2",
     "release-please": "^17.1.2",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.2",
     "ts-jest": "^29.4.2",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "typescript": "^5.9.2"
   },
   "resolutions": {
-    "glob": ">=11.1.0",
-    "js-yaml": ">=4.1.1"    
+    "js-yaml": ">=4.1.1"
   },
   "jest": {
     "moduleFileExtensions": [
