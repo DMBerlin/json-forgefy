@@ -20,13 +20,24 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
-        cache-dependency-path: pnpm-lock.yaml
+        # Do not use setup-node caching for pnpm; we'll cache pnpm store explicitly
 
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
         version: 9
+
+    - name: Get pnpm store directory
+      id: pnpm-store
+      run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
 
     - run: pnpm install --frozen-lockfile
     - run: pnpm run lint --if-present

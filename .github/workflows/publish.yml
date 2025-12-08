@@ -30,13 +30,24 @@ jobs:
       with:
         node-version: '20.x'
         registry-url: 'https://registry.npmjs.org'
-        cache: 'pnpm'
-        cache-dependency-path: pnpm-lock.yaml
+        # No built-in pnpm cache here; we'll cache pnpm store explicitly
 
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
         version: 9
+
+    - name: Get pnpm store directory
+      id: pnpm-store
+      run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
 
     - run: pnpm install --frozen-lockfile
     - run: pnpm run build --if-present
