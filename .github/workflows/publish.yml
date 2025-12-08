@@ -50,7 +50,7 @@ jobs:
           ${{ runner.os }}-pnpm-store-
 
     - run: pnpm install --frozen-lockfile
-    - run: pnpm run build --if-present
+    - run: pnpm run build
 
     - name: Configure Git user
       run: |

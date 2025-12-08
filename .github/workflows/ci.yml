@@ -20,7 +20,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        # Do not use setup-node caching for pnpm; we'll cache pnpm store explicitly
 
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
@@ -40,6 +39,6 @@ jobs:
           ${{ runner.os }}-pnpm-store-
 
     - run: pnpm install --frozen-lockfile
-    - run: pnpm run lint --if-present
-    - run: pnpm run build --if-present
+    - run: pnpm lint
+    - run: pnpm build
     - run: pnpm test
