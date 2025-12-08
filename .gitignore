@@ -2,6 +2,9 @@
 node_modules/
 playground/node_modules/
 
+# Agentic generated files
+.agent/
+
 # Output directories
 dist/
 lib/
