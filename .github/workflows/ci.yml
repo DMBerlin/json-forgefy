@@ -20,9 +20,15 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: 'pnpm'
+        cache-dependency-path: pnpm-lock.yaml
 
-    - run: npm ci
-    - run: npm run lint --if-present
-    - run: npm run build --if-present
-    - run: npm test
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm run lint --if-present
+    - run: pnpm run build --if-present
+    - run: pnpm test
