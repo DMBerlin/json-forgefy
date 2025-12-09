@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/json-forgefy.svg)](https://badge.fury.io/js/json-forgefy)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/DMBerlin/json-forgefy/badge)](https://securityscorecards.dev/viewer/?uri=github.com/DMBerlin/json-forgefy)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11594/badge)](https://www.bestpractices.dev/projects/11594)
 
 **Transform JSON data with MongoDB-style operators. No database required.**
