@@ -17,6 +17,8 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: ["main"]
+  # Allow manual runs to retrigger a fresh scan after workflow changes
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * 1"
 
