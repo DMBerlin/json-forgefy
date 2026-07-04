@@ -229,6 +229,7 @@ export const $reduce: ExecutableExpression<ReduceOperatorInput, unknown> = (
           $accumulated: accumulated,
           $current: element,
           $index: index,
+          strict: ctx?.strict,
         };
 
         // Use resolveArgs to handle both operator expressions and plain objects/values

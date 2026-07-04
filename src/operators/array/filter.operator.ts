@@ -158,6 +158,7 @@ export const $filter: ExecutableExpression<FilterOperatorInput, unknown[]> = (
           context: payload,
           $current: element,
           $index: index,
+          strict: ctx?.strict,
         };
 
         // Use resolveArgs to handle both operator expressions and plain values

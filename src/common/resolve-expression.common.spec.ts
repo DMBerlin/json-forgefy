@@ -1,5 +1,6 @@
 import { resolveExpression } from "./resolve-expression.common";
 import { ExecutionContext } from "@interfaces/execution-context.interface";
+import { UnknownOperatorError } from "@lib-types/error.types";
 
 describe("resolveExpression", () => {
   const source = {
@@ -260,6 +261,48 @@ describe("resolveExpression", () => {
       expect(
         resolveExpression(source, { $unknownOperator: ["test"] }),
       ).toBeNull();
+    });
+  });
+
+  describe("Strict Mode", () => {
+    it("should throw UnknownOperatorError for unknown operators in strict mode", () => {
+      expect(() =>
+        resolveExpression(
+          source,
+          { $unknownOp: [1, 2] },
+          { context: source, strict: true },
+        ),
+      ).toThrow(UnknownOperatorError);
+    });
+
+    it("should throw for expressions with multiple operator keys in strict mode", () => {
+      expect(() =>
+        resolveExpression(
+          source,
+          { $add: [1, 2], $multiply: [3, 4] },
+          { context: source, strict: true },
+        ),
+      ).toThrow("exactly one operator key");
+    });
+
+    it("should propagate operator errors in strict mode", () => {
+      expect(() =>
+        resolveExpression(
+          source,
+          { $sqrt: { value: -1 } },
+          { context: source, strict: true },
+        ),
+      ).toThrow();
+    });
+
+    it("should still resolve valid expressions in strict mode", () => {
+      expect(
+        resolveExpression<number>(
+          source,
+          { $add: [1, 2] },
+          { context: source, strict: true },
+        ),
+      ).toBe(3);
     });
   });
 

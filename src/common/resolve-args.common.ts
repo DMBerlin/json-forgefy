@@ -1,7 +1,7 @@
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { ExpressionResolver } from "@lib-types/resolver.types";
 import { resolveValue } from "./resolve-value.common";
-import { isOperator } from "@helpers/is-operator.helper";
+import { looksLikeOperator } from "@helpers/is-operator.helper";
 
 /**
  * Recursively resolves arguments for operator expressions.
@@ -56,8 +56,11 @@ export function resolveArgs(
 
   // Handle objects
   if (typeof args === "object") {
-    // Check if it's an operator expression
-    if (isOperator(args)) {
+    // Check if it's shaped like an operator expression (single "$"-prefixed
+    // key). Unknown / misspelled operators are routed to the resolver too so
+    // they are surfaced (thrown in strict mode, resolved to null otherwise)
+    // instead of being silently treated as plain objects.
+    if (looksLikeOperator(args)) {
       // Use the provided expression resolver if available
       if (expressionResolver) {
         return expressionResolver(source, args, executionContext);

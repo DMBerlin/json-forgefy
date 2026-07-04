@@ -1,4 +1,4 @@
-import { isOperator } from "@helpers/is-operator.helper";
+import { isOperator, looksLikeOperator } from "@helpers/is-operator.helper";
 
 describe("isOperator Testing Suit", () => {
   it("should return true when object is an operator", () => {
@@ -44,5 +44,39 @@ describe("isOperator Testing Suit", () => {
     expect(isOperator({ $eq: [1, 2] })).toBe(true);
     expect(isOperator({ $gt: [1, 2] })).toBe(true);
     expect(isOperator({ $and: [true, false] })).toBe(true);
+  });
+});
+
+describe("looksLikeOperator Testing Suit", () => {
+  it("should return true for a registered operator", () => {
+    expect(looksLikeOperator({ $add: [1, 2] })).toBe(true);
+  });
+
+  it("should return true for an unregistered but operator-shaped object", () => {
+    expect(looksLikeOperator({ $nonExistingOperator: "value" })).toBe(true);
+    expect(looksLikeOperator({ $addd: [1, 2] })).toBe(true);
+  });
+
+  it("should return false when the single key is not $-prefixed", () => {
+    expect(looksLikeOperator({ add: [1, 2] })).toBe(false);
+  });
+
+  it("should return false for objects with multiple keys", () => {
+    expect(looksLikeOperator({ $a: 1, $b: 2 })).toBe(false);
+  });
+
+  it("should return false for empty object", () => {
+    expect(looksLikeOperator({})).toBe(false);
+  });
+
+  it("should return false for null and undefined", () => {
+    expect(looksLikeOperator(null as any)).toBe(false);
+    expect(looksLikeOperator(undefined as any)).toBe(false);
+  });
+
+  it("should return false for non-object values", () => {
+    expect(looksLikeOperator("string" as any)).toBe(false);
+    expect(looksLikeOperator(123 as any)).toBe(false);
+    expect(looksLikeOperator(true as any)).toBe(false);
   });
 });
