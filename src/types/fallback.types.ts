@@ -6,7 +6,7 @@ import { ExpressionValues } from "./expression.types";
  * - A path to a field in the payload (e.g., "$fallback_date")
  * - An expression to be resolved (e.g., { $add: [1, 2] })
  */
-export type FallbackValue = ExpressionValues;
+export type FallbackValue = ExpressionValues | null;
 
 /**
  * Interface to be extended by operator inputs that support fallback

@@ -23,25 +23,21 @@ describe("toNumber", () => {
   });
   it("should convert a boolean to number", () => {
     const value = true;
-    // @ts-expect-error-next-line
     const result = $toNumber()(value);
     expect(result).toBe(1);
   });
   it("should convert a boolean to number", () => {
     const value = false;
-    // @ts-expect-error-next-line
     const result = $toNumber()(value);
     expect(result).toBe(0);
   });
   it("should convert an object to NaN", () => {
     const value = {};
-    // @ts-expect-error-next-line
     const result = $toNumber()(value);
     expect(result).toBeNaN();
   });
   it("should convert an array to NaN", () => {
     const value = [];
-    // @ts-expect-error-next-line
     const result = $toNumber()(value);
     expect(result).toBe(0);
   });

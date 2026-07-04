@@ -349,26 +349,37 @@
 - **Fix applied:** Split responsibilities: a pure `filterNumeric(): number[]`
   plus explicit fallback/default handling at each call site.
 
-### CS-4 🟠 PARTIALLY RESOLVED — Central operator abstraction is effectively untyped
+### CS-4 ✅ RESOLVED — Central operator abstraction is effectively untyped
 
-- **Status:** 🟠 PARTIALLY RESOLVED — tightened the registry's stored operator
-  shape: `OperatorValue` now returns `unknown` instead of `any`, forcing
-  `resolveExpression` to assert the caller-provided `T` explicitly. The registry
-  lookup is no longer falsely annotated as non-optional (`operatorRegistry.get`
-  returns `OperatorValue | undefined` and is narrowed by the existing guard).
-  **Remaining:** fully modeling the possibly-undefined lookup and propagating
-  per-operator generics into the registry requires enabling `strictNullChecks`
-  (currently `false` in `tsconfig.json`), which is a larger cross-cutting change
-  deferred pending a decision (see note below).
-- **Location:** `src/types/operator.types.ts` (`OperatorValue`),
-  `src/common/resolve-expression.common.ts`, and pervasive `Record<string, any>` usage.
+- **Status:** ✅ RESOLVED — completed in two phases. Phase 1 tightened the
+  registry's stored operator shape: `OperatorValue` now returns `unknown`
+  instead of `any`, forcing `resolveExpression` to assert the caller-provided
+  `T` explicitly, and the registry lookup is honestly modeled as
+  `OperatorValue | undefined` (narrowed by the existing guard). Phase 2 enabled
+  full strict null safety: **`strictNullChecks` and `strictBindCallApply` are
+  now `true`** in `tsconfig.json` (so `strict: true` is fully honored with no
+  overrides). Surfacing null/undefined revealed and fixed several genuine type
+  inaccuracies:
+  - `ExpressionValues` now includes `null | undefined` (values legitimately
+    resolve to these in a transformation pipeline).
+  - `FallbackValue` now includes `null` (null is a valid fallback).
+  - 25 operator inputs standardized from `fallback?: unknown` to
+    `fallback?: FallbackValue`.
+  - Added a dedicated `ComparableValue = number | string` for the ordered
+    comparison operators (`$gt`/`$gte`/`$lt`/`$lte`).
+  - `$toNumber` input widened to `ExpressionValues` (it converts booleans, null,
+    etc.); `$slice`'s `end` made optional; `isOperator` param widened to
+    `unknown` (it is a guard).
+  All 106 suites pass at 100% coverage; `tsc --noEmit` is clean under the
+  stricter config.
+- **Location:** `tsconfig.json`, `src/types/operator.types.ts`
+  (`OperatorValue`), `src/types/expression.types.ts`, `src/types/fallback.types.ts`,
+  `src/types/operator-input.types.ts`, `src/common/resolve-expression.common.ts`,
+  `src/helpers/is-operator.helper.ts`, and the comparison operators.
 - **Description:** `OperatorValue = (ctx?) => (...args: any[]) => any` erased all
-  type information, so per-operator `ExecutableExpression<P, R>` generics never
-  flowed into the registry or `resolveExpression`.
-- **Impact:** No compile-time protection when refactoring operator signatures;
-  regressions surface only at runtime/tests.
-- **Fix applied (partial):** `unknown` result boundary + honest optional lookup.
-- **Deferred:** Enabling `strictNullChecks` + registry generics.
+  type information, and `strictNullChecks: false` masked null/undefined flows.
+- **Fix applied:** `unknown` result boundary + honest optional lookup + full
+  `strictNullChecks`/`strictBindCallApply` with the type-accuracy fixes above.
 
 ### CS-5 ✅ RESOLVED — `isObject` is not a type guard and is realm-fragile
 

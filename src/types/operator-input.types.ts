@@ -58,7 +58,7 @@ export type SizeOperatorInput = unknown[];
 export type SliceOperatorInput = {
   input: string;
   start: number;
-  end: number;
+  end?: number;
 };
 
 export type SplitOperatorInput = {
@@ -76,7 +76,7 @@ export type SubtractOperatorInput = number[];
 
 export type ToLowerOperatorInput = string;
 
-export type ToNumberOperatorInput = string;
+export type ToNumberOperatorInput = ExpressionValues;
 
 export type ToStringOperatorInput = unknown;
 
@@ -87,10 +87,17 @@ export type ToFixedOperatorInput = {
   precision: number;
 };
 
-export type GtOperatorInput = [ExpressionValues, ExpressionValues];
-export type GteOperatorInput = [ExpressionValues, ExpressionValues];
-export type LtOperatorInput = [ExpressionValues, ExpressionValues];
-export type LteOperatorInput = [ExpressionValues, ExpressionValues];
+/**
+ * A value that supports ordered relational comparison ($gt, $gte, $lt, $lte).
+ * By the time these operators run, paths and nested expressions have been
+ * resolved to concrete comparable primitives.
+ */
+export type ComparableValue = number | string;
+
+export type GtOperatorInput = [ComparableValue, ComparableValue];
+export type GteOperatorInput = [ComparableValue, ComparableValue];
+export type LtOperatorInput = [ComparableValue, ComparableValue];
+export type LteOperatorInput = [ComparableValue, ComparableValue];
 export type AndOperatorInput = ExpressionValues[];
 export type OrOperatorInput = ExpressionValues[];
 export type NotOperatorInput = ExpressionValues;
@@ -148,56 +155,56 @@ export type IsDateOperatorInput = unknown;
 export type ModOperatorInput = {
   dividend: number;
   divisor: number;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type PowOperatorInput = {
   base: number;
   exponent: number;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type SqrtOperatorInput = {
   value: number;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type TruncOperatorInput = {
   value: number;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type LtrimOperatorInput = {
   input: string;
   chars?: string[];
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type RtrimOperatorInput = {
   input: string;
   chars?: string[];
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type IndexOfOperatorInput = {
   input: string;
   substring: string;
   start?: number;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type ReplaceOneOperatorInput = {
   input: string;
   search: string;
   replacement: string;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type ReplaceAllOperatorInput = {
   input: string;
   search: string;
   replacement: string;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 // Date operator types
@@ -207,7 +214,7 @@ export type ToDateOperatorInput =
   | Date
   | {
       value: string | number | Date;
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 export type DayOfWeekOperatorInput =
@@ -217,7 +224,7 @@ export type DayOfWeekOperatorInput =
   | {
       date: string | number | Date;
       timezone?: string;
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 export type DayOfMonthOperatorInput =
@@ -227,7 +234,7 @@ export type DayOfMonthOperatorInput =
   | {
       date: string | number | Date;
       timezone?: string;
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 export type DayOfYearOperatorInput =
@@ -237,7 +244,7 @@ export type DayOfYearOperatorInput =
   | {
       date: string | number | Date;
       timezone?: string;
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 /**
@@ -264,7 +271,7 @@ export type DateShiftOperatorInput = {
   weekends?: number[];
   timezone?: string;
   maxIterations?: number;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 // Additional date operator types
@@ -276,21 +283,21 @@ export type IsWeekendOperatorInput =
       date: string | number | Date;
       timezone?: string;
       weekends?: number[];
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 export type IsHolidayOperatorInput = {
   date: string | number | Date;
   holidays: string[];
   timezone?: string;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type AddDaysOperatorInput = {
   date: string | number | Date;
   days: number;
   timezone?: string;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type MonthOperatorInput =
@@ -300,7 +307,7 @@ export type MonthOperatorInput =
   | {
       date: string | number | Date;
       timezone?: string;
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 export type YearOperatorInput =
@@ -310,7 +317,7 @@ export type YearOperatorInput =
   | {
       date: string | number | Date;
       timezone?: string;
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 export type IsLeapYearOperatorInput =
@@ -319,7 +326,7 @@ export type IsLeapYearOperatorInput =
   | Date
   | {
       value: string | number | Date;
-      fallback?: unknown;
+      fallback?: FallbackValue;
     };
 
 // Array operator types
@@ -345,25 +352,25 @@ export type ReduceOperatorInput = {
 export type ArrayAtOperatorInput = {
   input: unknown[];
   index: number;
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type ArrayFirstOperatorInput = {
   input: unknown[];
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type ArrayLastOperatorInput = {
   input: unknown[];
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type AvgOperatorInput = {
   values: number[];
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };
 
 export type SumOperatorInput = {
   values: number[];
-  fallback?: unknown;
+  fallback?: FallbackValue;
 };

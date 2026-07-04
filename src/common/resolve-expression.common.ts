@@ -142,7 +142,7 @@ export function resolveExpression<T>(
     // resolve them per element with the correct execution context.
     const resolvedArgs = resolveOperatorArgs(
       key,
-      expression[key],
+      expression[key] as ExpressionValues,
       source,
       executionContext,
     );
@@ -160,6 +160,6 @@ export function resolveExpression<T>(
     }
     // Return null on errors for backward compatibility
     // This allows operators to handle errors gracefully
-    return null;
+    return null as T;
   }
 }

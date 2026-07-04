@@ -21,7 +21,7 @@ import { OperatorKey } from "@lib-types/operator.types";
  * isOperator({}); // Returns false (no keys)
  * ```
  */
-export function isOperator(obj: Record<string, any>): boolean {
+export function isOperator(obj: unknown): boolean {
   // Handle null, undefined, or non-object values
   if (!obj || typeof obj !== "object") {
     return false;
