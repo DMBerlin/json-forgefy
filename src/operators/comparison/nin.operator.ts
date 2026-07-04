@@ -25,7 +25,6 @@ import { NinOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $nin: ExecutableExpression<NinOperatorInput, boolean> = () => {
   return function (value: NinOperatorInput): boolean {
-    // All values are already resolved by resolveArgs
     const [targetValue, arrayValues] = value;
 
     // If not an array, consider the value as "not in" the array

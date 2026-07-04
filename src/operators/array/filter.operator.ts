@@ -16,19 +16,10 @@ import {
  * evaluates to truthy, making the current element available as $current and
  * the index as $index.
  *
- * Supports:
- * - Simple boolean conditions
- * - Complex nested conditions ($and, $or, $cond, etc.)
- * - Comparison operators ($gt, $lt, $eq, etc.)
- * - Execution context variables ($current, $index)
- * - Fallback values for error handling
- * - Empty arrays
- *
- * **LIMITATION:** Due to circular module dependencies, you cannot nest $filter (or other array
- * operators like $map, $reduce) within object properties. Nested $filter calls will return null.
- *
- * **Workaround:** Use $filter at the expression root level instead of nesting it in object properties,
- * or use sequential filter operations.
+ * Supports simple boolean conditions, complex nested conditions ($and, $or,
+ * $cond, etc.), comparison operators ($gt, $lt, $eq, etc.), execution-context
+ * variables ($current, $index), fallback values, empty arrays, and nesting
+ * other array operators inside the condition.
  *
  * @param ctx - Execution context containing the source object
  * @returns A function that filters an array based on the given condition
@@ -36,93 +27,28 @@ import {
  * @example
  * ```typescript
  * // Simple condition
- * {
- *   adults: {
- *     $filter: {
- *       input: "$users",
- *       condition: { $gte: ["$current.age", 18] }
- *     }
- *   }
- * }
+ * { adults: { $filter: { input: "$users", condition: { $gte: ["$current.age", 18] } } } }
  *
- * // With $and and $or
+ * // With $and / $or
  * {
  *   eligible: {
  *     $filter: {
  *       input: "$candidates",
- *       condition: {
- *         $and: [
- *           { $gte: ["$current.age", 18] },
- *           { $eq: ["$current.status", "active"] }
- *         ]
- *       }
+ *       condition: { $and: [{ $gte: ["$current.age", 18] }, { $eq: ["$current.status", "active"] }] }
  *     }
  *   }
  * }
  *
- * // With $cond
- * {
- *   filtered: {
- *     $filter: {
- *       input: "$items",
- *       condition: {
- *         $cond: {
- *           if: { $eq: ["$current.type", "premium"] },
- *           then: { $gt: ["$current.price", 100] },
- *           else: { $gt: ["$current.price", 50] }
- *         }
- *       }
- *     }
- *   }
- * }
+ * // With index and fallback
+ * { oddIndexed: { $filter: { input: "$items", condition: { $eq: [{ $mod: ["$index", 2] }, 1] }, fallback: [] } } }
  *
- * // With index
- * {
- *   oddIndexed: {
- *     $filter: {
- *       input: "$items",
- *       condition: { $eq: [{ $mod: ["$index", 2] }, 1] }
- *     }
- *   }
- * }
- *
- * // With fallback
- * {
- *   safe: {
- *     $filter: {
- *       input: "$maybeArray",
- *       condition: "$current.active",
- *       fallback: []
- *     }
- *   }
- * }
- *
- * // ❌ LIMITATION - Nested $filter in object property doesn't work
+ * // Nesting array operators inside another operator's expression is supported
  * {
  *   $map: {
  *     input: "$groups",
- *     expression: {
- *       filtered: {  // ← Nested in object - will return null
- *         $filter: { input: "$current.items", condition: { $gt: ["$current", 100] } }
- *       }
- *     }
+ *     expression: { filtered: { $filter: { input: "$current.items", condition: { $gt: ["$current", 100] } } } }
  *   }
  * }
- * // Returns: [{ filtered: null }, ...]
- *
- * // ✅ WORKAROUND - $filter at expression root
- * {
- *   $map: {
- *     input: "$groups",
- *     expression: {
- *       $filter: {  // ← At root level - works!
- *         input: "$current.items",
- *         condition: { $gt: ["$current", 100] }
- *       }
- *     }
- *   }
- * }
- * // Returns: [[filtered items], ...]
  * ```
  */
 export const $filter: ExecutableExpression<FilterOperatorInput, unknown[]> = (

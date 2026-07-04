@@ -15,18 +15,10 @@ import {
  * It iterates over the array and applies the provided expression to each element,
  * making the current element available as $current and the index as $index.
  *
- * Supports:
- * - Simple transformations
- * - Complex nested expressions ($cond, $switch, math operators, etc.)
- * - Execution context variables ($current, $index)
- * - Fallback values for error handling
- * - Empty arrays
- *
- * **LIMITATION:** Due to circular module dependencies, you cannot nest $map (or other array
- * operators like $filter, $reduce) within object properties. Nested $map calls will return null.
- *
- * **Workaround:** Use $map at the expression root level instead of nesting it in object properties,
- * or use sequential map operations.
+ * Supports simple transformations, complex nested expressions ($cond, $switch,
+ * math operators, etc.), execution-context variables ($current, $index),
+ * fallback values, empty arrays, and nesting other array operators (including
+ * $map/$filter/$reduce) inside the expression.
  *
  * @param ctx - Execution context containing the source object
  * @returns A function that maps over an array with the given expression
@@ -34,14 +26,7 @@ import {
  * @example
  * ```typescript
  * // Simple transformation
- * {
- *   doubled: {
- *     $map: {
- *       input: "$numbers",
- *       expression: { $multiply: ["$current", 2] }
- *     }
- *   }
- * }
+ * { doubled: { $map: { input: "$numbers", expression: { $multiply: ["$current", 2] } } } }
  *
  * // With conditional logic
  * {
@@ -59,56 +44,17 @@ import {
  *   }
  * }
  *
- * // With index
- * {
- *   indexed: {
- *     $map: {
- *       input: "$items",
- *       expression: {
- *         item: "$current",
- *         position: { $add: ["$index", 1] } // 1-based index
- *       }
- *     }
- *   }
- * }
+ * // With index (1-based position) and fallback
+ * { indexed: { $map: { input: "$items", expression: { item: "$current", position: { $add: ["$index", 1] } }, fallback: [] } } }
  *
- * // With fallback
- * {
- *   safe: {
- *     $map: {
- *       input: "$maybeArray",
- *       expression: "$current",
- *       fallback: []
- *     }
- *   }
- * }
- *
- * // ❌ LIMITATION - Nested $map in object property doesn't work
+ * // Nesting array operators inside the expression is supported
  * {
  *   $map: {
  *     input: [{ items: [1, 2, 3] }],
- *     expression: {
- *       doubled: {  // ← Nested in object - will return null
- *         $map: { input: "$current.items", expression: { $multiply: ["$current", 2] } }
- *       }
- *     }
+ *     expression: { doubled: { $map: { input: "$current.items", expression: { $multiply: ["$current", 2] } } } }
  *   }
  * }
- * // Returns: [{ doubled: null }]
- *
- * // ✅ WORKAROUND - $map at expression root
- * {
- *   $map: {
- *     input: [{ items: [1, 2, 3] }],
- *     expression: {
- *       $map: {  // ← At root level - works!
- *         input: "$current.items",
- *         expression: { $multiply: ["$current", 2] }
- *       }
- *     }
- *   }
- * }
- * // Returns: [[2, 4, 6]]
+ * // Returns: [{ doubled: [2, 4, 6] }]
  * ```
  */
 export const $map: ExecutableExpression<MapOperatorInput, unknown[]> = (

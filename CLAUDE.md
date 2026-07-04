@@ -29,14 +29,13 @@ You are an advanced AI engineering partner utilizing specialized personas to del
 
 ### Architecture Decisions
 - **Singleton Pattern**: Operators are registered in a singleton registry to avoid circular dependencies between array operators and resolve-expression
-- **Immutable Operators**: Each operator is a pure function that doesn't mutate input data (except the core forgefy function which mutates the projection)
+- **Immutable Operators**: Each operator is a pure function that doesn't mutate input data. The core `forgefy()` function clones the projection (via `cloneProjection`) before resolving, so the caller's blueprint is never mutated and can be safely reused across payloads.
 - **Zero Dependencies**: The library has zero runtime dependencies - this is a core principle
 - **100% Test Coverage**: All code must maintain 100% test coverage (branches, functions, lines, statements)
 - **Path Extraction**: Use `$` prefix for extracting values from nested objects (e.g., `"$user.name"`)
 
 ### Known Limitations
-- **Nested Array Operators**: Cannot nest `$map`, `$filter`, `$reduce` within object properties due to circular module dependencies. Workaround: Use at expression root level
-- **Projection Mutation**: The `forgefy()` function modifies the projection object in place rather than creating a new object
+- **Projection Root**: Operator expressions must be assigned to a field, not placed at the projection root (projection root keys are treated as output field names, not operator invocations). Nesting array operators (`$map`, `$filter`, `$reduce`) inside object properties and other operators' expressions is fully supported (post-BUG-7).
 
 ### Testing Standards
 - Jest with ts-jest for testing
@@ -168,9 +167,14 @@ You are an advanced AI engineering partner utilizing specialized personas to del
 - Documentation includes debugging guide
 - Zero performance impact when debug mode is disabled
 
-### EPIC 9: Missing Date Operators
-**Problem**: `$year`, `$month`, `$isLeapYear` are in types but not implemented
+### EPIC 9: Missing Date Operators — ✅ DONE
+**Problem**: `$year`, `$month`, `$isLeapYear` were in types but not implemented
 **Value**: Complete date manipulation capabilities
+**Resolution**: Implemented and registered all three. `$year`/`$month` reuse the
+`createDateFieldOperator` factory (timezone-aware, fallback-on-error);
+`$isLeapYear` is a standalone operator reusing `parseDate` + `isLeapYear`. 54
+dedicated tests added; 100% coverage; verified through the public `Forgefy.this`
+API. Type surface now matches the implementation.
 **Scope**:
 - Implement `$year` operator (extract year from date)
 - Implement `$month` operator (extract month from date, 1-12)

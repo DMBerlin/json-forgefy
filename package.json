@@ -73,6 +73,9 @@
       "ts"
     ],
     "testRegex": ".*\\.spec\\.ts$",
+    "setupFiles": [
+      "<rootDir>/src/operators/forgefy.operators.ts"
+    ],
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },

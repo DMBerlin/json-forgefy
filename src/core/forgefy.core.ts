@@ -6,6 +6,13 @@ import { looksLikeOperator } from "@helpers/is-operator.helper";
 import { resolveExpression } from "@common/resolve-expression.common";
 import { Projection } from "@lib-types/expression.types";
 import { ForgefyOptions } from "@interfaces/forgefy-options.interface";
+// Side-effect import: populates the singleton operator registry. This is the
+// single, explicit bootstrap point for operator registration — previously the
+// registry was populated only as an incidental side effect of a helper import
+// (see docs/ISSUES.md CS-7 / IMP-3). Importing it here guarantees the registry
+// is fully populated before any transformation runs, regardless of how the
+// helpers below import the (same) singleton instance.
+import "@operators/forgefy.operators";
 
 /**
  * Assigns a value to a node property by resolving an operator expression.
@@ -15,6 +22,7 @@ import { ForgefyOptions } from "@interfaces/forgefy-options.interface";
  * @param key - The property key in the node object to assign the resolved value to
  * @param origin - The original payload object used as context for expression resolution
  * @param node - The target node object where the resolved value will be assigned
+ * @param options - Normalized transformation options (carries `strict`)
  * @returns void - Modifies the node object in place
  *
  * @example
@@ -29,11 +37,11 @@ function assignValueByOperator(
   key: string,
   origin: Record<string, any>,
   node: Record<string, any>,
-  strict: boolean,
+  options: ForgefyOptions,
 ): void {
   node[key] = resolveExpression(origin, node[key], {
     context: origin,
-    strict,
+    strict: options.strict,
   });
 }
 
@@ -88,7 +96,7 @@ function keyHandler(
   key: string,
   origin: Record<string, any>,
   node: Record<string, any>,
-  strict: boolean,
+  options: ForgefyOptions,
 ): void {
   if (isValidObjectPath(node[key])) {
     assignValueByPath(key, origin, node);
@@ -98,9 +106,9 @@ function keyHandler(
       // Registered operators resolve normally; unknown / misspelled operators
       // are surfaced by resolveExpression (thrown in strict mode, resolved to
       // null otherwise) instead of being silently passed through verbatim.
-      assignValueByOperator(key, origin, node, strict);
+      assignValueByOperator(key, origin, node, options);
     } else {
-      node[key] = forgefyNode(origin, node[key], strict);
+      node[key] = forgefyNode(origin, node[key], options);
     }
   }
 }
@@ -113,16 +121,17 @@ function keyHandler(
  *
  * @param payload - The source object used as context for resolution
  * @param node - The (cloned) projection node to resolve in place
- * @param strict - When true, resolution errors are surfaced instead of nulled
+ * @param options - Normalized transformation options threaded through the core
+ *                   (currently carries `strict`; extend here for future options)
  * @returns The resolved node
  */
 function forgefyNode(
   payload: Record<string, any>,
   node: Record<string, any>,
-  strict: boolean,
+  options: ForgefyOptions,
 ): Record<string, any> {
   for (const key of Object.keys(node)) {
-    keyHandler(key, payload, node, strict);
+    keyHandler(key, payload, node, options);
   }
   return node;
 }
@@ -176,7 +185,9 @@ export function forgefy(
   projection: Projection,
   options?: ForgefyOptions,
 ): Record<string, any> {
-  const strict = options?.strict ?? false;
+  const normalizedOptions: ForgefyOptions = {
+    strict: options?.strict ?? false,
+  };
   // Clone the projection once so the caller's blueprint is never mutated and
   // can be reused across multiple payloads. Recursion happens over this private
   // copy via forgefyNode, so nested nodes are not re-cloned.
@@ -186,5 +197,5 @@ export function forgefy(
   // checks (e.g. isObject) when running inside sandboxed realms such as Jest's
   // VM. cloneProjection rebuilds plain objects/arrays in the current realm.
   const draft = cloneProjection(projection) as Record<string, any>;
-  return forgefyNode(payload, draft, strict);
+  return forgefyNode(payload, draft, normalizedOptions);
 }

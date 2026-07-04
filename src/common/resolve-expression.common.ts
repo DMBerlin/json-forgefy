@@ -1,5 +1,5 @@
 import { operatorRegistry } from "@/singletons/operators.singleton";
-import { OperatorKey, OperatorValue } from "@lib-types/operator.types";
+import { OperatorKey } from "@lib-types/operator.types";
 import { ExpressionValues } from "@lib-types/expression.types";
 import { ExecutionContext } from "@interfaces/execution-context.interface";
 import { UnknownOperatorError } from "@lib-types/error.types";
@@ -128,9 +128,11 @@ export function resolveExpression<T>(
 
     const key = keys[0] as OperatorKey;
 
-    // Validate operator exists
-    // Use singleton's get() method to access registry at runtime (when fully populated)
-    const operator: OperatorValue = operatorRegistry.get(key);
+    // Validate operator exists.
+    // The registry lookup is intentionally modeled as possibly-undefined; the
+    // guard below narrows it before use (an unknown / misspelled operator key
+    // yields undefined here).
+    const operator = operatorRegistry.get(key);
     if (!operator) {
       throw new UnknownOperatorError(key, Array.from(operatorRegistry.keys()));
     }
@@ -145,9 +147,11 @@ export function resolveExpression<T>(
       executionContext,
     );
 
-    // Execute the operator with resolved arguments
-    // Pass the execution context to preserve $current, $index, $accumulated for nested operators
-    return operator(executionContext)(resolvedArgs);
+    // Execute the operator with resolved arguments.
+    // Pass the execution context to preserve $current, $index, $accumulated for
+    // nested operators. The registry stores operators with an `unknown` result,
+    // so the caller-provided T is asserted here.
+    return operator(executionContext)(resolvedArgs) as T;
   } catch (error) {
     // In strict mode, surface the error so unknown operators, malformed
     // expressions, and operator failures become diagnosable by the caller.

@@ -24,7 +24,6 @@ import { LteOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $lte: ExecutableExpression<LteOperatorInput, boolean> = () => {
   return function (value: LteOperatorInput): boolean {
-    // All values are already resolved by resolveArgs
     const [firstValue, secondValue] = value;
     return firstValue <= secondValue;
   };
