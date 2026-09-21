@@ -83,7 +83,7 @@
     "prettier": "^3.7.4",
     "release-please": "^17.1.3",
     "rimraf": "^6.1.2",
-    "secretlint": "^11.2.5",
+    "secretlint": "^13.0.5",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
