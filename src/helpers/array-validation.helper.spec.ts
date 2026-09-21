@@ -2,8 +2,7 @@ import {
   validateArrayOperatorParams,
   validateArrayInput,
   validateNumberInput,
-  getEmptyArrayFallback,
-  extractNumericValues,
+  filterNumeric,
 } from "./array-validation.helper";
 import {
   ArrayOperatorInputError,
@@ -325,155 +324,79 @@ describe("array-validation.helper", () => {
     });
   });
 
-  describe("getEmptyArrayFallback", () => {
-    it("should return fallback for empty array when provided", () => {
-      const result = getEmptyArrayFallback([], "default");
-      expect(result).toBe("default");
-    });
-
-    it("should return undefined for empty array without fallback", () => {
-      const result = getEmptyArrayFallback([]);
-      expect(result).toBeUndefined();
-    });
-
-    it("should return undefined for non-empty array", () => {
-      const result = getEmptyArrayFallback([1, 2, 3], "fallback");
-      expect(result).toBeUndefined();
-    });
-
-    it("should allow falsy fallback values", () => {
-      const result = getEmptyArrayFallback([], 0);
-      expect(result).toBe(0);
-    });
-
-    it("should return null as fallback", () => {
-      const result = getEmptyArrayFallback([], null);
-      expect(result).toBeNull();
-    });
-
-    it("should return false as fallback", () => {
-      const result = getEmptyArrayFallback([], false);
-      expect(result).toBe(false);
-    });
-
-    it("should return empty string as fallback", () => {
-      const result = getEmptyArrayFallback([], "");
-      expect(result).toBe("");
-    });
-  });
-
-  describe("extractNumericValues", () => {
+  describe("filterNumeric", () => {
     describe("valid numeric arrays", () => {
-      it("should return array of numbers when all values are numeric", () => {
-        const result = extractNumericValues([10, 20, 30]);
-        expect(result).toEqual([10, 20, 30]);
+      it("should return all values when they are numeric", () => {
+        expect(filterNumeric([10, 20, 30])).toEqual([10, 20, 30]);
       });
 
       it("should filter out non-numeric values", () => {
-        const result = extractNumericValues([10, "text", 20, null, 30]);
-        expect(result).toEqual([10, 20, 30]);
+        expect(filterNumeric([10, "text", 20, null, 30])).toEqual([10, 20, 30]);
       });
 
       it("should filter out NaN values", () => {
-        const result = extractNumericValues([10, NaN, 20, 30]);
-        expect(result).toEqual([10, 20, 30]);
+        expect(filterNumeric([10, NaN, 20, 30])).toEqual([10, 20, 30]);
       });
 
       it("should filter out undefined values", () => {
-        const result = extractNumericValues([10, undefined, 20, 30]);
-        expect(result).toEqual([10, 20, 30]);
+        expect(filterNumeric([10, undefined, 20, 30])).toEqual([10, 20, 30]);
       });
 
       it("should filter out boolean values", () => {
-        const result = extractNumericValues([10, true, 20, false, 30]);
-        expect(result).toEqual([10, 20, 30]);
+        expect(filterNumeric([10, true, 20, false, 30])).toEqual([10, 20, 30]);
       });
 
       it("should filter out object values", () => {
-        const result = extractNumericValues([10, { value: 5 }, 20]);
-        expect(result).toEqual([10, 20]);
+        expect(filterNumeric([10, { value: 5 }, 20])).toEqual([10, 20]);
       });
 
       it("should filter out array values", () => {
-        const result = extractNumericValues([10, [5], 20]);
-        expect(result).toEqual([10, 20]);
+        expect(filterNumeric([10, [5], 20])).toEqual([10, 20]);
       });
 
       it("should include zeros", () => {
-        const result = extractNumericValues([10, 0, 20, 0, 30]);
-        expect(result).toEqual([10, 0, 20, 0, 30]);
+        expect(filterNumeric([10, 0, 20, 0, 30])).toEqual([10, 0, 20, 0, 30]);
       });
 
       it("should include negative numbers", () => {
-        const result = extractNumericValues([10, -5, 20, -10]);
-        expect(result).toEqual([10, -5, 20, -10]);
+        expect(filterNumeric([10, -5, 20, -10])).toEqual([10, -5, 20, -10]);
       });
 
       it("should include decimals", () => {
-        const result = extractNumericValues([1.5, 2.5, 3.5]);
-        expect(result).toEqual([1.5, 2.5, 3.5]);
+        expect(filterNumeric([1.5, 2.5, 3.5])).toEqual([1.5, 2.5, 3.5]);
+      });
+
+      it("should include Infinity and -Infinity", () => {
+        expect(filterNumeric([Infinity, 1, -Infinity])).toEqual([
+          Infinity,
+          1,
+          -Infinity,
+        ]);
       });
     });
 
-    describe("empty array handling", () => {
-      it("should return default value 0 for empty array", () => {
-        const result = extractNumericValues([]);
-        expect(result).toBe(0);
+    describe("empty results", () => {
+      it("should return an empty array for an empty input", () => {
+        expect(filterNumeric([])).toEqual([]);
       });
 
-      it("should return fallback for empty array when provided", () => {
-        const result = extractNumericValues([], null);
-        expect(result).toBeNull();
+      it("should return an empty array when no values are numeric", () => {
+        expect(filterNumeric(["a", "b", "c"])).toEqual([]);
       });
 
-      it("should return custom fallback for empty array", () => {
-        const result = extractNumericValues([], 999);
-        expect(result).toBe(999);
+      it("should return an empty array for only NaN values", () => {
+        expect(filterNumeric([NaN, NaN])).toEqual([]);
       });
 
-      it("should allow falsy fallback values", () => {
-        const result = extractNumericValues([], 0);
-        expect(result).toBe(0);
+      it("should return an empty array for only null/undefined", () => {
+        expect(filterNumeric([null, undefined])).toEqual([]);
       });
     });
 
-    describe("no valid numbers handling", () => {
-      it("should return default value when all values are non-numeric", () => {
-        const result = extractNumericValues(["a", "b", "c"]);
-        expect(result).toBe(0);
-      });
-
-      it("should return fallback when all values are non-numeric", () => {
-        const result = extractNumericValues(["a", "b", "c"], null);
-        expect(result).toBeNull();
-      });
-
-      it("should return fallback when only NaN values", () => {
-        const result = extractNumericValues([NaN, NaN], -1);
-        expect(result).toBe(-1);
-      });
-
-      it("should return fallback when only null/undefined", () => {
-        const result = extractNumericValues([null, undefined], 100);
-        expect(result).toBe(100);
-      });
-    });
-
-    describe("custom default value", () => {
-      it("should use custom default value when no fallback", () => {
-        const result = extractNumericValues([], undefined, -1);
-        expect(result).toBe(-1);
-      });
-
-      it("should prefer fallback over default value", () => {
-        const result = extractNumericValues([], 999, -1);
-        expect(result).toBe(999);
-      });
-
-      it("should use default value when no valid numbers and no fallback", () => {
-        const result = extractNumericValues(["a", "b"], undefined, 42);
-        expect(result).toBe(42);
-      });
+    it("should not mutate the input array", () => {
+      const input = [1, "x", 2];
+      filterNumeric(input);
+      expect(input).toEqual([1, "x", 2]);
     });
   });
 });

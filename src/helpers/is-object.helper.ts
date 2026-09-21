@@ -1,10 +1,21 @@
 /**
- * Determines if a value is a plain object (not an array, null, or other non-object types).
- * This helper function is used throughout the library to identify when a value should be
- * processed as an object that might contain nested projections or operators.
+ * Type guard that determines if a value is a plain object (a record) — i.e. not
+ * an array, null, or a primitive. Used throughout the library to decide when a
+ * value should be treated as a nested projection or operator expression.
+ *
+ * Implemented with `typeof` (not `instanceof Object`) so it stays correct across
+ * JavaScript realms — e.g. plain objects created in a different realm such as
+ * Jest's VM context, where `instanceof` fails. This is the same realm-safety
+ * concern that motivated `cloneProjection`.
+ *
+ * Semantics:
+ * - Plain objects (including cross-realm and null-prototype) → true
+ * - Date / RegExp (and other `typeof "object"` instances) → true
+ * - Arrays, null, undefined, primitives → false
+ * - Functions → false (a function is not a data record)
  *
  * @param value - The value to check
- * @returns true if the value is a plain object, false otherwise
+ * @returns true if the value is a non-array, non-null object
  *
  * @example
  * ```typescript
@@ -14,11 +25,12 @@
  * isObject(null); // Returns false (null)
  * isObject("string"); // Returns false (string)
  * isObject(42); // Returns false (number)
+ * isObject(() => {}); // Returns false (function)
  * isObject(new Date()); // Returns true (Date is an object)
  * ```
  */
-export function isObject(value: any): boolean {
-  return value instanceof Object && !Array.isArray(value);
+export function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 /**

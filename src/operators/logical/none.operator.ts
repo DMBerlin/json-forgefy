@@ -40,7 +40,6 @@ export const $none: ExecutableExpression<NoneOperatorInput, boolean> = () => {
       return true;
     }
 
-    // All expressions are already resolved by resolveArgs
     // Return false if any expression is truthy
     for (const expression of expressions) {
       if (expression) {

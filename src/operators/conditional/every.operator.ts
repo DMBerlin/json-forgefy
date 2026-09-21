@@ -40,14 +40,12 @@ import { EveryOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $every: ExecutableExpression<EveryOperatorInput, unknown> = () => {
   return function (value: EveryOperatorInput): unknown {
-    // All conditions are already resolved by resolveArgs
     // Check if all conditions are truthy
     const allConditionsMet = value.conditions.every((condition) =>
       Boolean(condition),
     );
 
     // Return 'then' if all conditions met, 'else' otherwise
-    // Both branches are already resolved by resolveArgs
     return allConditionsMet ? value.then : value.else;
   };
 };

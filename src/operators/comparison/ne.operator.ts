@@ -25,7 +25,6 @@ import { NeOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $ne: ExecutableExpression<NeOperatorInput, boolean> = () => {
   return function (value: NeOperatorInput): boolean {
-    // All values are already resolved by resolveArgs
     const [firstValue, secondValue] = value;
     return firstValue !== secondValue;
   };

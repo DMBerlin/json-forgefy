@@ -24,7 +24,6 @@ import { LtOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $lt: ExecutableExpression<LtOperatorInput, boolean> = () => {
   return function (value: LtOperatorInput): boolean {
-    // All values are already resolved by resolveArgs
     const [firstValue, secondValue] = value;
     return firstValue < secondValue;
   };

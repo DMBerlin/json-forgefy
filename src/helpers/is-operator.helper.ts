@@ -1,4 +1,4 @@
-import { operatorRegistry } from "@operators/forgefy.operators";
+import { operatorRegistry } from "@/singletons/operators.singleton";
 import { OperatorKey } from "@lib-types/operator.types";
 
 /**
@@ -21,7 +21,7 @@ import { OperatorKey } from "@lib-types/operator.types";
  * isOperator({}); // Returns false (no keys)
  * ```
  */
-export function isOperator(obj: Record<string, any>): boolean {
+export function isOperator(obj: unknown): boolean {
   // Handle null, undefined, or non-object values
   if (!obj || typeof obj !== "object") {
     return false;
@@ -33,4 +33,35 @@ export function isOperator(obj: Record<string, any>): boolean {
     keys[0].startsWith("$") &&
     operatorRegistry.has(keys[0] as OperatorKey)
   );
+}
+
+/**
+ * Determines if an object is *shaped* like an operator expression, regardless
+ * of whether the operator is actually registered.
+ *
+ * This is broader than {@link isOperator}: it returns true for any single-key
+ * object whose key starts with "$", including unknown or misspelled operators.
+ * It is used to detect operator-like values so that unregistered operators can
+ * be surfaced (thrown in strict mode, resolved to null otherwise) instead of
+ * being silently passed through as plain objects.
+ *
+ * @param obj - The object to check for operator-like structure
+ * @returns true if the object looks like an operator expression, false otherwise
+ *
+ * @example
+ * ```typescript
+ * looksLikeOperator({ $add: [1, 2] }); // Returns true (registered)
+ * looksLikeOperator({ $unknownOp: 1 }); // Returns true (unregistered but shaped like one)
+ * looksLikeOperator({ name: "John" }); // Returns false (no $ prefix)
+ * looksLikeOperator({ $a: 1, $b: 2 }); // Returns false (multiple keys)
+ * ```
+ */
+export function looksLikeOperator(obj: Record<string, any>): boolean {
+  // Handle null, undefined, or non-object values
+  if (!obj || typeof obj !== "object") {
+    return false;
+  }
+
+  const keys: string[] = Object.keys(obj);
+  return keys.length === 1 && keys[0].startsWith("$");
 }

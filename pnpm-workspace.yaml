@@ -1,0 +1,6 @@
+packages:
+  - "."
+
+overrides:
+  eslint@<9.26.0: '>=9.26.0'
+  js-yaml: '>=4.1.1'

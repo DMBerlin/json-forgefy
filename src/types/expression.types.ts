@@ -6,6 +6,8 @@ type NestedExpression = { [key: string]: ExpressionValues };
 
 export type ExpressionValues =
   | string
+  | null
+  | undefined
   | number
   | boolean
   | Expression

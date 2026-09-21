@@ -3,7 +3,7 @@ import { SumOperatorInput } from "@lib-types/operator-input.types";
 import {
   validateArrayOperatorParams,
   validateArrayInput,
-  extractNumericValues,
+  filterNumeric,
 } from "@helpers/array-validation.helper";
 
 /**
@@ -77,10 +77,11 @@ export const $sum: ExecutableExpression<SumOperatorInput, number> = () => {
       return validArray as number; // This is the fallback
     }
 
-    // Extract valid numeric values (handles empty array and non-numeric filtering)
-    const numbers = extractNumericValues(validArray, fallback);
-    if (!Array.isArray(numbers)) {
-      return numbers as number; // This is the fallback or default value
+    // Extract valid numeric values, then apply fallback/default at the call
+    // site: an empty result means no numbers to sum.
+    const numbers = filterNumeric(validArray);
+    if (numbers.length === 0) {
+      return (fallback !== undefined ? fallback : 0) as number;
     }
 
     // Calculate sum

@@ -49,6 +49,6 @@ class OperatorRegistry {
   }
 }
 
-// Export singleton instance - single source of truth for v4.0.0
+// Export singleton instance - single source of truth for the operator registry
 export const operatorRegistry: OperatorRegistry =
   OperatorRegistry.getInstance();

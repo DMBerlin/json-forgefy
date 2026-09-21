@@ -82,7 +82,16 @@ import {
   YearOperatorInput,
 } from "./operator-input.types";
 
-export type OperatorValue = (ctx?: ExecutionContext) => (...args: any[]) => any;
+/**
+ * The type-erased shape under which every operator is stored in the registry.
+ *
+ * Concrete operators are authored as {@link ExecutableExpression}`<P, R>` with
+ * specific input/output types; they are widened to this common shape for
+ * storage. The input is intentionally `any` (each operator narrows its own
+ * input), while the result is `unknown` so callers must explicitly assert the
+ * expected return type instead of silently propagating `any`.
+ */
+export type OperatorValue = (ctx?: ExecutionContext) => (value: any) => unknown;
 
 export type OperatorKey =
   | "$abs"

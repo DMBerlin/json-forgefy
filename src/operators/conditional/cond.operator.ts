@@ -36,7 +36,6 @@ import { CondOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $cond: ExecutableExpression<CondOperatorInput, unknown> = () => {
   return function (value: CondOperatorInput): unknown {
-    // All expressions are already resolved by resolveArgs
     // Simply evaluate the condition and return the appropriate branch
     return value.if ? value.then : value.else;
   };

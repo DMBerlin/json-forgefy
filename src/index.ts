@@ -12,7 +12,6 @@
  * - And many more operators inspired by MongoDB's aggregation pipeline
  *
  * @author Daniel Marinho
- * @version 4.0.0
  * @license ISC
  */
 

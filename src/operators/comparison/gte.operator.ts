@@ -24,7 +24,6 @@ import { GteOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $gte: ExecutableExpression<GteOperatorInput, boolean> = () => {
   return function (value: GteOperatorInput): boolean {
-    // All values are already resolved by resolveArgs
     const [firstValue, secondValue] = value;
     return firstValue >= secondValue;
   };

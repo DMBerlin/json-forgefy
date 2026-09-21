@@ -28,7 +28,6 @@ export const $coalesce: ExecutableExpression<
   unknown
 > = () => {
   return function (values: CoalesceOperatorInput): unknown {
-    // All values are already resolved by resolveArgs
     for (const value of values) {
       if (value !== null && value !== undefined) {
         return value;

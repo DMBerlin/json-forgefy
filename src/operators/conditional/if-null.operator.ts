@@ -28,7 +28,6 @@ export const $ifNull: ExecutableExpression<
   unknown | null
 > = () => {
   return function (values: IfNullOperatorInput): unknown {
-    // All values are already resolved by resolveArgs
     return values[0] ?? values[1];
   };
 };

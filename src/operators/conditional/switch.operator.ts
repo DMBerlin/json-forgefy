@@ -42,7 +42,6 @@ import { SwitchOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $switch = () => {
   return function (value: SwitchOperatorInput) {
-    // All case expressions are already resolved by resolveArgs
     // Simply check which case is truthy and return the corresponding branch
     for (const branch of value.branches) {
       if (branch.case) return branch.then;
