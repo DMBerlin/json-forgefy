@@ -1,9 +1,18 @@
 {
   "name": "json-forgefy",
   "version": "4.0.1",
-  "description": "Transform JSON data with custom operators including powerful array transformations and date operations.",
+  "description": "Safe, declarative JSON transformation engine using MongoDB-style aggregation operators. Zero dependencies, 100% test coverage, and TypeScript-first. Ideal for API data mapping, ETL, and AI agents.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "tsc && tsc-alias",
     "prepublishOnly": "pnpm run build",
@@ -27,9 +36,26 @@
     "url": "git+https://github.com/DMBerlin/json-forgefy.git"
   },
   "keywords": [
-    "typescript",
     "json",
-    "npm-package"
+    "json-transform",
+    "json-transformation",
+    "json-mapper",
+    "data-mapping",
+    "json-reshape",
+    "mongodb-operators",
+    "declarative-json",
+    "json-pipeline",
+    "etl",
+    "jq-alternative",
+    "jsonata-alternative",
+    "ai-tool",
+    "ai-agent",
+    "llm-tools",
+    "safe-eval",
+    "zero-dependencies",
+    "typescript",
+    "data-normalization",
+    "projection"
   ],
   "author": "Daniel Marinho",
   "license": "ISC",

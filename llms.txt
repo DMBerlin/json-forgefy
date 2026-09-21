@@ -1,0 +1,178 @@
+# JSON Forgefy
+
+> Safe, declarative JSON transformation engine using MongoDB-style aggregation operators. Zero dependencies, 100% test coverage, and TypeScript-first. Ideal for API response mapping, data pipelines, ETL, and AI agents.
+
+## Overview
+
+JSON Forgefy transforms JSON data using declarative projection blueprints with MongoDB-style aggregation operators (`$add`, `$cond`, `$map`, `$filter`, `$year`, etc.). It runs synchronously in pure JavaScript with zero runtime dependencies.
+
+- Repository: https://github.com/DMBerlin/json-forgefy
+- Playground: https://dmberlin.github.io/json-forgefy-playground
+- Package: https://www.npmjs.com/package/json-forgefy
+
+## Why JSON Forgefy for AI Agents & LLMs
+
+1. **Safe Against Arbitrary Code Execution**: Blueprints are pure declarative JSON objects. Unlike `eval()` or JavaScript template expressions, untrusted LLM-generated blueprints cannot execute code or access the host runtime.
+2. **Native MongoDB Aggregation Mental Model**: LLMs (GPT, Claude, Gemini) are extensively trained on MongoDB aggregation operators, minimizing syntax hallucinations.
+3. **Structured Outputs & Schema Friendly**: Blueprints follow deterministic object schemas that can be generated via LLM structured outputs (`response_format: json_schema`) or tool calls.
+4. **Zero Dependencies & Universal**: Runs anywhere JavaScript runs: Edge functions, Cloudflare Workers, browser sandboxes, Bun, Deno, and Node.js (>=22).
+5. **Deterministic**: Eliminates temperature-based data drift; identical input + blueprint always produces identical output.
+
+## Installation
+
+```bash
+pnpm add json-forgefy
+# or npm install json-forgefy
+# or yarn add json-forgefy
+```
+
+## Quick Start
+
+```typescript
+import Forgefy from 'json-forgefy';
+
+const rawData = {
+  user: {
+    firstName: "john",
+    lastName: "doe",
+    balance: "1250.75"
+  },
+  items: [
+    { name: "item1", price: 10, qty: 2 },
+    { name: "item2", price: 25, qty: 1 }
+  ]
+};
+
+const blueprint = {
+  fullName: {
+    $concat: [
+      { $capitalize: "$user.firstName" },
+      " ",
+      { $capitalize: "$user.lastName" }
+    ]
+  },
+  userBalance: { $toNumber: "$user.balance" },
+  totalSpend: {
+    $sum: {
+      $map: {
+        input: "$items",
+        as: "item",
+        in: { $multiply: ["$$item.price", "$$item.qty"] }
+      }
+    }
+  }
+};
+
+const result = Forgefy.this(rawData, blueprint);
+// Result:
+// {
+//   fullName: "John Doe",
+//   userBalance: 1250.75,
+//   totalSpend: 45
+// }
+```
+
+## Options: Strict Mode
+
+```typescript
+// Strict mode throws errors on unknown operators or evaluation failures instead of returning null
+const result = Forgefy.this(rawData, blueprint, { strict: true });
+```
+
+## Operators Reference (80 Operators)
+
+### Array Operators
+- `$map`: Transform array elements `{ input: "$array", as: "item", in: <expression> }`
+- `$filter`: Filter array elements `{ input: "$array", as: "item", cond: <boolean-expression> }`
+- `$reduce`: Fold array elements `{ input: "$array", initialValue: <val>, in: <expression> }`
+- `$sum`: Sum array of numbers or nested expression
+- `$avg`: Average array of numbers
+- `$min`, `$max`: Minimum or maximum value in an array
+- `$size`: Length of array
+- `$reverse`: Reverse array order
+- `$slice`: Extract sub-array `[ "$array", start, count ]`
+- `$concatArrays`: Concatenate multiple arrays
+- `$first`, `$last`: First or last element of array
+- `$arrayElemAt`: Element at specific index `[ "$array", index ]`
+- `$in`: Check if value exists in array
+- `$indexOfArray`: First index of element in array
+- `$sort`: Sort array elements
+
+### Comparison Operators
+- `$eq`: Equal `[ val1, val2 ]`
+- `$ne`: Not equal `[ val1, val2 ]`
+- `$gt`, `$gte`: Greater than / greater than or equal
+- `$lt`, `$lte`: Less than / less than or equal
+- `$in`: In list `[ value, array ]`
+- `$nin`: Not in list `[ value, array ]`
+
+### Conditional & Logical Operators
+- `$cond`: If-then-else `{ if: <cond>, then: <val>, else: <val> }`
+- `$ifNull`: Fallback if null/undefined `[ "$field", fallbackValue ]`
+- `$switch`: Multi-branch condition `{ branches: [{ case: <cond>, then: <val> }], default: <val> }`
+- `$coalesce`: Return first non-null/non-undefined value
+- `$and`: Logical AND across array of conditions
+- `$or`: Logical OR across array of conditions
+- `$not`: Logical NOT `[ <expression> ]`
+
+### Date Operators
+- `$year`: Extract year from date/ISO string `{ date: "$created_at", timezone?: "UTC", fallback?: null }`
+- `$month`: Extract month (1-12) from date/ISO string
+- `$dayOfMonth`: Extract day of month (1-31)
+- `$dayOfWeek`: Extract day of week (1=Sunday, 7=Saturday)
+- `$dayOfYear`: Extract day of year (1-366)
+- `$isLeapYear`: Check if date/year is a leap year `{ value: "$created_at" }`
+- `$dateToString`: Format date to string with format specifiers
+- `$dateDiff`: Difference between two dates
+
+### Math Operators
+- `$add`: Add numbers `[ a, b, ... ]`
+- `$subtract`: Subtract numbers `[ a, b ]`
+- `$multiply`: Multiply numbers `[ a, b, ... ]`
+- `$divide`: Divide numbers `[ numerator, denominator ]`
+- `$mod`: Modulo `[ a, b ]`
+- `$abs`: Absolute value
+- `$ceil`, `$floor`, `$round`: Rounding functions
+- `$toFixed`: Format number to fixed decimal string
+
+### String Operators
+- `$concat`: Concatenate strings `[ str1, str2, ... ]`
+- `$toLower`, `$toUpper`: Case conversion
+- `$capitalize`: Capitalize first letter
+- `$trim`, `$ltrim`, `$rtrim`: Whitespace trimming
+- `$substring`: Extract substring `[ "$str", start, length ]`
+- `$split`: Split string by delimiter `[ "$str", delimiter ]`
+- `$replaceOne`, `$replaceAll`: String replacement
+
+### Type Conversion & Type Checking
+- `$toString`: Convert value to string
+- `$toNumber`: Convert value to number
+- `$toBoolean`: Convert value to boolean
+- `$toDate`: Convert ISO string/timestamp to Date
+- `$isNull`: Check if value is null
+- `$isNumber`, `$isString`, `$isArray`, `$isObject`: Type check guards
+
+## AI Agent Integration Pattern
+
+When designing an AI tool or function for LLMs to transform data:
+
+```typescript
+import Forgefy from 'json-forgefy';
+
+// Tool definition for OpenAI / Anthropic / Vercel AI SDK
+export const jsonTransformTool = {
+  name: "transform_json",
+  description: "Safely transforms a source JSON object using a declarative MongoDB-style blueprint without executing code.",
+  parameters: {
+    type: "object",
+    properties: {
+      data: { type: "object", description: "The raw source data to transform" },
+      blueprint: { type: "object", description: "The json-forgefy transformation blueprint" }
+    },
+    required: ["data", "blueprint"]
+  },
+  execute: async ({ data, blueprint }: { data: any; blueprint: any }) => {
+    return Forgefy.this(data, blueprint, { strict: true });
+  }
+};
+```
