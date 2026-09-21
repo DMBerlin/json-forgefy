@@ -244,11 +244,11 @@ describe("resolveArgs", () => {
       ).toBe("high");
     });
 
-    it("should treat unknown operators as plain objects", () => {
-      // Unknown operators are not recognized by isOperator, so they're treated as plain objects
-      expect(resolve({ $unknownOp: [1, 2] }, source)).toEqual({
-        $unknownOp: [1, 2],
-      });
+    it("should resolve unknown operators to null via the resolver", () => {
+      // Operator-shaped values (including unknown/misspelled operators) are
+      // routed to the resolver, which returns null for unregistered operators
+      // in lenient mode instead of silently passing them through verbatim.
+      expect(resolve({ $unknownOp: [1, 2] }, source)).toBeNull();
     });
 
     it("should return expression as-is when no resolver provided", () => {

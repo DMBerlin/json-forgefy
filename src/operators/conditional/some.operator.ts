@@ -40,14 +40,12 @@ import { SomeOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $some: ExecutableExpression<SomeOperatorInput, unknown> = () => {
   return function (value: SomeOperatorInput): unknown {
-    // All conditions are already resolved by resolveArgs
     // Check if any condition is truthy
     const anyConditionMet = value.conditions.some((condition) =>
       Boolean(condition),
     );
 
     // Return 'then' if any condition met, 'else' otherwise
-    // Both branches are already resolved by resolveArgs
     return anyConditionMet ? value.then : value.else;
   };
 };

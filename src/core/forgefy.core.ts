@@ -1,9 +1,18 @@
 import { isValidObjectPath } from "@helpers/is-valid-object-path.helper";
 import { getValueByPath } from "@common/get-value-by-path.common";
+import { cloneProjection } from "@common/clone-projection.common";
 import { isObject } from "@helpers/is-object.helper";
-import { isOperator } from "@helpers/is-operator.helper";
+import { looksLikeOperator } from "@helpers/is-operator.helper";
 import { resolveExpression } from "@common/resolve-expression.common";
 import { Projection } from "@lib-types/expression.types";
+import { ForgefyOptions } from "@interfaces/forgefy-options.interface";
+// Side-effect import: populates the singleton operator registry. This is the
+// single, explicit bootstrap point for operator registration — previously the
+// registry was populated only as an incidental side effect of a helper import
+// (see docs/ISSUES.md CS-7 / IMP-3). Importing it here guarantees the registry
+// is fully populated before any transformation runs, regardless of how the
+// helpers below import the (same) singleton instance.
+import "@operators/forgefy.operators";
 
 /**
  * Assigns a value to a node property by resolving an operator expression.
@@ -13,6 +22,7 @@ import { Projection } from "@lib-types/expression.types";
  * @param key - The property key in the node object to assign the resolved value to
  * @param origin - The original payload object used as context for expression resolution
  * @param node - The target node object where the resolved value will be assigned
+ * @param options - Normalized transformation options (carries `strict`)
  * @returns void - Modifies the node object in place
  *
  * @example
@@ -27,8 +37,12 @@ function assignValueByOperator(
   key: string,
   origin: Record<string, any>,
   node: Record<string, any>,
+  options: ForgefyOptions,
 ): void {
-  node[key] = resolveExpression(origin, node[key]);
+  node[key] = resolveExpression(origin, node[key], {
+    context: origin,
+    strict: options.strict,
+  });
 }
 
 /**
@@ -82,16 +96,44 @@ function keyHandler(
   key: string,
   origin: Record<string, any>,
   node: Record<string, any>,
+  options: ForgefyOptions,
 ): void {
   if (isValidObjectPath(node[key])) {
     assignValueByPath(key, origin, node);
   } else if (isObject(node[key])) {
-    if (isOperator(node[key])) {
-      assignValueByOperator(key, origin, node);
+    if (looksLikeOperator(node[key])) {
+      // Any single "$"-prefixed key is treated as an operator invocation.
+      // Registered operators resolve normally; unknown / misspelled operators
+      // are surfaced by resolveExpression (thrown in strict mode, resolved to
+      // null otherwise) instead of being silently passed through verbatim.
+      assignValueByOperator(key, origin, node, options);
     } else {
-      node[key] = forgefy(origin, node[key]);
+      node[key] = forgefyNode(origin, node[key], options);
     }
   }
+}
+
+/**
+ * Recursively resolves every key of an already-cloned projection node in place.
+ * This is the internal worker used by {@link forgefy}. It operates on a node
+ * that is guaranteed to be a private copy, so mutating it has no observable
+ * side effects on the caller's blueprint.
+ *
+ * @param payload - The source object used as context for resolution
+ * @param node - The (cloned) projection node to resolve in place
+ * @param options - Normalized transformation options threaded through the core
+ *                   (currently carries `strict`; extend here for future options)
+ * @returns The resolved node
+ */
+function forgefyNode(
+  payload: Record<string, any>,
+  node: Record<string, any>,
+  options: ForgefyOptions,
+): Record<string, any> {
+  for (const key of Object.keys(node)) {
+    keyHandler(key, payload, node, options);
+  }
+  return node;
 }
 
 /**
@@ -103,7 +145,11 @@ function keyHandler(
  * @param payload - The source object containing the data to be transformed
  * @param projection - The blueprint object defining how the payload should be transformed.
  *                    Can contain direct values, object paths (starting with $), operators, or nested objects
- * @returns The transformed object with the same structure as the projection but with resolved values
+ * @param options - Optional transformation options. Set `{ strict: true }` to surface
+ *                   errors (unknown operators, malformed expressions, operator failures)
+ *                   instead of silently resolving them to null.
+ * @returns A new transformed object with the same structure as the projection but with resolved values.
+ *          The original projection blueprint is never mutated, so it can be safely reused across calls.
  *
  * @example
  * ```typescript
@@ -128,14 +174,28 @@ function keyHandler(
  * //   amountCents: 10050,
  * //   currency: "USD"
  * // }
+ *
+ * // Strict mode surfaces mistakes instead of returning null:
+ * Forgefy.this(payload, { total: { $addd: ["$user.age", 1] } }, { strict: true });
+ * // Throws UnknownOperatorError
  * ```
  */
 export function forgefy(
   payload: Record<string, any>,
   projection: Projection,
+  options?: ForgefyOptions,
 ): Record<string, any> {
-  for (const key of Object.keys(projection)) {
-    keyHandler(key, payload, projection);
-  }
-  return projection;
+  const normalizedOptions: ForgefyOptions = {
+    strict: options?.strict ?? false,
+  };
+  // Clone the projection once so the caller's blueprint is never mutated and
+  // can be reused across multiple payloads. Recursion happens over this private
+  // copy via forgefyNode, so nested nodes are not re-cloned.
+  //
+  // A dedicated recursive clone is used instead of structuredClone because the
+  // latter produces objects bound to the Node realm, which breaks `instanceof`
+  // checks (e.g. isObject) when running inside sandboxed realms such as Jest's
+  // VM. cloneProjection rebuilds plain objects/arrays in the current realm.
+  const draft = cloneProjection(projection) as Record<string, any>;
+  return forgefyNode(payload, draft, normalizedOptions);
 }

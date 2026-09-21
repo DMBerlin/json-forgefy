@@ -82,6 +82,9 @@ import { $dateShift } from "@operators/date/date-shift.operator";
 import { $isWeekend } from "@operators/date/is-weekend.operator";
 import { $isHoliday } from "@operators/date/is-holiday.operator";
 import { $addDays } from "@operators/date/add-days.operator";
+import { $year } from "@operators/date/year.operator";
+import { $month } from "@operators/date/month.operator";
+import { $isLeapYear } from "@operators/date/is-leap-year.operator";
 
 // Array operators
 import { $map } from "@operators/array/map.operator";
@@ -109,7 +112,7 @@ import { $sum } from "@operators/array/sum.operator";
  * - Utility: $exists, $isNull
  * - Type Conversion: $toNumber, $toString
  * - Type Checking: $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN
- * - Date: $dateDiff, $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $dateShift, $isWeekend, $isHoliday, $addDays
+ * - Date: $dateDiff, $toDate, $dayOfWeek, $dayOfMonth, $dayOfYear, $dateShift, $isWeekend, $isHoliday, $addDays, $year, $month, $isLeapYear
  * - Array Transformation: $map, $filter, $reduce
  * - Array Utility: $arrayFirst, $arrayLast, $arrayAt, $avg, $sum
  * - Utility: $toFixed
@@ -193,6 +196,9 @@ operatorRegistry
   .register("$isWeekend", $isWeekend)
   .register("$isHoliday", $isHoliday)
   .register("$addDays", $addDays)
+  .register("$year", $year)
+  .register("$month", $month)
+  .register("$isLeapYear", $isLeapYear)
   .register("$map", $map)
   .register("$filter", $filter)
   .register("$reduce", $reduce)

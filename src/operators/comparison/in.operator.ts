@@ -25,7 +25,6 @@ import { InOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $in: ExecutableExpression<InOperatorInput, boolean> = () => {
   return function (value: InOperatorInput): boolean {
-    // All values are already resolved by resolveArgs
     const [targetValue, arrayValues] = value;
 
     // Ensure we have an array to check against

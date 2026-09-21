@@ -28,7 +28,6 @@ export const $isNull: ExecutableExpression<
   boolean
 > = () => {
   return function (expression: IsNullOperatorInput): boolean {
-    // Expression is already resolved by resolveArgs
     return expression === null || expression === undefined;
   };
 };

@@ -25,7 +25,6 @@ import { NotOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $not: ExecutableExpression<NotOperatorInput, boolean> = () => {
   return function (expression: NotOperatorInput): boolean {
-    // Expression is already resolved by resolveArgs
     return !expression;
   };
 };

@@ -16,6 +16,27 @@ describe("isObject Testing Suit", () => {
     expect(isObject(null)).toBe(false);
     expect(isObject(undefined)).toBe(false);
   });
+
+  // These cases pin the type-guard semantics for non-plain object types.
+  // CS-5 (docs/ISSUES.md) deliberately moved isObject from `instanceof Object`
+  // to a realm-safe `typeof` guard. Two incidental results changed on purpose
+  // (neither type ever appears in a JSON blueprint):
+  //   - functions: true -> false (a function is not a data record)
+  //   - null-prototype objects: false -> true (realm-safe; it IS a record)
+  // Date / RegExp remain true (both are `typeof "object"`).
+  it("should return true for Date and RegExp instances", () => {
+    expect(isObject(new Date())).toBe(true);
+    expect(isObject(/regex/)).toBe(true);
+  });
+
+  it("should return false for functions", () => {
+    expect(isObject(function named() {})).toBe(false);
+    expect(isObject(() => undefined)).toBe(false);
+  });
+
+  it("should return true for a null-prototype object", () => {
+    expect(isObject(Object.create(null))).toBe(true);
+  });
 });
 
 describe("isObjectWithProperty Testing Suit", () => {

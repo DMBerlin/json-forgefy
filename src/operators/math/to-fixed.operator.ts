@@ -27,6 +27,6 @@ export const $toFixed: ExecutableExpression<
     const rule: RegExp = new RegExp(
       "^-?\\d+(?:.\\d{0," + (input.precision || -1) + "})?",
     );
-    return Number(input.value.toString().match(rule)[0]);
+    return Number(input.value.toString().match(rule)![0]);
   };
 };

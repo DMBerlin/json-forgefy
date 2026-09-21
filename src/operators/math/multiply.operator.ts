@@ -27,7 +27,6 @@ export const $multiply: ExecutableExpression<
   number
 > = () => {
   return function (values: MultiplyOperatorInput): number {
-    // All values are already resolved by resolveArgs
     return values.reduce(
       (accumulator: number, base: number) => accumulator * base,
     );

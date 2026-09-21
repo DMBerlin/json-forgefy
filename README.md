@@ -45,7 +45,7 @@ Try JSON Forgefy in your browser with our interactive playground:
 - **🌐 Live Playground**: [https://dmberlin.github.io/json-forgefy-playground](https://dmberlin.github.io/json-forgefy-playground)
 - **📦 Source Code**: [https://github.com/DMBerlin/json-forgefy-playground](https://github.com/DMBerlin/json-forgefy-playground)
 
-The playground lets you test all 77 operators with real-time transformation, syntax highlighting, and interactive API reference.
+The playground lets you test all 80 operators with real-time transformation, syntax highlighting, and interactive API reference.
 
 ## 🚀 Quick Start
 
@@ -318,7 +318,7 @@ const blueprint = {
 
 > 📖 **For detailed API documentation with comprehensive examples, see [GUIDE.md](GUIDE.md)**
 
-**77 operators across 10 categories:**
+**80 operators across 10 categories:**
 
 | Category | Operators | Count |
 |----------|-----------|-------|
@@ -329,7 +329,7 @@ const blueprint = {
 | 🎯 **Conditional** | $cond, $switch, $ifNull, $coalesce, $every, $some | 6 |
 | 🔄 **Type Conversion** | $toNumber, $toString, $toDate | 3 |
 | 🔍 **Type Checking** | $type, $isArray, $isString, $isBoolean, $isDate, $isNumber, $isNull, $isNaN, $exists | 9 |
-| 📅 **Date** | $dayOfWeek, $dayOfMonth, $dayOfYear, $isWeekend, $isHoliday, $addDays, $dateShift, $dateDiff | 8 |
+| 📅 **Date** | $dayOfWeek, $dayOfMonth, $dayOfYear, $year, $month, $isLeapYear, $isWeekend, $isHoliday, $addDays, $dateShift, $dateDiff | 11 |
 | 📋 **Array Transform** | $map, $filter, $reduce | 3 |
 | 📊 **Array Utilities** | $arrayFirst, $arrayLast, $arrayAt, $sum, $avg | 5 |
 
@@ -637,6 +637,9 @@ Work with dates, extract components, and handle business days:
 | `$dayOfWeek` | Day of week (0-6) | `{ $dayOfWeek: { date: "$date" } }` | `0-6` |
 | `$dayOfMonth` | Day of month (1-31) | `{ $dayOfMonth: { date: "$date" } }` | `1-31` |
 | `$dayOfYear` | Day of year (1-366) | `{ $dayOfYear: { date: "$date" } }` | `1-366` |
+| `$year` | Four-digit year | `{ $year: { date: "$date" } }` | `2025` |
+| `$month` | Month (1-12) | `{ $month: { date: "$date" } }` | `1-12` |
+| `$isLeapYear` | Check if leap year | `{ $isLeapYear: { value: "$date" } }` | `true/false` |
 | `$isWeekend` | Check if weekend | `{ $isWeekend: { date: "$date" } }` | `true/false` |
 | `$isHoliday` | Check if holiday | `{ $isHoliday: { date: "$date", holidays: ["2025-01-01"] } }` | `true/false` |
 | `$addDays` | Add/subtract days | `{ $addDays: { date: "$date", days: 7 } }` | `"2025-01-22"` |
@@ -653,6 +656,9 @@ const dateInfo = {
   dayOfWeek: { $dayOfWeek: { date: "$date" } },        // 6 (Saturday)
   dayOfMonth: { $dayOfMonth: { date: "$date" } },      // 15
   dayOfYear: { $dayOfYear: { date: "$date" } },        // 74
+  year: { $year: { date: "$date" } },                  // 2025
+  month: { $month: { date: "$date" } },                // 3
+  isLeapYear: { $isLeapYear: { value: "$date" } },     // false
   isWeekend: { $isWeekend: { date: "$date" } }         // true
 };
 
@@ -1059,40 +1065,42 @@ const safe = {
 
 ## 📌 Important Notes
 
-### Array Operator Limitations
+### Array Operators & Nesting
 
-Due to JavaScript module circular dependencies, array operators (`$map`, `$filter`, `$reduce`) cannot be nested within object properties:
+Array operators (`$map`, `$filter`, `$reduce`) can be nested to unlimited depth,
+including inside other operators' expressions and inside object properties:
 
 ```typescript
-// ❌ This doesn't work (nested $map in object property)
+// ✅ Nesting an array operator inside an object property works
 {
-  $map: {
-    input: [{ items: [1, 2, 3] }],
-    expression: {
-      doubled: {  // ← Nested in object property
-        $map: { input: "$current.items", expression: { $multiply: ["$current", 2] } }
+  result: {
+    $map: {
+      input: [{ items: [1, 2, 3] }],
+      expression: {
+        doubled: {
+          $map: { input: "$current.items", expression: { $multiply: ["$current", 2] } }
+        }
       }
     }
   }
 }
-// Returns: [{ doubled: null }]
-
-// ✅ Use $map at expression root instead
-{
-  $map: {
-    input: [{ items: [1, 2, 3] }],
-    expression: {
-      $map: {  // ← At root level
-        input: "$current.items",
-        expression: { $multiply: ["$current", 2] }
-      }
-    }
-  }
-}
-// Returns: [[2, 4, 6]]
+// Returns: { result: [{ doubled: [2, 4, 6] }] }
 ```
 
-All other operators nest perfectly to unlimited depth.
+The only thing to keep in mind is that the **projection root maps output field
+names**, so an operator must be assigned to a field rather than being the entire
+projection:
+
+```typescript
+// ❌ An operator at the projection root is treated as a field name, not evaluated
+Forgefy.this(payload, { $map: { input: [1, 2], expression: { $multiply: ["$current", 2] } } });
+
+// ✅ Assign the operator to a field instead
+Forgefy.this(payload, { doubled: { $map: { input: [1, 2], expression: { $multiply: ["$current", 2] } } } });
+// Returns: { doubled: [2, 4] }
+```
+
+All operators nest perfectly to unlimited depth.
 
 ## 🛠️ Development
 

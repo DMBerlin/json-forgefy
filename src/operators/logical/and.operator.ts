@@ -39,7 +39,6 @@ export const $and: ExecutableExpression<AndOperatorInput, boolean> = () => {
       return true;
     }
 
-    // All expressions are already resolved by resolveArgs
     // Short-circuit evaluation: return false on first falsy expression
     for (const expression of expressions) {
       if (!expression) {

@@ -39,7 +39,6 @@ export const $or: ExecutableExpression<OrOperatorInput, boolean> = () => {
       return false;
     }
 
-    // All expressions are already resolved by resolveArgs
     // Short-circuit evaluation: return true on first truthy expression
     for (const expression of expressions) {
       if (expression) {

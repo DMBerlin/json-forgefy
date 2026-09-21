@@ -25,7 +25,6 @@ import { EqOperatorInput } from "@lib-types/operator-input.types";
  */
 export const $eq: ExecutableExpression<EqOperatorInput, boolean> = () => {
   return function (values: EqOperatorInput): boolean {
-    // All values are already resolved by resolveArgs
     return values[0] === values[1];
   };
 };

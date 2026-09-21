@@ -129,73 +129,25 @@ export function validateNumberInput<T = unknown>(
 }
 
 /**
- * Checks if an array is empty and returns fallback if provided.
- * This is a convenience helper for the common pattern of checking array length.
+ * Filters an array down to its valid numeric values.
  *
- * @param array - The array to check
- * @param fallback - Optional fallback value to return if empty
- * @returns The fallback value if array is empty and fallback is provided, otherwise undefined
- *
- * @example
- * ```typescript
- * if (array.length === 0) {
- *   const fb = getEmptyArrayFallback(array, fallback);
- *   if (fb !== undefined) return fb;
- * }
- * ```
- */
-export function getEmptyArrayFallback<T>(
-  array: unknown[],
-  fallback?: T,
-): T | undefined {
-  if (array.length === 0 && fallback !== undefined) {
-    return fallback;
-  }
-  return undefined;
-}
-
-/**
- * Filters an array to extract only valid numeric values.
- * Excludes NaN, null, undefined, strings, objects, and other non-numeric types.
- * Returns the filtered array of numbers, or fallback if no valid numbers found.
- * Returns default value (0) if array is empty or no valid numbers and no fallback provided.
+ * A pure, single-responsibility helper: it keeps only entries that are actual
+ * numbers (excluding `NaN`) and drops everything else — strings, booleans,
+ * objects, arrays, `null`, and `undefined`. `Infinity` / `-Infinity` are kept
+ * (they are numbers and not `NaN`). Empty-array and no-valid-number handling
+ * (fallbacks, defaults) is intentionally left to the caller so the contract
+ * stays a simple `unknown[] -> number[]`.
  *
  * @param array - The array to filter
- * @param fallback - Optional fallback value to return if no valid numbers
- * @param defaultValue - Default value to return if no numbers and no fallback (default: 0)
- * @returns Array of valid numbers, fallback, or default value
+ * @returns A new array containing only the valid numbers (possibly empty)
  *
  * @example
  * ```typescript
- * const numbers = extractNumericValues([10, "text", 20, null, 30], null);
- * // Returns: [10, 20, 30]
- *
- * const empty = extractNumericValues(["a", "b", "c"], 999);
- * // Returns: 999 (no valid numbers, uses fallback)
- *
- * const defaulted = extractNumericValues([]);
- * // Returns: 0 (default value)
+ * filterNumeric([10, "text", 20, null, 30]); // [10, 20, 30]
+ * filterNumeric(["a", "b"]);                  // []
+ * filterNumeric([]);                          // []
  * ```
  */
-export function extractNumericValues<T = number>(
-  array: unknown[],
-  fallback?: T,
-  defaultValue: number = 0,
-): number[] | T | number {
-  // Handle empty array
-  if (array.length === 0) {
-    return fallback !== undefined ? fallback : defaultValue;
-  }
-
-  // Filter out non-numeric values
-  const numbers = array.filter(
-    (v): v is number => typeof v === "number" && !isNaN(v),
-  );
-
-  // If no valid numbers found
-  if (numbers.length === 0) {
-    return fallback !== undefined ? fallback : defaultValue;
-  }
-
-  return numbers;
+export function filterNumeric(array: unknown[]): number[] {
+  return array.filter((v): v is number => typeof v === "number" && !isNaN(v));
 }
