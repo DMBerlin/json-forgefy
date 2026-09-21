@@ -1,5 +1,43 @@
 # Changelog
 
+## [4.1.0](https://github.com/DMBerlin/json-forgefy/compare/v4.0.1...v4.1.0) (2026-09-21)
+
+### ✨ Features
+
+- **Opt-in Strict Mode (`strict: true`)**:
+  - Adds `ForgefyOptions` enabling `{ strict: true }` in `forgefy(data, projection, { strict: true })`.
+  - In strict mode, unknown operators throw errors immediately instead of returning `null` or silent fallbacks. Unhandled operator evaluation errors are properly surfaced.
+- **EPIC 9 Date Operators**:
+  - `$year`: Extract the year from a date or timestamp with timezone support and fallback.
+  - `$month`: Extract the month (1-12) from a date or timestamp with timezone support and fallback.
+  - `$isLeapYear`: Standalone Gregorian leap year validator (4/100/400 rules).
+  - Operator catalog now reaches **80 operators** across 10 categories.
+- **AI & LLM Agent Readiness**:
+  - Added [`llms.txt`](llms.txt) specification file providing concise machine-readable context, full 80-operator reference, and agent tool execution patterns for LLMs (OpenAI, Anthropic, Gemini, Vercel AI SDK).
+  - Added dedicated AI & LLM Agent Pipelines section in `README.md` for safe, deterministic, `eval`-free JSON reshaping.
+- **Developer Experience & Modern Packaging**:
+  - Added standard `exports` map in `package.json` for NodeNext, ESM, and modern bundlers.
+  - Exported named `forgefy`, `ForgefyOptions`, and `Projection` alongside default export.
+
+### ♻ Code Quality & Architecture (CS-1 through CS-11)
+
+- **Strict TypeScript Compliance**: Enabled `strictNullChecks` and `strictBindCallApply` in `tsconfig.json` with zero compiler errors or suppresses.
+- **Core Engine Unification**: Unified `resolveValue` and `resolveArgs` into shared `resolveRecursive` engine.
+- **Numeric & Date Helpers**: Replaced tri-state extraction with pure `filterNumeric`; extracted `createDateFieldOperator` factory.
+- **Immutability**: Deep immutability guarantees on data projections (`cloneProjection`).
+- **100% Test Coverage**: 107 test suites and 1,871 tests passing with 100% statement, branch, function, and line coverage.
+
+### 🛡 Security
+
+- Resolved 30 Dependabot security advisories across transitive dependencies (`lodash`, `flatted`, `picomatch`, `minimatch`, `fast-uri`, `brace-expansion`, `xmldom`, `js-yaml`, `@babel/core`, `browserslist`, `baseline-browser-mapping`).
+- Hardened GitHub Actions workflows with StepSecurity egress auditing and pinned action SHAs.
+- Clean production audit (`0` vulnerabilities).
+
+### 🧰 Maintenance & Compatibility
+
+- Added `"engines": { "node": ">=22" }` targeting active LTS lines (Node 22.x, 24.x) and dropping EOL Node 18/20.
+- Updated `pnpm-workspace.yaml` packages configuration for pnpm 10 compatibility.
+
 ## [4.0.1](https://github.com/DMBerlin/json-forgefy/compare/v4.0.0...v4.0.1) (2025-11-19)
 
 ### 🛡 Security
