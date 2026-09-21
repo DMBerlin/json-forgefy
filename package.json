@@ -1,6 +1,6 @@
 {
   "name": "json-forgefy",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Safe, declarative JSON transformation engine using MongoDB-style aggregation operators. Zero dependencies, 100% test coverage, and TypeScript-first. Ideal for API data mapping, ETL, and AI agents.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
